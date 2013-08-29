@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+  <head http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Paul Calnan: Bash PS1</title>
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/css/main.css" type="text/css"/>
+
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/highlight.js/styles/solarized_light.css">
+    <script src="http://paulcalnan.com/theme/highlight.js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="header">
+        <table width="100%" border="0" cellpadding="0">
+          <tr>
+            <td class="headerTitle">
+              <a href="http://paulcalnan.com" style="text-decoration: none;">Paul Calnan</a>
+            </td>
+            <td class="headerLinks">
+              <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>            </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="headerFoot">
+              I love it when a plan comes together
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      
+<div class="post">
+  <div class="postTitle">
+    <a href="/archives/2013/2/bash_ps1.html">Bash PS1</a>
+  </div>
+    <div class="date">Published February 15, 2013</div>
+  <p>My Bash prompt has progressively gotten more complicated over the years. Today, I wanted to add to it and realized it was time to reorganize.</p>
+<p>Prior to today, it looked like this:</p>
+<pre><code class="bash">export PS1=&quot;\n\[\e[0;33m\]\D{%a %b %d %T %Z %Y}\[\e[0;34m\]\$(__git_ps1)\n\[\e[0;31m\]\u@\h\[\e[0m\]: \[\e[0;36m\]\w\[\e[0m\]\n$ &quot;
+</code></pre>
+
+<p>After today's reorganization, it now looks like this:</p>
+<pre><code class="bash">__pyenv_prompt()
+{
+    if [ &quot;$VIRTUAL_ENV&quot; != &quot;&quot; ]; then
+        echo -n &quot;$(basename $VIRTUAL_ENV) &quot;
+    fi
+}
+
+__PS1_DTS=&quot;\[\e[0;33m\]\D{%a %b %d %T %Z %Y}&quot;
+__PS1_PYENV=&quot;\[\e[1;35m\]\$(__pyenv_prompt)&quot;
+
+if [ -e &quot;$__RVM_HOME/bin/rvm-prompt&quot; ]; then
+    __PS1_RVM=&quot;\[\e[0;31m\]\$(rvm-prompt i v p g)&quot;
+fi
+
+__PS1_USERNAME=&quot;\[\e[0;31m\]\u@\h\[\e[0m\]: &quot;
+__PS1_PWD=&quot;\[\e[0;36m\]\w\[\e[0m\]&quot;
+
+export PS1=&quot;\n${__PS1_DTS}${__PS1_GITSTATUS} ${__PS1_PYENV}${__PS1_RVM}\n${__PS1_USERNAME}${__PS1_PWD}\n$ &quot;
+</code></pre>
+
+<p>Here's a screenshot of it in action:</p>
+<p><img alt="Screenshot" src="/static/images/Bash_PS1_screenshot.png" title="Bash Prompt Screenshot" /></p>
+<p>Maybe it's too much information, but I find it useful. On the first line, the date is in yellow. My current Git branch is in green. My current Python virtual environment is in purple. My current Ruby version, patchlevel, and gemset is in red. On the next line, my username and hostname are in red, and my working directory is in blue.</p>
+<p>To show the Git branch, you need to have the <a href="http://mxcl.github.com/homebrew/">Homebrew</a> <code>bash-completion</code> package installed, and you need to do the following in your <code>.bashrc</code>:</p>
+<pre><code class="bash">if [ -f /usr/local/etc/bash_completion.d/git-prompt.sh ]; then
+    export GIT_PS1_SHOWDIRTYSTATE=1
+    source /usr/local/etc/bash_completion.d/git-prompt.sh
+fi
+</code></pre>
+</div>
+
+
+      <div id="copyright">
+        <center>
+          <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>          <br/><br/>
+          &copy; 2013 Paul Calnan. All rights reserved.
+        </center>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+  var _gauges = _gauges || [];
+  (function() {
+    var t   = document.createElement('script');
+    t.type  = 'text/javascript';
+    t.async = true;
+    t.id    = 'gauges-tracker';
+    t.setAttribute('data-site-id', '51304dd7108d7b6aad000032');
+    t.src = '//secure.gaug.es/track.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(t, s);
+  })();
+</script>
+  </body>
+</html>

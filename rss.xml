@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Paul Calnan</title><link>http://paulcalnan.com/</link><description></description><atom:link href="http://paulcalnan.com/rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 15 Aug 2013 23:21:21 -0400</lastBuildDate><item><title>Pause When Dialing a Skype Number</title><link>http://paulcalnan.com/archives/2013/8/pause_when_dialing_a_skype_number.html</link><description>&lt;p&gt;One of my clients uses a phone bridge for conference calls. I usually call in to the bridge using Skype. Each regular conference call I have uses a different access code. It works like an extension number: you call the bridge, wait a few seconds, dial the access code, press &lt;code&gt;#&lt;/code&gt;, wait a few seconds, and press &lt;code&gt;#&lt;/code&gt; again.&lt;/p&gt;
+&lt;p&gt;On a cell phone, you can usually add commas to the phone number to insert a pause when dialing, allowing you to save extensions and access codes like this in the contact information. Of course, Skype doesn't support that.&lt;/p&gt;
+&lt;p&gt;I found an &lt;a href="http://community.skype.com/t5/Mac/Re-Pause-option-when-dialing/td-p/731820"&gt;AppleScript on a Skype discussion board&lt;/a&gt; that shows a way to dial a number using Skype followed by a &lt;a href="http://en.wikipedia.org/wiki/dtmf"&gt;DTMF&lt;/a&gt; string to be sent after the call connects. I wrote a Python wrapper for it. Commas are interpreted as 2 second delays.&lt;/p&gt;
+&lt;p&gt;Now, I can call the phone bridge and dial the access code all with the following command:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="no-highlight"&gt;$ skypecall 800-555-1212 &amp;quot;12345#,,#&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This dials the number &lt;code&gt;+18005551212&lt;/code&gt;, waits for the call to connect, waits 10 seconds, then dials the string &lt;code&gt;12345#&lt;/code&gt;, waits 4 seconds, then dials &lt;code&gt;#&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Here's the Python script:&lt;/p&gt;
+&lt;script src="https://gist.github.com/pwc3/6246835.js"&gt;&lt;/script&gt;
+
+&lt;p&gt;It's fairly easy to go from that to any of a number of shortcuts (Alfred, LaunchBar, an Automator action, etc.) to quickly place a call.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;UPDATE:&lt;/strong&gt; I created an Alfred Keyword action named &lt;code&gt;bridge&lt;/code&gt; which triggers a shell script that looks like this:&lt;/p&gt;
+&lt;script src="https://gist.github.com/pwc3/6246974.js"&gt;&lt;/script&gt;
+
+&lt;p&gt;The &lt;code&gt;case&lt;/code&gt; statement maps from keyword arguments (&lt;code&gt;monday&lt;/code&gt;, &lt;code&gt;wednesday&lt;/code&gt;, or &lt;code&gt;friday&lt;/code&gt; in this example) into access codes (&lt;code&gt;12345&lt;/code&gt;, &lt;code&gt;23456&lt;/code&gt;, or &lt;code&gt;34567&lt;/code&gt; respectively). To run it, I invoke Alfred (&lt;code&gt;Cmd-Space&lt;/code&gt; on my computer) then I type:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="no-highlight"&gt;bridge monday
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This causes Skype to dial &lt;code&gt;+18005551212&lt;/code&gt;, and enters the access code &lt;code&gt;12345&lt;/code&gt; with the right pauses and &lt;code&gt;#&lt;/code&gt;s. If I wanted to use an arbitrary access code that doesn't have a corresponding keyword, I could do so like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="no-highlight"&gt;bridge 24680
+&lt;/code&gt;&lt;/pre&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Thu, 15 Aug 2013 23:21:21 -0400</pubDate><guid>tag:paulcalnan.com,2013-08-15:archives/2013/8/pause_when_dialing_a_skype_number.html</guid></item><item><title>Editing Property Lists in a Text Editor</title><link>http://paulcalnan.com/archives/2013/8/editing_property_lists_in_a_text_editor.html</link><description>&lt;p&gt;Occasionally, I've wanted to be able to poke around in a plist file while working in the terminal. You can open an XML plist in a text editor like Vim, but a binary plist just looks like gibberish.&lt;/p&gt;
+&lt;p&gt;Fortunately, you can convert a plist file into XML format with the following command:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="bash"&gt;plutil -convert xml1 INPUT_FILENAME
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Alternatively, you can convert a plist file into binary format with the following command:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="bash"&gt;plutil -convert binary1 INPUT_FILENAME
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Obviously, change &lt;code&gt;INPUT_FILENAME&lt;/code&gt; to whatever file you want to edit.&lt;/p&gt;
+&lt;p&gt;I wrote a quick Python script to automate this. I called it &lt;code&gt;edit-plist&lt;/code&gt;. It first checks the file type (using the &lt;code&gt;file&lt;/code&gt; utility). If it's a binary plist, it converts to XML. Then it opens in the selected editor (Vim). Once the editor exits, if the file was originally a binary plist, it converts back to that format.&lt;/p&gt;
+&lt;script src="https://gist.github.com/pwc3/6161201.js"&gt;&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Mon, 05 Aug 2013 21:21:21 -0400</pubDate><guid>tag:paulcalnan.com,2013-08-05:archives/2013/8/editing_property_lists_in_a_text_editor.html</guid></item><item><title>Copy to Pasteboard from a Remote Machine</title><link>http://paulcalnan.com/archives/2013/8/copy_to_pasteboard_from_a_remote_machine.html</link><description>&lt;p&gt;I do a lot of work via SSH on a remote Linux server. It is often useful to transfer text from that server back to my local machine. Rather than save to a file and &lt;code&gt;scp&lt;/code&gt; it down to my local machine, I &lt;a href="http://seancoates.com/blogs/remote-pbcopy"&gt;adapted this process&lt;/a&gt; to allow me to copy to my local pasteboard from a remote machine.&lt;/p&gt;
+&lt;p&gt;Note, I use port 50730 for this. I can't remember why I picked that number. Regardless, it's arbitrary and you should be able to choose something else if you prefer.&lt;/p&gt;
+&lt;h3&gt;Step 1: Create a pasteboard daemon&lt;/h3&gt;
+&lt;p&gt;On Mac OS X, this is fairly easy using a Launch Agent.&lt;/p&gt;
+&lt;p&gt;Save the following XML property list file in &lt;code&gt;~/Library/LaunchAgents/com.paulcalnan.pbcopy.plist&lt;/code&gt; on your local machine:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="xml"&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;!DOCTYPE plist PUBLIC &amp;quot;-//Apple Computer//DTD PLIST 1.0//EN&amp;quot; &amp;quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&amp;quot;&amp;gt;
+&amp;lt;plist version=&amp;quot;1.0&amp;quot;&amp;gt;
+&amp;lt;dict&amp;gt;
+     &amp;lt;key&amp;gt;Label&amp;lt;/key&amp;gt;
+     &amp;lt;string&amp;gt;com.paulcalnan.pbcopy&amp;lt;/string&amp;gt;
+     &amp;lt;key&amp;gt;ProgramArguments&amp;lt;/key&amp;gt;
+     &amp;lt;array&amp;gt;
+         &amp;lt;string&amp;gt;/usr/bin/pbcopy&amp;lt;/string&amp;gt;
+     &amp;lt;/array&amp;gt;
+     &amp;lt;key&amp;gt;inetdCompatibility&amp;lt;/key&amp;gt;
+     &amp;lt;dict&amp;gt;
+          &amp;lt;key&amp;gt;Wait&amp;lt;/key
+          &amp;lt;false/&amp;gt;
+     &amp;lt;/dict&amp;gt;
+     &amp;lt;key&amp;gt;Sockets&amp;lt;/key&amp;gt;
+     &amp;lt;dict&amp;gt;
+          &amp;lt;key&amp;gt;Listeners&amp;lt;/key&amp;gt;
+               &amp;lt;dict&amp;gt;
+                    &amp;lt;key&amp;gt;SockServiceName&amp;lt;/key&amp;gt;
+                    &amp;lt;string&amp;gt;50730&amp;lt;/string&amp;gt;
+                    &amp;lt;key&amp;gt;SockNodeName&amp;lt;/key&amp;gt;
+                    &amp;lt;string&amp;gt;127.0.0.1&amp;lt;/string&amp;gt;
+               &amp;lt;/dict&amp;gt;
+     &amp;lt;/dict&amp;gt;
+&amp;lt;/dict&amp;gt;
+&amp;lt;/plist&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that I use my domain name, &lt;code&gt;com.paulcalnan&lt;/code&gt;, in the daemon and file name. You can call it whatever you like.&lt;/p&gt;
+&lt;h3&gt;Step 2: Load the daemon&lt;/h3&gt;
+&lt;p&gt;From the Terminal on your local machine, run:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="bash"&gt;launchctl load ~/Library/LaunchAgents/com.paulcalnan.pbcopy.plist
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Step 3: Configure SSH port forwarding&lt;/h3&gt;
+&lt;p&gt;Add the following to your local machine's &lt;code&gt;~/.ssh/config&lt;/code&gt; file:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="no-highlight"&gt;RemoteForward 50730 127.0.0.1:50730
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Step 4: Create a remote &lt;code&gt;pbcopy&lt;/code&gt; script&lt;/h3&gt;
+&lt;p&gt;Add the following file to the remote server as &lt;code&gt;~/bin/pbcopy&lt;/code&gt; and make it executable:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="bash"&gt;#!/usr/bin/env bash
+cat | nc localhost 50730
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This assumes &lt;code&gt;~/bin&lt;/code&gt; is on your &lt;code&gt;PATH&lt;/code&gt;. If the remote host runs OS X, you should name it something else, like &lt;code&gt;rpbcopy&lt;/code&gt;, to prevent confusion with the built-in &lt;code&gt;pbcopy&lt;/code&gt;.&lt;/p&gt;
+&lt;h3&gt;Step 5: Try it out&lt;/h3&gt;
+&lt;p&gt;From the remote server, run a command and pipe the output through &lt;code&gt;pbcopy&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="bash"&gt;uptime | pbcopy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Back on your local machine, paste into a text editor.&lt;/p&gt;
+&lt;h3&gt;Bonus &lt;code&gt;tmux&lt;/code&gt; Trick&lt;/h3&gt;
+&lt;p&gt;Most of the time, I use &lt;code&gt;tmux&lt;/code&gt; to manage multiple consoles in the same SSH session. When I split the window horizontally, it breaks my ability to select multiple lines of text with the mouse.&lt;/p&gt;
+&lt;p&gt;To copy from a tmux session, I do a &lt;code&gt;Ctrl-A [&lt;/code&gt;, select text I want to copy, and press &lt;code&gt;Enter&lt;/code&gt; (I use &lt;code&gt;Ctrl-A&lt;/code&gt; instead of &lt;code&gt;Ctrl-B&lt;/code&gt; for my prefix). That puts the selected text in the tmux buffer. To copy the tmux buffer contents, I run &lt;code&gt;tmuxcp&lt;/code&gt;, defined as an alias in my &lt;code&gt;.bashrc&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="bash"&gt;alias tmuxcp='tmux save-buffer - | pbcopy'
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This works on Linux (where I have my &lt;code&gt;pbcopy&lt;/code&gt; script on my path) and on OS X (which has the native &lt;code&gt;pbcopy&lt;/code&gt; on the path).&lt;/p&gt;
+&lt;h3&gt;Issues&lt;/h3&gt;
+&lt;p&gt;I use this quite often and it's turned out to be a huge time saver. It's not perfect, though. There are two issues I have encountered.&lt;/p&gt;
+&lt;p&gt;First, it doesn't work if you open multiple SSH sessions to the same server. After one session is opened, subsequent sessions print a warning:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="no-highlight"&gt;Warning: remote port forwarding failed for listen port 50730
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This can cause other issues. For instance, I have a particular Linux host I connect to via SSH that also runs a MySQL instance. if I have an SSH session open to that host and then use MySQL Workbench (or some other MySQL graphical client) to open an SSH connection to that same host, the warning message is incorrectly interpreted as an error message and the connection fails. The workaround here is to open the MySQL connection first and then open the SSH connection. The port forwarding will fail in the SSH session, preventing the remote &lt;code&gt;pbcopy&lt;/code&gt; from working, but the MySQL connection will work.&lt;/p&gt;
+&lt;p&gt;Second, it doesn't handle text encoding particularly well. When I pass UTF-8 text into the remote &lt;code&gt;pbcopy&lt;/code&gt; script, it shows up on the local pasteboard garbled. This shouldn't be too hard to fix, but I don't run into it often enough to spend the time debugging it.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Fri, 02 Aug 2013 18:41:18 -0400</pubDate><guid>tag:paulcalnan.com,2013-08-02:archives/2013/8/copy_to_pasteboard_from_a_remote_machine.html</guid></item><item><title>Python Line Numbers</title><link>http://paulcalnan.com/archives/2013/8/python_line_numbers.html</link><description>&lt;p&gt;Someone posted to Twitter a link to &lt;a href="http://nedbatchelder.com/text/iter/iter.html"&gt;a presentation on Python iteration&lt;/a&gt;. In it, I saw something clever.&lt;/p&gt;
+&lt;p&gt;When iterating over a file line-by-line, you generally do something like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="python"&gt;with open(some_filename, 'r') as fh:
+    for line in fh:
+        do_something_interesting(line)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Occasionally, you need a line number associated with each line of data. I usually wind up doing something like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="python"&gt;with open(some_filename, 'r') as fh:
+    lineno = 0
+    for line in fh:
+        lineno += 1
+        do_something_interesting(line, lineno)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;From the presentation, I learned that you can do the same with the &lt;code&gt;enumerate&lt;/code&gt; function:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="python"&gt;with open(some_filename, 'r') as fh:
+    for lineno, line in enumerate(fh, start=1):
+        do_something_interesting(line, lineno)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I can't believe that never occurred to me before.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Fri, 02 Aug 2013 00:30:00 -0400</pubDate><guid>tag:paulcalnan.com,2013-08-02:archives/2013/8/python_line_numbers.html</guid></item><item><title>Exchange to iCloud Calendar Sync</title><link>http://paulcalnan.com/archives/2013/4/exchange_to_icloud_calendar_sync.html</link><description>&lt;p&gt;I recently received an email from a client of mine. They decided to block all iOS 6.1.3 users from syncing with the corporate Exchange server. This isn't a problem with email as I was able to configure IMAP easily. This was, however, a big problem for my calendar. Being unable to have an up-to-date schedule on my iPhone was out of the question.&lt;/p&gt;
+&lt;p&gt;I first looked at &lt;a href="http://davmail.sourceforge.net/"&gt;DavMail&lt;/a&gt; but couldn't get it to work. Instead I decided to make a duplicate of my Exchange calendar in iCloud.&lt;/p&gt;
+&lt;p&gt;(Update 2013-04-16) This wound up causing lots of problems with iCloud. Around when the script ran, I noticed in Console.app reports of the &lt;code&gt;CalendarAgent&lt;/code&gt; process crashing repeatedly every few seconds. I'm not sure why, and didn't really dig too deeply to find out. Fortunately, my client re-enabled iOS syncing with Exchange, so the need for this script has gone away.&lt;/p&gt;
+&lt;h3&gt;Step 1: Create a new iCloud calendar&lt;/h3&gt;
+&lt;p&gt;In Calendar.app (formerly iCal) on OS X, create a new calendar (File &amp;gt; New Calendar &amp;gt; iCloud). Call it whatever you like.&lt;/p&gt;
+&lt;p&gt;(Update 2013-04-09) You'll want to Ignore Alerts on this calendar on your computer. Otherwise you'll get double alerts for every event. Right-click the calendar in the list and select Get Info. Check the &lt;em&gt;Ignore Alerts&lt;/em&gt; checkbox and click OK.&lt;/p&gt;
+&lt;h3&gt;Step 2: Create an AppleScript&lt;/h3&gt;
+&lt;p&gt;The pivotal piece here is an AppleScript that does the following:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Deletes all events from the destination iCloud calendar (created in Step 1 above).&lt;/li&gt;
+&lt;li&gt;Copies all events from your Exchange calendar to the iCloud calendar.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;For the purposes of this example, we'll call the Exchange calendar "Source Calendar" and the iCloud calendar "Destination Calendar".&lt;/p&gt;
+&lt;p&gt;We first delete all of the events from the destination calendar. We're not &lt;em&gt;really&lt;/em&gt; syncing the calendars, rather we're copying all events from one to another. If we didn't delete first, events removed from the source calendar would never be removed from the destination calendar. Just be careful to use the right calendar names so you don't accidentally delete from wrong one!&lt;/p&gt;
+&lt;script src="https://gist.github.com/pwc3/5342337.js"&gt;&lt;/script&gt;
+
+&lt;p&gt;Copy and paste the script above into the AppleScript Editor (usually found in /Applications/Utilities) and change the calendar names as necessary. Try it out and make sure you don't get any error messages. Save it someplace convenient and remember where you put it.&lt;/p&gt;
+&lt;h3&gt;Step 3: Schedule the script to run&lt;/h3&gt;
+&lt;p&gt;This step is optional. If you prefer, you can just run the script whenever you think of it. I decided to schedule it using Cron. &lt;a href="http://en.wikipedia.org/wiki/Cron"&gt;This Wikipedia article&lt;/a&gt; provides a reasonable rundown of how Cron works, if you're unfamiliar with it.&lt;/p&gt;
+&lt;p&gt;In the Terminal, run:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="bash"&gt;crontab -e
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This will launch a text editor. In it, you specify the schedule. In my case, I wanted to run it every two hours, Monday through Friday.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="no-highlight"&gt;* */2 * * 1-5 osascript $HOME/Dropbox/Scripts/Applications/Calendar/Exchange\ Sync.scpt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Change the path to your AppleScript to match where you put it in Step 2.&lt;/p&gt;
+&lt;p&gt;(Apparently, you can wrap an AppleScript with an Automator workflow and &lt;a href="http://hints.macworld.com/article.php?story=20050504105901868"&gt;schedule it to run using Calendar.app&lt;/a&gt;, but I haven't tried this approach.)&lt;/p&gt;
+&lt;h3&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;On a relatively new MacBook Pro, the script takes a couple of minutes to sync around 200 events. Presumably fewer events will sync faster. It may take a couple of minutes for the iCloud sync to go through before you see the events on your iOS device.&lt;/p&gt;
+&lt;p&gt;The script is pretty basic. I was going to make the sync go incrementally, but AppleScript is such a pain to program, I decided to go the naive route and just delete everything and copy it back over.&lt;/p&gt;
+&lt;p&gt;As usual, &lt;a href="http://twitter.com/pwc/"&gt;questions and feedback are always welcome&lt;/a&gt;.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Mon, 08 Apr 2013 22:07:40 -0400</pubDate><guid>tag:paulcalnan.com,2013-04-08:archives/2013/4/exchange_to_icloud_calendar_sync.html</guid></item><item><title>Resetting Kindle Reading Rate Estimates</title><link>http://paulcalnan.com/archives/2013/3/resetting_kindle_reading_rate_estimates.html</link><description>&lt;p&gt;I recently bought a &lt;a href="http://www.amazon.com/Kindle-Paperwhite-Touch-light/dp/B007OZNZG0"&gt;Kindle Paperwhite&lt;/a&gt;. I used to own a &lt;a href="http://www.amazon.com/Kindle-Special-Offers-Wireless-Reader/dp/B004HFS6Z0"&gt;Kindle Keyboard&lt;/a&gt; and was pleasantly surprised by the updated features on the new model. &lt;/p&gt;
+&lt;p&gt;One of the features I really like is the estimated time printed at the bottom of the screen. You can toggle between time left in the current chapter and time left in the book. When you first use the Kindle, it doesn't immediately show you those values. Rather, it watches how fast you read and adjusts the estimates accordingly.&lt;/p&gt;
+&lt;p&gt;Unfortunately, it's easily confused. I'm reading a book with lots of footnotes, and I occasionally flip around. Rapidly changing pages appears to confuse the time estimate calculations. After a while, it was estimating I'd finish the book in one hour, even though I was at the 8% mark of a 1000+ page book.&lt;/p&gt;
+&lt;p&gt;Luckily, I found an easy way to reset the estimate. Search for &lt;code&gt;;ReadingTimeReset&lt;/code&gt; (keep the semicolon and capitalization as shown) and the estimate will be reset.&lt;/p&gt;
+&lt;p&gt;A couple of other miscellaneous thoughts on the Paperwhite:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;I was initially disappointed by the uneven backlight at the bottom of the screen. After a couple hours of use, I found that I had the light turned on too high. Lowering the light intensity makes the unevenness less apparent while keeping the screen legible.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Once I decided to keep the Paperwhite, paying the extra $20 to get rid of the ads (or "Unsubscribe from Special Offers" in marketing-speak) was a no-brainer.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Mon, 04 Mar 2013 04:01:58 -0500</pubDate><guid>tag:paulcalnan.com,2013-03-04:archives/2013/3/resetting_kindle_reading_rate_estimates.html</guid></item><item><title>Bash PS1</title><link>http://paulcalnan.com/archives/2013/2/bash_ps1.html</link><description>&lt;p&gt;My Bash prompt has progressively gotten more complicated over the years. Today, I wanted to add to it and realized it was time to reorganize.&lt;/p&gt;
+&lt;p&gt;Prior to today, it looked like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="bash"&gt;export PS1=&amp;quot;\n\[\e[0;33m\]\D{%a %b %d %T %Z %Y}\[\e[0;34m\]\$(__git_ps1)\n\[\e[0;31m\]\u@\h\[\e[0m\]: \[\e[0;36m\]\w\[\e[0m\]\n$ &amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After today's reorganization, it now looks like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="bash"&gt;__pyenv_prompt()
+{
+    if [ &amp;quot;$VIRTUAL_ENV&amp;quot; != &amp;quot;&amp;quot; ]; then
+        echo -n &amp;quot;$(basename $VIRTUAL_ENV) &amp;quot;
+    fi
+}
+
+__PS1_DTS=&amp;quot;\[\e[0;33m\]\D{%a %b %d %T %Z %Y}&amp;quot;
+__PS1_PYENV=&amp;quot;\[\e[1;35m\]\$(__pyenv_prompt)&amp;quot;
+
+if [ -e &amp;quot;$__RVM_HOME/bin/rvm-prompt&amp;quot; ]; then
+    __PS1_RVM=&amp;quot;\[\e[0;31m\]\$(rvm-prompt i v p g)&amp;quot;
+fi
+
+__PS1_USERNAME=&amp;quot;\[\e[0;31m\]\u@\h\[\e[0m\]: &amp;quot;
+__PS1_PWD=&amp;quot;\[\e[0;36m\]\w\[\e[0m\]&amp;quot;
+
+export PS1=&amp;quot;\n${__PS1_DTS}${__PS1_GITSTATUS} ${__PS1_PYENV}${__PS1_RVM}\n${__PS1_USERNAME}${__PS1_PWD}\n$ &amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here's a screenshot of it in action:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Screenshot" src="/static/images/Bash_PS1_screenshot.png" title="Bash Prompt Screenshot" /&gt;&lt;/p&gt;
+&lt;p&gt;Maybe it's too much information, but I find it useful. On the first line, the date is in yellow. My current Git branch is in green. My current Python virtual environment is in purple. My current Ruby version, patchlevel, and gemset is in red. On the next line, my username and hostname are in red, and my working directory is in blue.&lt;/p&gt;
+&lt;p&gt;To show the Git branch, you need to have the &lt;a href="http://mxcl.github.com/homebrew/"&gt;Homebrew&lt;/a&gt; &lt;code&gt;bash-completion&lt;/code&gt; package installed, and you need to do the following in your &lt;code&gt;.bashrc&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="bash"&gt;if [ -f /usr/local/etc/bash_completion.d/git-prompt.sh ]; then
+    export GIT_PS1_SHOWDIRTYSTATE=1
+    source /usr/local/etc/bash_completion.d/git-prompt.sh
+fi
+&lt;/code&gt;&lt;/pre&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Fri, 15 Feb 2013 04:02:24 -0500</pubDate><guid>tag:paulcalnan.com,2013-02-15:archives/2013/2/bash_ps1.html</guid></item><item><title>Automator Service for Tracking Deliveries</title><link>http://paulcalnan.com/archives/2013/1/automator_service_for_tracking_deliveries.html</link><description>&lt;p&gt;I order lots of stuff online, most of which gets shipped with a tracking number. I use &lt;a href="https://junecloud.com"&gt;Junecloud's awesome Delivery Touch app for iOS&lt;/a&gt; to track those shipments. Junecloud offers a couple of &lt;a href="http://junecloud.com/support/delivery-status-ios/delivery-status-url-scheme.html"&gt;URLs to add new tracking numbers to their system&lt;/a&gt; which will sync to their iOS apps (and dashboard widget).&lt;/p&gt;
+&lt;p&gt;I put together a simple Automator service that allows you to select a tracking number (for example, from an Amazon.com confirmation email), option-click on it, and select "Add Tracking Number to Deliveries" from your Services menu. This will open the Junecloud sync website and add your selected tracking number. Note, you will need a Junecloud sync account for this to work.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/pwc3/deliveries-service"&gt;You can download the Automator service from Github&lt;/a&gt;, or you can create it yourself:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Open &lt;em&gt;Automator&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Create a new &lt;em&gt;Service&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Make sure the options show: &lt;em&gt;Service receives selected&lt;/em&gt; &lt;strong&gt;&lt;em&gt;text&lt;/em&gt;&lt;/strong&gt; &lt;em&gt;in&lt;/em&gt; &lt;strong&gt;&lt;em&gt;any application&lt;/em&gt;&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;Drag a &lt;em&gt;Run AppleScript&lt;/em&gt; action to the area that says &lt;em&gt;Drag actions or files here to build your workflow.&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Enter the following in the new &lt;em&gt;Run AppleScript&lt;/em&gt; action:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code class="applescript"&gt;on run {input, parameters}
+    set _url to &amp;quot;https://junecloud.com/sync/grab/?no=&amp;quot; &amp;amp; input
+    do shell script &amp;quot;open &amp;quot; &amp;amp; _url
+    return input
+end run
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Save the service as "Add Tracking Number to Deliveries" (or whatever service name you prefer).&lt;/li&gt;
+&lt;/ol&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Thu, 31 Jan 2013 00:25:09 -0500</pubDate><guid>tag:paulcalnan.com,2013-01-31:archives/2013/1/automator_service_for_tracking_deliveries.html</guid></item><item><title>Dropbox Updater for OS X</title><link>http://paulcalnan.com/archives/2013/1/dropbox_updater_for_os_x.html</link><description>&lt;p&gt;Since the Dropbox client software installed on my computer never seems to
+automatically update, I wrote a Python script to do it for me. It was developed
+and tested under Mac OS X Mountain Lion 10.8.2.&lt;/p&gt;
+&lt;p&gt;The script does the following:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Checks &lt;code&gt;/Applications/Dropbox.app&lt;/code&gt; for the currently-installed version
+   number.&lt;/li&gt;
+&lt;li&gt;Checks &lt;a href="http://www.dropbox.com/install"&gt;http://www.dropbox.com/install&lt;/a&gt; for
+   the "latest available version" (i.e., whichever version is listed on the
+   &lt;em&gt;Download&lt;/em&gt; button, which may or may not be the latest available version).&lt;/li&gt;
+&lt;li&gt;If the installed version number is less than the latest available version,
+   it attempts to download a DMG of the latest version to &lt;code&gt;~/Downloads&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;If a DMG was successfully downloaded, the script then mounts the DMG and
+   runs the installer.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;There are several assumptions made in the script. I tried to document them all
+and use easily-modifiable constants wherever possible. If the script fails, one
+of the assumptions may no longer be valid.&lt;/p&gt;
+&lt;p&gt;There are two command-line options (run with &lt;code&gt;--help&lt;/code&gt; for details). The
+&lt;code&gt;-v&lt;/code&gt;/&lt;code&gt;--version&lt;/code&gt; option allows you to specify the version to install. This is
+useful when installing Forum builds. The &lt;code&gt;-d&lt;/code&gt;/&lt;code&gt;--dry-run&lt;/code&gt; option performs a
+"dry run" which downloads the DMG but does not mount it or run the installer.&lt;/p&gt;
+&lt;p&gt;The script requires the &lt;code&gt;beautifulsoup4&lt;/code&gt; module. It is used to scrape the
+Dropbox download page to determine the version number. It can be installed via
+either &lt;code&gt;pip install beautifulsoup4&lt;/code&gt; or &lt;code&gt;easy_install beautifulsoup4&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The script is available for download &lt;a href="http://github.com/pwc3/dropbox-updater"&gt;on Github&lt;/a&gt;.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Mon, 28 Jan 2013 22:19:47 -0500</pubDate><guid>tag:paulcalnan.com,2013-01-28:archives/2013/1/dropbox_updater_for_os_x.html</guid></item><item><title>New Blogging Setup</title><link>http://paulcalnan.com/archives/2013/1/new_blogging_setup.html</link><description>&lt;p&gt;My blog posts come pretty intermittently. I most recently tried using an &lt;a href="http://octopress.org/"&gt;Octopress&lt;/a&gt; blog hosted at &lt;a href="http://heroku.com/"&gt;Heroku&lt;/a&gt; for a while. I got it set up, made a handful of posts over about a week, and then stopped.&lt;/p&gt;
+&lt;p&gt;Recently, I had a few blog ideas and went back to try to make some more posts. I'm not sure what I did, but over the past five months, I managed to break my setup. My familiarity with Ruby is pretty limited, so I couldn't easily diagnose the issue.&lt;/p&gt;
+&lt;p&gt;So, I started looking at some of other static blogging setups that are comparable to Octopress. &lt;a href="http://blog.getpelican.com/"&gt;Pelican&lt;/a&gt; was my first choice, as I do a lot of Python development for my day job. The setup was fairly easy, but the output looked bad. I couldn't find a Pelican theme that didn't look awful.&lt;/p&gt;
+&lt;p&gt;After that, I took a look at &lt;a href="http://calepin.co/"&gt;Calepin&lt;/a&gt; and &lt;a href="http://scriptogr.am/"&gt;Scriptogram&lt;/a&gt;. Both are static blogging engines powered by &lt;a href="http://www.dropbox.com/"&gt;Dropbox&lt;/a&gt;. I liked them both, but neither were exactly what I was looking for.&lt;/p&gt;
+&lt;p&gt;I had been considering buying a copy of &lt;a href="http://flyingmeat.com/voodoopad/"&gt;VoodooPad&lt;/a&gt; from &lt;a href="http://flyingmeat.com/"&gt;Flying Meat&lt;/a&gt; for a while now. I like the idea of keeping my notes in a wiki format. When I found out that &lt;a href="http://flyingmeat.com/voodoopad/docs/static%20publishing.html"&gt;static blogging was recently added&lt;/a&gt;, I thought I'd give it a try.&lt;/p&gt;
+&lt;p&gt;I really liked what I saw. It's convenient enough, fits my workflow, supports &lt;a href="http://daringfireball.net/projects/markdown/"&gt;Markdown&lt;/a&gt;, and gives me enough flexibility in page generation. So, I bought a license and will see how it goes.&lt;/p&gt;
+&lt;p&gt;I post a lot of code samples, and I wanted decent syntax highlighting in the generated pages. Adding &lt;a href="http://softwaremaniacs.org/soft/highlight/en/"&gt;Highlight.js&lt;/a&gt; was pretty simple.&lt;/p&gt;
+&lt;p&gt;As for hosting, I decided to give &lt;a href="http://pages.github.com/"&gt;Github Pages&lt;/a&gt; a try. After some confusion about &lt;a href="https://help.github.com/articles/user-organization-and-project-pages"&gt;user and project pages&lt;/a&gt;, I got it up and running.&lt;/p&gt;
+&lt;p&gt;So far, so good.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Mon, 28 Jan 2013 01:56:48 -0500</pubDate><guid>tag:paulcalnan.com,2013-01-28:archives/2013/1/new_blogging_setup.html</guid></item><item><title>TextExpander, the Pasteboard, and Unix Pipelines</title><link>http://paulcalnan.com/archives/2013/1/textexpander__the_pasteboard__and_unix_pipelines.html</link><description>&lt;p&gt;Here's a dead simple &lt;a href="http://smilesoftware.com/TextExpander/index.html"&gt;TextExpander&lt;/a&gt; snippet that I use quite a bit.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="bash"&gt;#!/usr/bin/env bash
+pbpaste | %fill:filter%
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Be sure to set the Content to &lt;code&gt;Shell Script&lt;/code&gt;. I have this set to fire when I
+type &lt;code&gt;;pipe&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;When it fires, a dialog is presented allowing you to fill in whatever you want
+where the &lt;code&gt;%fill:filter%&lt;/code&gt; appears. It takes the contents of the pasteboard and
+runs it through an arbitrary Unix pipeline. You can enter a single command,
+(like &lt;code&gt;tr a-z A-Z&lt;/code&gt;) or a pipeline of commands (like &lt;code&gt;sort | uniq -c&lt;/code&gt;). The
+contents of the pasteboard are passed through whatever set of commands you
+specify and the result is substituted to wherever you were typing.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Sun, 27 Jan 2013 04:15:55 -0500</pubDate><guid>tag:paulcalnan.com,2013-01-27:archives/2013/1/textexpander__the_pasteboard__and_unix_pipelines.html</guid></item><item><title>SVN Diffs in FileMerge</title><link>http://paulcalnan.com/archives/2012/8/svn_diffs_in_filemerge.html</link><description>&lt;p&gt;Sometimes, the output of &lt;code&gt;svn diff&lt;/code&gt; doesn't quite cut it. Sometimes, you want to see a side-by-side comparison of the full files. The &lt;code&gt;--diff-cmd&lt;/code&gt; flag lets you specify an external diff program:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="sh"&gt;svn diff --diff-cmd=fmdiff
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This requires &lt;code&gt;fmdiff&lt;/code&gt;, which is available &lt;a href="http://www.defraine.net/~brunod/fmdiff/"&gt;from the developer's website&lt;/a&gt; or via &lt;a href="http://mxcl.github.com/homebrew/"&gt;Homebrew&lt;/a&gt;. It will show a diff of the entire file in FileMerge.&lt;/p&gt;
+&lt;p&gt;I use this frequently enough that I added an alias to it in my &lt;code&gt;.bashrc&lt;/code&gt; file:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="sh"&gt;alias svndiff='svn diff --diff-cmd=fmdiff'
+&lt;/code&gt;&lt;/pre&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Wed, 15 Aug 2012 04:24:00 -0400</pubDate><guid>tag:paulcalnan.com,2012-08-15:archives/2012/8/svn_diffs_in_filemerge.html</guid></item><item><title>TextExpander Date Arithmetic</title><link>http://paulcalnan.com/archives/2012/8/textexpander_date_arithmetic.html</link><description>&lt;p&gt;&lt;a href="http://www.smilesoftware.com/textexpander"&gt;TextExpander&lt;/a&gt; is one of the first apps I install on a new computer. It’s great for abbreviating repeatedly-typed strings. It also is capable of doing simple date arithmetic. Here are some examples I use regularly.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Abbreviation&lt;/th&gt;
+&lt;th&gt;Expansion&lt;/th&gt;
+&lt;th&gt;Example&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;;yesterday&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;%@-1D%Y-%m-%d&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;2012-08-12&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;;today&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;%Y-%m-%d&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;2012-08-13&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;;tomorrow&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;%@+1D%Y-%m-%d&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;2012-08-14&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;There's more information about this on the &lt;a href="http://blog.smilesoftware.com/2008/10/28/textexpander-date-and-time-math/"&gt;TextExpander blog&lt;/a&gt;.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Tue, 14 Aug 2012 02:55:00 -0400</pubDate><guid>tag:paulcalnan.com,2012-08-14:archives/2012/8/textexpander_date_arithmetic.html</guid></item><item><title>Diff with a Remote File</title><link>http://paulcalnan.com/archives/2012/8/diff_with_a_remote_file.html</link><description>&lt;p&gt;You can use &lt;a href="http://tldp.org/LDP/abs/html/process-sub.html"&gt;Bash process substitution&lt;/a&gt; to diff a local file with a remote file (or two remote files, for that matter).&lt;/p&gt;
+&lt;pre&gt;&lt;code class="bash"&gt;diff path/to/local/file &amp;lt;(ssh remote-host 'cat path/to/remote/file')
+&lt;/code&gt;&lt;/pre&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Mon, 13 Aug 2012 05:58:00 -0400</pubDate><guid>tag:paulcalnan.com,2012-08-13:archives/2012/8/diff_with_a_remote_file.html</guid></item><item><title>Automated OS X Address Book Backup</title><link>http://paulcalnan.com/archives/2012/8/automated_os_x_address_book_backup.html</link><description>&lt;p&gt;Occasionally, I hear horror stories about &lt;a href="http://www.leancrew.com/all-this/2012/04/address-book-and-icloud-problems/"&gt;iCloud screwing up a synced address book&lt;/a&gt;. Although I have another backup system in place, I decided I wanted to make an automated script that could back up just my address book.&lt;/p&gt;
+&lt;p&gt;The script to run the actual backup is fairly simple. It creates a &lt;code&gt;tar.bz2&lt;/code&gt; file with the contents of the &lt;code&gt;~/Library/Application Support/AddressBook/&lt;/code&gt; directory. The script puts the &lt;code&gt;tar.bz2&lt;/code&gt; archive in &lt;code&gt;~/AddressBookBackups&lt;/code&gt;, but you can change it to wherever you'd like your backups to go.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="bash"&gt;#!/usr/bin/env bash
+
+tar -C $HOME/Library/Application\ Support/ -cjf \
+    $HOME/AddressBookBackups/AddressBookBackup-$(date +%Y-%m-%d).tar.bz2 \
+    AddressBook/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, for the automation part, I wrote a Launch Agent file that schedules the script to be run nightly at midnight.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="xml"&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;!DOCTYPE plist PUBLIC &amp;quot;-//Apple//DTD PLIST 1.0//EN&amp;quot; &amp;quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&amp;quot;&amp;gt;
+&amp;lt;plist version=&amp;quot;1.0&amp;quot;&amp;gt;
+    &amp;lt;dict&amp;gt;
+        &amp;lt;key&amp;gt;Label&amp;lt;/key&amp;gt;
+        &amp;lt;string&amp;gt;com.paulcalnan.backupaddressbook&amp;lt;/string&amp;gt;
+        &amp;lt;key&amp;gt;ProgramArguments&amp;lt;/key&amp;gt;
+        &amp;lt;array&amp;gt;
+            &amp;lt;string&amp;gt;/Users/paul/AddressBookBackups/backup-address-book.sh&amp;lt;/string&amp;gt;
+        &amp;lt;/array&amp;gt;
+        &amp;lt;key&amp;gt;StartCalendarInterval&amp;lt;/key&amp;gt;
+        &amp;lt;dict&amp;gt;
+            &amp;lt;key&amp;gt;Hour&amp;lt;/key&amp;gt;
+            &amp;lt;integer&amp;gt;0&amp;lt;/integer&amp;gt;
+            &amp;lt;key&amp;gt;Minute&amp;lt;/key&amp;gt;
+            &amp;lt;integer&amp;gt;0&amp;lt;/integer&amp;gt;
+        &amp;lt;/dict&amp;gt;
+    &amp;lt;/dict&amp;gt;
+&amp;lt;/plist&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can change the Label (and the filename) from &lt;code&gt;com.paulcalnan...&lt;/code&gt; to whatever you prefer. You should change the path to the program from &lt;code&gt;/Users/paul/AddressBookBackups&lt;/code&gt; to wherever you have the script stored.&lt;/p&gt;
+&lt;p&gt;I have an OS X server running 24/7, so I'm able to schedule this there and it runs the backup for me without having to think about it. If don't have a computer that's always on, &lt;code&gt;launchctl&lt;/code&gt; takes care of running the scheduled script even if the scheduled time is missed. From the &lt;code&gt;launchctl.plist&lt;/code&gt; man page:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Unlike cron which skips job invocations when the computer is asleep, launchd will start the job the next time the computer wakes up. If multiple intervals transpire before the computer is woken, those events will be coalesced into one event upon wake from sleep.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Place the &lt;code&gt;plist&lt;/code&gt; file in &lt;code&gt;~/Library/LaunchAgents&lt;/code&gt; then run the following to get &lt;code&gt;launchctl&lt;/code&gt; to schedule the job:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="bash"&gt;launchctl load ~/Library/LaunchAgents/com.paulcalnan.BackupAddressBook.plist
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that this setup will keep making new backup files every day. I'll leave it as an exercise to the reader to write a script that cleans up old backup files.&lt;/p&gt;
+&lt;p&gt;In the event that you want to restore from backup, you can do the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Quit the Contacts app (formerly known as Address Book)&lt;/li&gt;
+&lt;li&gt;Copy the latest backup file to &lt;code&gt;~/Library/Application Support/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Rename the &lt;code&gt;~/Library/Application Support/AddressBook&lt;/code&gt; directory to &lt;code&gt;AddressBook.old&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Unpack the latest backup file (using &lt;code&gt;tar xjf FILENAME&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;Restart Contacts and see if this fixed your problem&lt;/li&gt;
+&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Sun, 12 Aug 2012 20:36:00 -0400</pubDate><guid>tag:paulcalnan.com,2012-08-12:archives/2012/8/automated_os_x_address_book_backup.html</guid></item><item><title>Generating Tuples from a List of Dicts</title><link>http://paulcalnan.com/archives/2012/8/generating_tuples_from_a_list_of_dicts.html</link><description>&lt;p&gt;In Python, I needed a way to insert a list of dictionaries into a SQLite database. The &lt;code&gt;sqlite3&lt;/code&gt; package's &lt;code&gt;Cursor&lt;/code&gt; class provides an &lt;code&gt;executemany&lt;/code&gt; method that takes a parameterized SQL statement and a sequence of parameters.&lt;/p&gt;
+&lt;p&gt;An example of this, &lt;a href="http://docs.python.org/library/sqlite3.html#using-shortcut-methods"&gt;taken from the Python documentation&lt;/a&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="python"&gt;import sqlite3
+
+person_tuples = [
+    ('Hugo', 'Boss'),
+    ('Calvin', 'Klein')
+]
+
+con = sqlite3.connect(':memory:')
+
+# Create the table
+con.execute('create table person(firstname, lastname)')
+
+# Fill the table
+con.executemany('insert into person(firstname, lastname) values (?, ?)',
+                person_tuples)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, that works fine for the case when you have a list of tuples already. But what can be done when you have a list of dictionaries? You could call &lt;code&gt;dict.values()&lt;/code&gt;, but the order of the values can't be guaranteed and they likely won't match the order required by the SQL statement.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="python"&gt;&amp;gt;&amp;gt;&amp;gt; person_dicts = [
+...     { 'firstname': 'Hugo', 'lastname': 'Boss' },
+...     { 'firstname': 'Calvin', 'lastname': 'Klein' },
+... ]
+...
+&amp;gt;&amp;gt;&amp;gt; for d in person_dicts:
+...     print d.values()
+...
+['Boss', 'Hugo']
+['Klein', 'Calvin']
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To solve this, I wrote &lt;code&gt;generate_tuples()&lt;/code&gt;. It takes a list of dictionaries and a list of keys. It generates a sequence of tuples, one for each dictionary in the list. The elements of the tuple are determined by the values for the specified keys.&lt;/p&gt;
+&lt;p&gt;Here's the function:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="python"&gt;def generate_tuples(list_of_dicts, keys):
+    &amp;quot;&amp;quot;&amp;quot;Generates tuples, one for each dict in the specified list, with
+    elements corresponding to the values for the specified keys.
+
+    &amp;quot;&amp;quot;&amp;quot;
+    from operator import itemgetter
+    getter = itemgetter(*keys)
+    return (getter(d) for d in list_of_dicts)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And, here it is in action:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="python"&gt;&amp;gt;&amp;gt;&amp;gt; for t in generate_tuples(person_dicts, ['firstname', 'lastname']):
+...     print t
+...
+('Hugo', 'Boss')
+('Calvin', 'Klein')
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Back to the original example, this would allow me to insert the list of dictionaries as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="python"&gt;con.executemany('insert into person(firstname, lastname) values (?, ?)',
+                generate_tuples(person_dicts, ['firstname', 'lastname']))
+&lt;/code&gt;&lt;/pre&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Sun, 12 Aug 2012 04:52:00 -0400</pubDate><guid>tag:paulcalnan.com,2012-08-12:archives/2012/8/generating_tuples_from_a_list_of_dicts.html</guid></item><item><title>Cleaning up after Microsoft Outlook</title><link>http://paulcalnan.com/archives/2012/8/cleaning_up_after_microsoft_outlook.html</link><description>&lt;p&gt;I'm not a fan of Microsoft Outlook. Unfortunately, I'm often required to use it. Most of the time, a combination of Apple's Mail.app and iCal is good enough to get the job done. However, there are occasions that you need to use Outlook.  In particular, Outlook is the only way to set a server-side rule on an Exchange server.&lt;/p&gt;
+&lt;p&gt;So, every once in a while I need to fire up Outlook to create a new rule.  Here's the part that really gets on my nerves: Every time you launch Outlook on OS X, it launches &lt;code&gt;Microsoft Office Reminders&lt;/code&gt; which shows a popup window with reminders for all of your appointments. Additionally, it launches &lt;code&gt;Microsoft Database Daemon&lt;/code&gt; and &lt;em&gt;adds it to your Login Items&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Rather than having to quit out of &lt;code&gt;Microsoft Office Reminders&lt;/code&gt; and go into System Preferences &amp;gt; Users &amp;amp; Groups &amp;gt; Login Items every time I run Outlook, I wrote a little script to do it for me.&lt;/p&gt;
+&lt;p&gt;Since I usually have a Terminal window open, I simply run &lt;code&gt;kill-mso-remnants&lt;/code&gt; after I quit Outlook and we're back to where we started.&lt;/p&gt;
+&lt;p&gt;The script:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="bash"&gt;#!/usr/bin/env bash
+
+# Kill the two processes.
+for PROC in &amp;quot;Microsoft Database Daemon&amp;quot; &amp;quot;Microsoft Office Reminders&amp;quot;; do
+    echo &amp;quot;Killing $PROC&amp;quot;
+    killall &amp;quot;$PROC&amp;quot;
+done
+
+# This plist file contains your Login Items.
+PLIST_FILE=&amp;quot;$HOME/Library/Preferences/loginwindow.plist&amp;quot;
+
+# PlistBuddy lets you edit plist files from the command line.
+PLIST_BUDDY=&amp;quot;/usr/libexec/PlistBuddy&amp;quot;
+
+# The app that gets added to your Login Items.
+APP_NAME=&amp;quot;/Applications/Microsoft Office 2011/Office/Microsoft Database Daemon.app&amp;quot;
+
+# This loop searches the plist file for the offending application and, if it's
+# found, removes it.
+INDEX=0
+while :
+do
+    # Print the application path for this item in the list and capture the
+    # output.
+    OUTPUT=$($PLIST_BUDDY $PLIST_FILE -c &amp;quot;Print :AutoLaunchedApplicationDictionary:$INDEX:Path&amp;quot; 2&amp;gt;&amp;amp;1)
+
+    # If the output is the name of the offending application...
+    if [ &amp;quot;$OUTPUT&amp;quot; = &amp;quot;$APP_NAME&amp;quot; ]; then
+        # Delete the containing element from the plist file.
+        $PLIST_BUDDY $PLIST_FILE -c &amp;quot;Delete :AutoLaunchedApplicationDictionary:$INDEX&amp;quot;
+        echo &amp;quot;Entry for $APP_NAME deleted from $PLIST_FILE&amp;quot;
+        break
+
+    # If the output matches &amp;quot;Does Not Exist&amp;quot;, we have finished searching
+    # without finding a match.
+    elif [[ &amp;quot;$OUTPUT&amp;quot; =~ &amp;quot;Does Not Exist&amp;quot; ]]; then
+        echo &amp;quot;Could not find Plist entry for $APP_NAME&amp;quot;
+        break
+    fi
+
+    INDEX=$((INDEX + 1))
+done
+&lt;/code&gt;&lt;/pre&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Sat, 11 Aug 2012 05:31:00 -0400</pubDate><guid>tag:paulcalnan.com,2012-08-11:archives/2012/8/cleaning_up_after_microsoft_outlook.html</guid></item><item><title>Adding Unread Skype Message Count to the OS X Menu Bar</title><link>http://paulcalnan.com/archives/2012/8/adding_unread_skype_message_count_to_the_os_x_menu_bar.html</link><description>&lt;p&gt;&lt;a href="http://scriptd.tumblr.com/post/23319145310/adding-unread-skype-message-count-to-the-os-x-menu-bar"&gt;This is another repost from Scriptd.&lt;/a&gt; Be forewarned: it's pretty hacky. That having been said, I use this every day at work.&lt;/p&gt;
+&lt;p&gt;I use the Skype 5 client pretty often while I’m at work. It pops up a Growl notification whenever a new message comes in, but if I’m not looking at the screen (or if I’m looking at another monitor), I’ll oftentimes miss it. The dock icon shows a badge, but my dock is set to auto-hide so I can’t see the badge until I move the mouse to the dock.&lt;/p&gt;
+&lt;p&gt;As a result of all this, I wind up missing Skype messages all of the time. What I’d really like is some sort of indicator on the menu bar to tell me when I have unread messages. Unfortunately, Skype doesn’t provide this option (one of a long list of shortcomings of the Skype UI). So, I wanted to try to hack something together to fill this need.&lt;/p&gt;
+&lt;p&gt;Dock icon badges are presented in OS X via the &lt;code&gt;NSDockTile&lt;/code&gt; class. There is a &lt;code&gt;badgeLabel&lt;/code&gt; property that contains the text that gets shown in the little red badge bubble. Unfortunately, I couldn’t figure out a way to access this information from an external script.&lt;/p&gt;
+&lt;p&gt;I had heard of &lt;a href="http://www.fscript.org/"&gt;F-Script&lt;/a&gt; a while ago as a tool for debugging Cocoa applications. I won’t go into details about all you can do with F-Script (and my knowledge of the tool is pretty limited). I had played around with it enough to get a feel for some of the things it could do and figured it might be of use for this issue.&lt;/p&gt;
+&lt;p&gt;One of the cool features of F-Script is the ability to inject itself into a running Cocoa application. It’s got the ability to add a console to a running app, allowing you to access objects in the app. You set it up using GDB:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="no-highlight"&gt;$ gdb
+(gdb) attach Skype
+(gdb) p (char)[[NSBundle bundleWithPath:@&amp;quot;/Library/Frameworks/FScript.framework&amp;quot;] load]
+(gdb) p (void)[FScriptMenuItem insertInMainMenu]
+(gdb) detach
+(gdb) quit
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Once you do that, you get a menu item in the target application (in this case, Skype). You can then open a console and play around:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="no-highlight"&gt;&amp;gt; app := NSApplication sharedApplication
+
+&amp;gt; app dockTile badgeLabel
+nil
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is what appears if there is no badge icon. Do this again when there is a badge (in this case, I have a “1” badge) and you see the following:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="no-highlight"&gt;&amp;gt; app dockTile badgeLabel
+'1'
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Great, so I figured out a way to access the badge from a script. But the process is a bit clunky and certainly not something I’d want to do on a daily basis. It’s a step in in the right direction, though.&lt;/p&gt;
+&lt;p&gt;F-Script also allows you to create your own Objective-C objects that interact with the running application. After a bit of trial and error, I came up with the following &lt;code&gt;NSObject&lt;/code&gt;-derived class that accomplished what I wanted to do.&lt;/p&gt;
+&lt;pre&gt;&lt;code class="no-highlight"&gt;SkypeMenuUpdater : NSObject
+{
+    statusBarItem
+    timer
+
+    - init
+    {
+        self := super init.
+        self ~~ nil ifTrue:
+        [
+            statusBarItem := NSStatusBar systemStatusBar statusItemWithLength:20.
+
+            timer := NSTimer scheduledTimerWithTimeInterval:1
+                                                     target:[self updateMenu]
+                                                   selector:#value
+                                                   userInfo:nil
+                                                    repeats:YES.
+        ].
+        ^ self
+    }
+
+    - updateMenu
+    {
+        statusBarItem setTitle:NSApplication sharedApplication dockTile badgeLabel.
+    }
+}.
+
+updater := (SkypeMenuUpdater alloc) init.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here, I define a new class called &lt;code&gt;SkypeMenuUpdater&lt;/code&gt; with two ivars. The constructor creates a &lt;code&gt;NSStatusBarItem&lt;/code&gt; called &lt;code&gt;statusBarItem&lt;/code&gt; and a &lt;code&gt;NSTimer&lt;/code&gt; called &lt;code&gt;timer&lt;/code&gt; set to fire once a second. When the timer fires, it calls the &lt;code&gt;updateMenu&lt;/code&gt; method, which queries the badge label of the app’s dock tile, and then sets the status bar item to reflect the value of the label. Finally, it instantiates the object, which kicks the whole thing off.&lt;/p&gt;
+&lt;p&gt;The last piece involves injecting this script into a running Skype instance. I chose Ruby, since &lt;a href="https://gist.github.com/1170175"&gt;someone had a nice gist on Github showing how to do something similar&lt;/a&gt;. The final script is available on &lt;a href="https://gist.github.com/2728176"&gt;Github&lt;/a&gt;. All you have to do is run the Ruby script and it’ll do the rest of the work for you.&lt;/p&gt;
+&lt;p&gt;It requires F-Script to be installed (the script assumes it’s installed in &lt;code&gt;/Library/Frameworks/FScript.framework&lt;/code&gt;). It also requires GDB, which is installed as part of the Xcode command line tools. Also note, you’ll have to run the script each time you launch Skype.&lt;/p&gt;
+&lt;p&gt;Feel free to try this out. Use it at your own risk, though. I make no guarantees that it will work perfectly under all configurations. Also, I feel that this kind of hack is generally a bad idea. It gets the job done for me, but I’d love to have a less hacky way of accomplishing this.&lt;/p&gt;
+&lt;p&gt;As always, &lt;a href="http://twitter.com/pwc"&gt;feel free to send along any questions or comments.&lt;/a&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Sat, 11 Aug 2012 05:14:00 -0400</pubDate><guid>tag:paulcalnan.com,2012-08-11:archives/2012/8/adding_unread_skype_message_count_to_the_os_x_menu_bar.html</guid></item><item><title>Pretty-Print JSON</title><link>http://paulcalnan.com/archives/2012/8/pretty-print_json.html</link><description>&lt;p&gt;I got the idea for this script &lt;a href="http://crisp.tumblr.com/post/2574967567/json-pretty-print-formatting-in-bbedit"&gt;from a BBEdit script&lt;/a&gt; I found on Tumblr. I &lt;a href="http://scriptd.tumblr.com/post/9941663896/pretty-print-json"&gt;posted it to my Tumblr site&lt;/a&gt; as well. The script simply reformats and cleans up JSON files.&lt;/p&gt;
+&lt;p&gt;Since then, I have revisited and changed the script. Originally, the script used a &lt;code&gt;fileinput&lt;/code&gt; object to build an input string, which it passed to the JSON parser. It also didn't do much in the way of error handling.&lt;/p&gt;
+&lt;p&gt;I updated it to pass &lt;code&gt;stdin&lt;/code&gt; directly to the JSON parser. It now catches exceptions thrown while parsing.&lt;/p&gt;
+&lt;p&gt;The new code looks like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class="python"&gt;#!/usr/bin/env python
+
+from __future__ import print_function
+import sys
+import json
+
+def main():
+    try:
+        obj = json.load(sys.stdin)
+        json.dump(obj, sys.stdout, sort_keys=True, indent=4)
+    except ValueError as strerr:
+        print(&amp;quot;Error: {0}&amp;quot;.format(strerr), file=sys.stderr)
+
+if __name__ == &amp;quot;__main__&amp;quot;:
+    main()
+&lt;/code&gt;&lt;/pre&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Sat, 11 Aug 2012 05:01:00 -0400</pubDate><guid>tag:paulcalnan.com,2012-08-11:archives/2012/8/pretty-print_json.html</guid></item><item><title>A New Beginning</title><link>http://paulcalnan.com/archives/2012/8/a_new_beginning.html</link><description>&lt;p&gt;Let's get started.&lt;/p&gt;
+&lt;p&gt;I want to use this space to record, primarily for myself, things that I've been working on and things that I've learned. Making it into a blog will hopefully help others.&lt;/p&gt;
+&lt;p&gt;I had a &lt;a href="http://scriptd.tumblr.com"&gt;Tumblr site&lt;/a&gt; where I posted scripts that I wanted to share with others. This time, I'm trying a Octopress site, which will hopefully reduce the friction that's prevented me from blogging more.&lt;/p&gt;
+&lt;p&gt;Stay tuned.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Sat, 11 Aug 2012 04:42:00 -0400</pubDate><guid>tag:paulcalnan.com,2012-08-11:archives/2012/8/a_new_beginning.html</guid></item></channel></rss>

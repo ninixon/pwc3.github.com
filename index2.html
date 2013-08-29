@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+  <head http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Paul Calnan</title>
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/css/main.css" type="text/css"/>
+
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/highlight.js/styles/solarized_light.css">
+    <script src="http://paulcalnan.com/theme/highlight.js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="header">
+        <table width="100%" border="0" cellpadding="0">
+          <tr>
+            <td class="headerTitle">
+              <a href="http://paulcalnan.com" style="text-decoration: none;">Paul Calnan</a>
+            </td>
+            <td class="headerLinks">
+              <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>            </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="headerFoot">
+              I love it when a plan comes together
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      
+  <div class="post">
+  <div class="postTitle">
+    <a href="/archives/2013/3/resetting_kindle_reading_rate_estimates.html">Resetting Kindle Reading Rate Estimates</a>
+  </div>
+    <div class="date">Published March 4, 2013</div>
+  <p>I recently bought a <a href="http://www.amazon.com/Kindle-Paperwhite-Touch-light/dp/B007OZNZG0">Kindle Paperwhite</a>. I used to own a <a href="http://www.amazon.com/Kindle-Special-Offers-Wireless-Reader/dp/B004HFS6Z0">Kindle Keyboard</a> and was pleasantly surprised by the updated features on the new model. </p>
+<p>One of the features I really like is the estimated time printed at the bottom of the screen. You can toggle between time left in the current chapter and time left in the book. When you first use the Kindle, it doesn't immediately show you those values. Rather, it watches how fast you read and adjusts the estimates accordingly.</p>
+<p>Unfortunately, it's easily confused. I'm reading a book with lots of footnotes, and I occasionally flip around. Rapidly changing pages appears to confuse the time estimate calculations. After a while, it was estimating I'd finish the book in one hour, even though I was at the 8% mark of a 1000+ page book.</p>
+<p>Luckily, I found an easy way to reset the estimate. Search for <code>;ReadingTimeReset</code> (keep the semicolon and capitalization as shown) and the estimate will be reset.</p>
+<p>A couple of other miscellaneous thoughts on the Paperwhite:</p>
+<ul>
+<li>
+<p>I was initially disappointed by the uneven backlight at the bottom of the screen. After a couple hours of use, I found that I had the light turned on too high. Lowering the light intensity makes the unevenness less apparent while keeping the screen legible.</p>
+</li>
+<li>
+<p>Once I decided to keep the Paperwhite, paying the extra $20 to get rid of the ads (or "Unsubscribe from Special Offers" in marketing-speak) was a no-brainer.</p>
+</li>
+</ul>
+</div>
+  <div class="post">
+  <div class="postTitle">
+    <a href="/archives/2013/2/bash_ps1.html">Bash PS1</a>
+  </div>
+    <div class="date">Published February 15, 2013</div>
+  <p>My Bash prompt has progressively gotten more complicated over the years. Today, I wanted to add to it and realized it was time to reorganize.</p>
+<p>Prior to today, it looked like this:</p>
+<pre><code class="bash">export PS1=&quot;\n\[\e[0;33m\]\D{%a %b %d %T %Z %Y}\[\e[0;34m\]\$(__git_ps1)\n\[\e[0;31m\]\u@\h\[\e[0m\]: \[\e[0;36m\]\w\[\e[0m\]\n$ &quot;
+</code></pre>
+
+<p>After today's reorganization, it now looks like this:</p>
+<pre><code class="bash">__pyenv_prompt()
+{
+    if [ &quot;$VIRTUAL_ENV&quot; != &quot;&quot; ]; then
+        echo -n &quot;$(basename $VIRTUAL_ENV) &quot;
+    fi
+}
+
+__PS1_DTS=&quot;\[\e[0;33m\]\D{%a %b %d %T %Z %Y}&quot;
+__PS1_PYENV=&quot;\[\e[1;35m\]\$(__pyenv_prompt)&quot;
+
+if [ -e &quot;$__RVM_HOME/bin/rvm-prompt&quot; ]; then
+    __PS1_RVM=&quot;\[\e[0;31m\]\$(rvm-prompt i v p g)&quot;
+fi
+
+__PS1_USERNAME=&quot;\[\e[0;31m\]\u@\h\[\e[0m\]: &quot;
+__PS1_PWD=&quot;\[\e[0;36m\]\w\[\e[0m\]&quot;
+
+export PS1=&quot;\n${__PS1_DTS}${__PS1_GITSTATUS} ${__PS1_PYENV}${__PS1_RVM}\n${__PS1_USERNAME}${__PS1_PWD}\n$ &quot;
+</code></pre>
+
+<p>Here's a screenshot of it in action:</p>
+<p><img alt="Screenshot" src="/static/images/Bash_PS1_screenshot.png" title="Bash Prompt Screenshot" /></p>
+<p>Maybe it's too much information, but I find it useful. On the first line, the date is in yellow. My current Git branch is in green. My current Python virtual environment is in purple. My current Ruby version, patchlevel, and gemset is in red. On the next line, my username and hostname are in red, and my working directory is in blue.</p>
+<p>To show the Git branch, you need to have the <a href="http://mxcl.github.com/homebrew/">Homebrew</a> <code>bash-completion</code> package installed, and you need to do the following in your <code>.bashrc</code>:</p>
+<pre><code class="bash">if [ -f /usr/local/etc/bash_completion.d/git-prompt.sh ]; then
+    export GIT_PS1_SHOWDIRTYSTATE=1
+    source /usr/local/etc/bash_completion.d/git-prompt.sh
+fi
+</code></pre>
+</div>
+  <div class="post">
+  <div class="postTitle">
+    <a href="/archives/2013/1/automator_service_for_tracking_deliveries.html">Automator Service for Tracking Deliveries</a>
+  </div>
+    <div class="date">Published January 31, 2013</div>
+  <p>I order lots of stuff online, most of which gets shipped with a tracking number. I use <a href="https://junecloud.com">Junecloud's awesome Delivery Touch app for iOS</a> to track those shipments. Junecloud offers a couple of <a href="http://junecloud.com/support/delivery-status-ios/delivery-status-url-scheme.html">URLs to add new tracking numbers to their system</a> which will sync to their iOS apps (and dashboard widget).</p>
+<p>I put together a simple Automator service that allows you to select a tracking number (for example, from an Amazon.com confirmation email), option-click on it, and select "Add Tracking Number to Deliveries" from your Services menu. This will open the Junecloud sync website and add your selected tracking number. Note, you will need a Junecloud sync account for this to work.</p>
+<p><a href="https://github.com/pwc3/deliveries-service">You can download the Automator service from Github</a>, or you can create it yourself:</p>
+<ol>
+<li>Open <em>Automator</em></li>
+<li>Create a new <em>Service</em></li>
+<li>Make sure the options show: <em>Service receives selected</em> <strong><em>text</em></strong> <em>in</em> <strong><em>any application</em></strong>.</li>
+<li>Drag a <em>Run AppleScript</em> action to the area that says <em>Drag actions or files here to build your workflow.</em></li>
+<li>Enter the following in the new <em>Run AppleScript</em> action:</li>
+</ol>
+<pre><code class="applescript">on run {input, parameters}
+    set _url to &quot;https://junecloud.com/sync/grab/?no=&quot; &amp; input
+    do shell script &quot;open &quot; &amp; _url
+    return input
+end run
+</code></pre>
+
+<ol>
+<li>Save the service as "Add Tracking Number to Deliveries" (or whatever service name you prefer).</li>
+</ol>
+</div>
+  <div class="post">
+  <div class="postTitle">
+    <a href="/archives/2013/1/dropbox_updater_for_os_x.html">Dropbox Updater for OS X</a>
+  </div>
+    <div class="date">Published January 28, 2013</div>
+  <p>Since the Dropbox client software installed on my computer never seems to
+automatically update, I wrote a Python script to do it for me. It was developed
+and tested under Mac OS X Mountain Lion 10.8.2.</p>
+<p>The script does the following:</p>
+<ol>
+<li>Checks <code>/Applications/Dropbox.app</code> for the currently-installed version
+   number.</li>
+<li>Checks <a href="http://www.dropbox.com/install">http://www.dropbox.com/install</a> for
+   the "latest available version" (i.e., whichever version is listed on the
+   <em>Download</em> button, which may or may not be the latest available version).</li>
+<li>If the installed version number is less than the latest available version,
+   it attempts to download a DMG of the latest version to <code>~/Downloads</code>.</li>
+<li>If a DMG was successfully downloaded, the script then mounts the DMG and
+   runs the installer.</li>
+</ol>
+<p>There are several assumptions made in the script. I tried to document them all
+and use easily-modifiable constants wherever possible. If the script fails, one
+of the assumptions may no longer be valid.</p>
+<p>There are two command-line options (run with <code>--help</code> for details). The
+<code>-v</code>/<code>--version</code> option allows you to specify the version to install. This is
+useful when installing Forum builds. The <code>-d</code>/<code>--dry-run</code> option performs a
+"dry run" which downloads the DMG but does not mount it or run the installer.</p>
+<p>The script requires the <code>beautifulsoup4</code> module. It is used to scrape the
+Dropbox download page to determine the version number. It can be installed via
+either <code>pip install beautifulsoup4</code> or <code>easy_install beautifulsoup4</code>.</p>
+<p>The script is available for download <a href="http://github.com/pwc3/dropbox-updater">on Github</a>.</p>
+</div>
+  <div class="post">
+  <div class="postTitle">
+    <a href="/archives/2013/1/new_blogging_setup.html">New Blogging Setup</a>
+  </div>
+    <div class="date">Published January 28, 2013</div>
+  <p>My blog posts come pretty intermittently. I most recently tried using an <a href="http://octopress.org/">Octopress</a> blog hosted at <a href="http://heroku.com/">Heroku</a> for a while. I got it set up, made a handful of posts over about a week, and then stopped.</p>
+<p>Recently, I had a few blog ideas and went back to try to make some more posts. I'm not sure what I did, but over the past five months, I managed to break my setup. My familiarity with Ruby is pretty limited, so I couldn't easily diagnose the issue.</p>
+<p>So, I started looking at some of other static blogging setups that are comparable to Octopress. <a href="http://blog.getpelican.com/">Pelican</a> was my first choice, as I do a lot of Python development for my day job. The setup was fairly easy, but the output looked bad. I couldn't find a Pelican theme that didn't look awful.</p>
+<p>After that, I took a look at <a href="http://calepin.co/">Calepin</a> and <a href="http://scriptogr.am/">Scriptogram</a>. Both are static blogging engines powered by <a href="http://www.dropbox.com/">Dropbox</a>. I liked them both, but neither were exactly what I was looking for.</p>
+<p>I had been considering buying a copy of <a href="http://flyingmeat.com/voodoopad/">VoodooPad</a> from <a href="http://flyingmeat.com/">Flying Meat</a> for a while now. I like the idea of keeping my notes in a wiki format. When I found out that <a href="http://flyingmeat.com/voodoopad/docs/static%20publishing.html">static blogging was recently added</a>, I thought I'd give it a try.</p>
+<p>I really liked what I saw. It's convenient enough, fits my workflow, supports <a href="http://daringfireball.net/projects/markdown/">Markdown</a>, and gives me enough flexibility in page generation. So, I bought a license and will see how it goes.</p>
+<p>I post a lot of code samples, and I wanted decent syntax highlighting in the generated pages. Adding <a href="http://softwaremaniacs.org/soft/highlight/en/">Highlight.js</a> was pretty simple.</p>
+<p>As for hosting, I decided to give <a href="http://pages.github.com/">Github Pages</a> a try. After some confusion about <a href="https://help.github.com/articles/user-organization-and-project-pages">user and project pages</a>, I got it up and running.</p>
+<p>So far, so good.</p>
+</div>
+
+<div class="paginator">
+            <a href="http://paulcalnan.com/index.html">Newer Posts</a>
+      
+    |
+  
+      <a href="http://paulcalnan.com/index3.html">Older Posts</a>
+  </div>
+
+      <div id="copyright">
+        <center>
+          <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>          <br/><br/>
+          &copy; 2013 Paul Calnan. All rights reserved.
+        </center>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+  var _gauges = _gauges || [];
+  (function() {
+    var t   = document.createElement('script');
+    t.type  = 'text/javascript';
+    t.async = true;
+    t.id    = 'gauges-tracker';
+    t.setAttribute('data-site-id', '51304dd7108d7b6aad000032');
+    t.src = '//secure.gaug.es/track.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(t, s);
+  })();
+</script>
+  </body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+  <head http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Paul Calnan: SVN Diffs in FileMerge</title>
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/css/main.css" type="text/css"/>
+
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/highlight.js/styles/solarized_light.css">
+    <script src="http://paulcalnan.com/theme/highlight.js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="header">
+        <table width="100%" border="0" cellpadding="0">
+          <tr>
+            <td class="headerTitle">
+              <a href="http://paulcalnan.com" style="text-decoration: none;">Paul Calnan</a>
+            </td>
+            <td class="headerLinks">
+              <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>            </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="headerFoot">
+              I love it when a plan comes together
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      
+<div class="post">
+  <div class="postTitle">
+    <a href="/archives/2012/8/svn_diffs_in_filemerge.html">SVN Diffs in FileMerge</a>
+  </div>
+    <div class="date">Published August 15, 2012</div>
+  <p>Sometimes, the output of <code>svn diff</code> doesn't quite cut it. Sometimes, you want to see a side-by-side comparison of the full files. The <code>--diff-cmd</code> flag lets you specify an external diff program:</p>
+<pre><code class="sh">svn diff --diff-cmd=fmdiff
+</code></pre>
+
+<p>This requires <code>fmdiff</code>, which is available <a href="http://www.defraine.net/~brunod/fmdiff/">from the developer's website</a> or via <a href="http://mxcl.github.com/homebrew/">Homebrew</a>. It will show a diff of the entire file in FileMerge.</p>
+<p>I use this frequently enough that I added an alias to it in my <code>.bashrc</code> file:</p>
+<pre><code class="sh">alias svndiff='svn diff --diff-cmd=fmdiff'
+</code></pre>
+</div>
+
+
+      <div id="copyright">
+        <center>
+          <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>          <br/><br/>
+          &copy; 2013 Paul Calnan. All rights reserved.
+        </center>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+  var _gauges = _gauges || [];
+  (function() {
+    var t   = document.createElement('script');
+    t.type  = 'text/javascript';
+    t.async = true;
+    t.id    = 'gauges-tracker';
+    t.setAttribute('data-site-id', '51304dd7108d7b6aad000032');
+    t.src = '//secure.gaug.es/track.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(t, s);
+  })();
+</script>
+  </body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+  <head http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Paul Calnan: Python Line Numbers</title>
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/css/main.css" type="text/css"/>
+
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/highlight.js/styles/solarized_light.css">
+    <script src="http://paulcalnan.com/theme/highlight.js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="header">
+        <table width="100%" border="0" cellpadding="0">
+          <tr>
+            <td class="headerTitle">
+              <a href="http://paulcalnan.com" style="text-decoration: none;">Paul Calnan</a>
+            </td>
+            <td class="headerLinks">
+              <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>            </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="headerFoot">
+              I love it when a plan comes together
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      
+<div class="post">
+  <div class="postTitle">
+    <a href="/archives/2013/8/python_line_numbers.html">Python Line Numbers</a>
+  </div>
+    <div class="date">Published August 2, 2013</div>
+  <p>Someone posted to Twitter a link to <a href="http://nedbatchelder.com/text/iter/iter.html">a presentation on Python iteration</a>. In it, I saw something clever.</p>
+<p>When iterating over a file line-by-line, you generally do something like this:</p>
+<pre><code class="python">with open(some_filename, 'r') as fh:
+    for line in fh:
+        do_something_interesting(line)
+</code></pre>
+
+<p>Occasionally, you need a line number associated with each line of data. I usually wind up doing something like this:</p>
+<pre><code class="python">with open(some_filename, 'r') as fh:
+    lineno = 0
+    for line in fh:
+        lineno += 1
+        do_something_interesting(line, lineno)
+</code></pre>
+
+<p>From the presentation, I learned that you can do the same with the <code>enumerate</code> function:</p>
+<pre><code class="python">with open(some_filename, 'r') as fh:
+    for lineno, line in enumerate(fh, start=1):
+        do_something_interesting(line, lineno)
+</code></pre>
+
+<p>I can't believe that never occurred to me before.</p>
+</div>
+
+
+      <div id="copyright">
+        <center>
+          <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>          <br/><br/>
+          &copy; 2013 Paul Calnan. All rights reserved.
+        </center>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+  var _gauges = _gauges || [];
+  (function() {
+    var t   = document.createElement('script');
+    t.type  = 'text/javascript';
+    t.async = true;
+    t.id    = 'gauges-tracker';
+    t.setAttribute('data-site-id', '51304dd7108d7b6aad000032');
+    t.src = '//secure.gaug.es/track.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(t, s);
+  })();
+</script>
+  </body>
+</html>

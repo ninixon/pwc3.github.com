@@ -1,0 +1,289 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+  <head http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Paul Calnan</title>
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/css/main.css" type="text/css"/>
+
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/highlight.js/styles/solarized_light.css">
+    <script src="http://paulcalnan.com/theme/highlight.js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="header">
+        <table width="100%" border="0" cellpadding="0">
+          <tr>
+            <td class="headerTitle">
+              <a href="http://paulcalnan.com" style="text-decoration: none;">Paul Calnan</a>
+            </td>
+            <td class="headerLinks">
+              <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>            </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="headerFoot">
+              I love it when a plan comes together
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      
+  <div class="post">
+  <div class="postTitle">
+    <a href="/archives/2012/8/generating_tuples_from_a_list_of_dicts.html">Generating Tuples from a List of Dicts</a>
+  </div>
+    <div class="date">Published August 12, 2012</div>
+  <p>In Python, I needed a way to insert a list of dictionaries into a SQLite database. The <code>sqlite3</code> package's <code>Cursor</code> class provides an <code>executemany</code> method that takes a parameterized SQL statement and a sequence of parameters.</p>
+<p>An example of this, <a href="http://docs.python.org/library/sqlite3.html#using-shortcut-methods">taken from the Python documentation</a>:</p>
+<pre><code class="python">import sqlite3
+
+person_tuples = [
+    ('Hugo', 'Boss'),
+    ('Calvin', 'Klein')
+]
+
+con = sqlite3.connect(':memory:')
+
+# Create the table
+con.execute('create table person(firstname, lastname)')
+
+# Fill the table
+con.executemany('insert into person(firstname, lastname) values (?, ?)',
+                person_tuples)
+</code></pre>
+
+<p>Now, that works fine for the case when you have a list of tuples already. But what can be done when you have a list of dictionaries? You could call <code>dict.values()</code>, but the order of the values can't be guaranteed and they likely won't match the order required by the SQL statement.</p>
+<pre><code class="python">&gt;&gt;&gt; person_dicts = [
+...     { 'firstname': 'Hugo', 'lastname': 'Boss' },
+...     { 'firstname': 'Calvin', 'lastname': 'Klein' },
+... ]
+...
+&gt;&gt;&gt; for d in person_dicts:
+...     print d.values()
+...
+['Boss', 'Hugo']
+['Klein', 'Calvin']
+</code></pre>
+
+<p>To solve this, I wrote <code>generate_tuples()</code>. It takes a list of dictionaries and a list of keys. It generates a sequence of tuples, one for each dictionary in the list. The elements of the tuple are determined by the values for the specified keys.</p>
+<p>Here's the function:</p>
+<pre><code class="python">def generate_tuples(list_of_dicts, keys):
+    &quot;&quot;&quot;Generates tuples, one for each dict in the specified list, with
+    elements corresponding to the values for the specified keys.
+
+    &quot;&quot;&quot;
+    from operator import itemgetter
+    getter = itemgetter(*keys)
+    return (getter(d) for d in list_of_dicts)
+</code></pre>
+
+<p>And, here it is in action:</p>
+<pre><code class="python">&gt;&gt;&gt; for t in generate_tuples(person_dicts, ['firstname', 'lastname']):
+...     print t
+...
+('Hugo', 'Boss')
+('Calvin', 'Klein')
+</code></pre>
+
+<p>Back to the original example, this would allow me to insert the list of dictionaries as follows:</p>
+<pre><code class="python">con.executemany('insert into person(firstname, lastname) values (?, ?)',
+                generate_tuples(person_dicts, ['firstname', 'lastname']))
+</code></pre>
+</div>
+  <div class="post">
+  <div class="postTitle">
+    <a href="/archives/2012/8/cleaning_up_after_microsoft_outlook.html">Cleaning up after Microsoft Outlook</a>
+  </div>
+    <div class="date">Published August 11, 2012</div>
+  <p>I'm not a fan of Microsoft Outlook. Unfortunately, I'm often required to use it. Most of the time, a combination of Apple's Mail.app and iCal is good enough to get the job done. However, there are occasions that you need to use Outlook.  In particular, Outlook is the only way to set a server-side rule on an Exchange server.</p>
+<p>So, every once in a while I need to fire up Outlook to create a new rule.  Here's the part that really gets on my nerves: Every time you launch Outlook on OS X, it launches <code>Microsoft Office Reminders</code> which shows a popup window with reminders for all of your appointments. Additionally, it launches <code>Microsoft Database Daemon</code> and <em>adds it to your Login Items</em>.</p>
+<p>Rather than having to quit out of <code>Microsoft Office Reminders</code> and go into System Preferences &gt; Users &amp; Groups &gt; Login Items every time I run Outlook, I wrote a little script to do it for me.</p>
+<p>Since I usually have a Terminal window open, I simply run <code>kill-mso-remnants</code> after I quit Outlook and we're back to where we started.</p>
+<p>The script:</p>
+<pre><code class="bash">#!/usr/bin/env bash
+
+# Kill the two processes.
+for PROC in &quot;Microsoft Database Daemon&quot; &quot;Microsoft Office Reminders&quot;; do
+    echo &quot;Killing $PROC&quot;
+    killall &quot;$PROC&quot;
+done
+
+# This plist file contains your Login Items.
+PLIST_FILE=&quot;$HOME/Library/Preferences/loginwindow.plist&quot;
+
+# PlistBuddy lets you edit plist files from the command line.
+PLIST_BUDDY=&quot;/usr/libexec/PlistBuddy&quot;
+
+# The app that gets added to your Login Items.
+APP_NAME=&quot;/Applications/Microsoft Office 2011/Office/Microsoft Database Daemon.app&quot;
+
+# This loop searches the plist file for the offending application and, if it's
+# found, removes it.
+INDEX=0
+while :
+do
+    # Print the application path for this item in the list and capture the
+    # output.
+    OUTPUT=$($PLIST_BUDDY $PLIST_FILE -c &quot;Print :AutoLaunchedApplicationDictionary:$INDEX:Path&quot; 2&gt;&amp;1)
+
+    # If the output is the name of the offending application...
+    if [ &quot;$OUTPUT&quot; = &quot;$APP_NAME&quot; ]; then
+        # Delete the containing element from the plist file.
+        $PLIST_BUDDY $PLIST_FILE -c &quot;Delete :AutoLaunchedApplicationDictionary:$INDEX&quot;
+        echo &quot;Entry for $APP_NAME deleted from $PLIST_FILE&quot;
+        break
+
+    # If the output matches &quot;Does Not Exist&quot;, we have finished searching
+    # without finding a match.
+    elif [[ &quot;$OUTPUT&quot; =~ &quot;Does Not Exist&quot; ]]; then
+        echo &quot;Could not find Plist entry for $APP_NAME&quot;
+        break
+    fi
+
+    INDEX=$((INDEX + 1))
+done
+</code></pre>
+</div>
+  <div class="post">
+  <div class="postTitle">
+    <a href="/archives/2012/8/adding_unread_skype_message_count_to_the_os_x_menu_bar.html">Adding Unread Skype Message Count to the OS X Menu Bar</a>
+  </div>
+    <div class="date">Published August 11, 2012</div>
+  <p><a href="http://scriptd.tumblr.com/post/23319145310/adding-unread-skype-message-count-to-the-os-x-menu-bar">This is another repost from Scriptd.</a> Be forewarned: it's pretty hacky. That having been said, I use this every day at work.</p>
+<p>I use the Skype 5 client pretty often while I’m at work. It pops up a Growl notification whenever a new message comes in, but if I’m not looking at the screen (or if I’m looking at another monitor), I’ll oftentimes miss it. The dock icon shows a badge, but my dock is set to auto-hide so I can’t see the badge until I move the mouse to the dock.</p>
+<p>As a result of all this, I wind up missing Skype messages all of the time. What I’d really like is some sort of indicator on the menu bar to tell me when I have unread messages. Unfortunately, Skype doesn’t provide this option (one of a long list of shortcomings of the Skype UI). So, I wanted to try to hack something together to fill this need.</p>
+<p>Dock icon badges are presented in OS X via the <code>NSDockTile</code> class. There is a <code>badgeLabel</code> property that contains the text that gets shown in the little red badge bubble. Unfortunately, I couldn’t figure out a way to access this information from an external script.</p>
+<p>I had heard of <a href="http://www.fscript.org/">F-Script</a> a while ago as a tool for debugging Cocoa applications. I won’t go into details about all you can do with F-Script (and my knowledge of the tool is pretty limited). I had played around with it enough to get a feel for some of the things it could do and figured it might be of use for this issue.</p>
+<p>One of the cool features of F-Script is the ability to inject itself into a running Cocoa application. It’s got the ability to add a console to a running app, allowing you to access objects in the app. You set it up using GDB:</p>
+<pre><code class="no-highlight">$ gdb
+(gdb) attach Skype
+(gdb) p (char)[[NSBundle bundleWithPath:@&quot;/Library/Frameworks/FScript.framework&quot;] load]
+(gdb) p (void)[FScriptMenuItem insertInMainMenu]
+(gdb) detach
+(gdb) quit
+</code></pre>
+
+<p>Once you do that, you get a menu item in the target application (in this case, Skype). You can then open a console and play around:</p>
+<pre><code class="no-highlight">&gt; app := NSApplication sharedApplication
+
+&gt; app dockTile badgeLabel
+nil
+</code></pre>
+
+<p>This is what appears if there is no badge icon. Do this again when there is a badge (in this case, I have a “1” badge) and you see the following:</p>
+<pre><code class="no-highlight">&gt; app dockTile badgeLabel
+'1'
+</code></pre>
+
+<p>Great, so I figured out a way to access the badge from a script. But the process is a bit clunky and certainly not something I’d want to do on a daily basis. It’s a step in in the right direction, though.</p>
+<p>F-Script also allows you to create your own Objective-C objects that interact with the running application. After a bit of trial and error, I came up with the following <code>NSObject</code>-derived class that accomplished what I wanted to do.</p>
+<pre><code class="no-highlight">SkypeMenuUpdater : NSObject
+{
+    statusBarItem
+    timer
+
+    - init
+    {
+        self := super init.
+        self ~~ nil ifTrue:
+        [
+            statusBarItem := NSStatusBar systemStatusBar statusItemWithLength:20.
+
+            timer := NSTimer scheduledTimerWithTimeInterval:1
+                                                     target:[self updateMenu]
+                                                   selector:#value
+                                                   userInfo:nil
+                                                    repeats:YES.
+        ].
+        ^ self
+    }
+
+    - updateMenu
+    {
+        statusBarItem setTitle:NSApplication sharedApplication dockTile badgeLabel.
+    }
+}.
+
+updater := (SkypeMenuUpdater alloc) init.
+</code></pre>
+
+<p>Here, I define a new class called <code>SkypeMenuUpdater</code> with two ivars. The constructor creates a <code>NSStatusBarItem</code> called <code>statusBarItem</code> and a <code>NSTimer</code> called <code>timer</code> set to fire once a second. When the timer fires, it calls the <code>updateMenu</code> method, which queries the badge label of the app’s dock tile, and then sets the status bar item to reflect the value of the label. Finally, it instantiates the object, which kicks the whole thing off.</p>
+<p>The last piece involves injecting this script into a running Skype instance. I chose Ruby, since <a href="https://gist.github.com/1170175">someone had a nice gist on Github showing how to do something similar</a>. The final script is available on <a href="https://gist.github.com/2728176">Github</a>. All you have to do is run the Ruby script and it’ll do the rest of the work for you.</p>
+<p>It requires F-Script to be installed (the script assumes it’s installed in <code>/Library/Frameworks/FScript.framework</code>). It also requires GDB, which is installed as part of the Xcode command line tools. Also note, you’ll have to run the script each time you launch Skype.</p>
+<p>Feel free to try this out. Use it at your own risk, though. I make no guarantees that it will work perfectly under all configurations. Also, I feel that this kind of hack is generally a bad idea. It gets the job done for me, but I’d love to have a less hacky way of accomplishing this.</p>
+<p>As always, <a href="http://twitter.com/pwc">feel free to send along any questions or comments.</a></p>
+</div>
+  <div class="post">
+  <div class="postTitle">
+    <a href="/archives/2012/8/pretty-print_json.html">Pretty-Print JSON</a>
+  </div>
+    <div class="date">Published August 11, 2012</div>
+  <p>I got the idea for this script <a href="http://crisp.tumblr.com/post/2574967567/json-pretty-print-formatting-in-bbedit">from a BBEdit script</a> I found on Tumblr. I <a href="http://scriptd.tumblr.com/post/9941663896/pretty-print-json">posted it to my Tumblr site</a> as well. The script simply reformats and cleans up JSON files.</p>
+<p>Since then, I have revisited and changed the script. Originally, the script used a <code>fileinput</code> object to build an input string, which it passed to the JSON parser. It also didn't do much in the way of error handling.</p>
+<p>I updated it to pass <code>stdin</code> directly to the JSON parser. It now catches exceptions thrown while parsing.</p>
+<p>The new code looks like this:</p>
+<pre><code class="python">#!/usr/bin/env python
+
+from __future__ import print_function
+import sys
+import json
+
+def main():
+    try:
+        obj = json.load(sys.stdin)
+        json.dump(obj, sys.stdout, sort_keys=True, indent=4)
+    except ValueError as strerr:
+        print(&quot;Error: {0}&quot;.format(strerr), file=sys.stderr)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+</div>
+  <div class="post">
+  <div class="postTitle">
+    <a href="/archives/2012/8/a_new_beginning.html">A New Beginning</a>
+  </div>
+    <div class="date">Published August 11, 2012</div>
+  <p>Let's get started.</p>
+<p>I want to use this space to record, primarily for myself, things that I've been working on and things that I've learned. Making it into a blog will hopefully help others.</p>
+<p>I had a <a href="http://scriptd.tumblr.com">Tumblr site</a> where I posted scripts that I wanted to share with others. This time, I'm trying a Octopress site, which will hopefully reduce the friction that's prevented me from blogging more.</p>
+<p>Stay tuned.</p>
+</div>
+
+<div class="paginator">
+            <a href="http://paulcalnan.com/index3.html">Newer Posts</a>
+      
+  
+  </div>
+
+      <div id="copyright">
+        <center>
+          <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>          <br/><br/>
+          &copy; 2013 Paul Calnan. All rights reserved.
+        </center>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+  var _gauges = _gauges || [];
+  (function() {
+    var t   = document.createElement('script');
+    t.type  = 'text/javascript';
+    t.async = true;
+    t.id    = 'gauges-tracker';
+    t.setAttribute('data-site-id', '51304dd7108d7b6aad000032');
+    t.src = '//secure.gaug.es/track.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(t, s);
+  })();
+</script>
+  </body>
+</html>

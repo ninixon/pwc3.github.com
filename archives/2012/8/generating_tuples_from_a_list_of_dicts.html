@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+  <head http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Paul Calnan: Generating Tuples from a List of Dicts</title>
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/css/main.css" type="text/css"/>
+
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/highlight.js/styles/solarized_light.css">
+    <script src="http://paulcalnan.com/theme/highlight.js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="header">
+        <table width="100%" border="0" cellpadding="0">
+          <tr>
+            <td class="headerTitle">
+              <a href="http://paulcalnan.com" style="text-decoration: none;">Paul Calnan</a>
+            </td>
+            <td class="headerLinks">
+              <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>            </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="headerFoot">
+              I love it when a plan comes together
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      
+<div class="post">
+  <div class="postTitle">
+    <a href="/archives/2012/8/generating_tuples_from_a_list_of_dicts.html">Generating Tuples from a List of Dicts</a>
+  </div>
+    <div class="date">Published August 12, 2012</div>
+  <p>In Python, I needed a way to insert a list of dictionaries into a SQLite database. The <code>sqlite3</code> package's <code>Cursor</code> class provides an <code>executemany</code> method that takes a parameterized SQL statement and a sequence of parameters.</p>
+<p>An example of this, <a href="http://docs.python.org/library/sqlite3.html#using-shortcut-methods">taken from the Python documentation</a>:</p>
+<pre><code class="python">import sqlite3
+
+person_tuples = [
+    ('Hugo', 'Boss'),
+    ('Calvin', 'Klein')
+]
+
+con = sqlite3.connect(':memory:')
+
+# Create the table
+con.execute('create table person(firstname, lastname)')
+
+# Fill the table
+con.executemany('insert into person(firstname, lastname) values (?, ?)',
+                person_tuples)
+</code></pre>
+
+<p>Now, that works fine for the case when you have a list of tuples already. But what can be done when you have a list of dictionaries? You could call <code>dict.values()</code>, but the order of the values can't be guaranteed and they likely won't match the order required by the SQL statement.</p>
+<pre><code class="python">&gt;&gt;&gt; person_dicts = [
+...     { 'firstname': 'Hugo', 'lastname': 'Boss' },
+...     { 'firstname': 'Calvin', 'lastname': 'Klein' },
+... ]
+...
+&gt;&gt;&gt; for d in person_dicts:
+...     print d.values()
+...
+['Boss', 'Hugo']
+['Klein', 'Calvin']
+</code></pre>
+
+<p>To solve this, I wrote <code>generate_tuples()</code>. It takes a list of dictionaries and a list of keys. It generates a sequence of tuples, one for each dictionary in the list. The elements of the tuple are determined by the values for the specified keys.</p>
+<p>Here's the function:</p>
+<pre><code class="python">def generate_tuples(list_of_dicts, keys):
+    &quot;&quot;&quot;Generates tuples, one for each dict in the specified list, with
+    elements corresponding to the values for the specified keys.
+
+    &quot;&quot;&quot;
+    from operator import itemgetter
+    getter = itemgetter(*keys)
+    return (getter(d) for d in list_of_dicts)
+</code></pre>
+
+<p>And, here it is in action:</p>
+<pre><code class="python">&gt;&gt;&gt; for t in generate_tuples(person_dicts, ['firstname', 'lastname']):
+...     print t
+...
+('Hugo', 'Boss')
+('Calvin', 'Klein')
+</code></pre>
+
+<p>Back to the original example, this would allow me to insert the list of dictionaries as follows:</p>
+<pre><code class="python">con.executemany('insert into person(firstname, lastname) values (?, ?)',
+                generate_tuples(person_dicts, ['firstname', 'lastname']))
+</code></pre>
+</div>
+
+
+      <div id="copyright">
+        <center>
+          <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>          <br/><br/>
+          &copy; 2013 Paul Calnan. All rights reserved.
+        </center>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+  var _gauges = _gauges || [];
+  (function() {
+    var t   = document.createElement('script');
+    t.type  = 'text/javascript';
+    t.async = true;
+    t.id    = 'gauges-tracker';
+    t.setAttribute('data-site-id', '51304dd7108d7b6aad000032');
+    t.src = '//secure.gaug.es/track.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(t, s);
+  })();
+</script>
+  </body>
+</html>

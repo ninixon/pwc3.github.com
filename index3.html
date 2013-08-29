@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+  <head http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Paul Calnan</title>
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/css/main.css" type="text/css"/>
+
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/highlight.js/styles/solarized_light.css">
+    <script src="http://paulcalnan.com/theme/highlight.js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="header">
+        <table width="100%" border="0" cellpadding="0">
+          <tr>
+            <td class="headerTitle">
+              <a href="http://paulcalnan.com" style="text-decoration: none;">Paul Calnan</a>
+            </td>
+            <td class="headerLinks">
+              <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>            </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="headerFoot">
+              I love it when a plan comes together
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      
+  <div class="post">
+  <div class="postTitle">
+    <a href="/archives/2013/1/textexpander__the_pasteboard__and_unix_pipelines.html">TextExpander, the Pasteboard, and Unix Pipelines</a>
+  </div>
+    <div class="date">Published January 27, 2013</div>
+  <p>Here's a dead simple <a href="http://smilesoftware.com/TextExpander/index.html">TextExpander</a> snippet that I use quite a bit.</p>
+<pre><code class="bash">#!/usr/bin/env bash
+pbpaste | %fill:filter%
+</code></pre>
+
+<p>Be sure to set the Content to <code>Shell Script</code>. I have this set to fire when I
+type <code>;pipe</code>.</p>
+<p>When it fires, a dialog is presented allowing you to fill in whatever you want
+where the <code>%fill:filter%</code> appears. It takes the contents of the pasteboard and
+runs it through an arbitrary Unix pipeline. You can enter a single command,
+(like <code>tr a-z A-Z</code>) or a pipeline of commands (like <code>sort | uniq -c</code>). The
+contents of the pasteboard are passed through whatever set of commands you
+specify and the result is substituted to wherever you were typing.</p>
+</div>
+  <div class="post">
+  <div class="postTitle">
+    <a href="/archives/2012/8/svn_diffs_in_filemerge.html">SVN Diffs in FileMerge</a>
+  </div>
+    <div class="date">Published August 15, 2012</div>
+  <p>Sometimes, the output of <code>svn diff</code> doesn't quite cut it. Sometimes, you want to see a side-by-side comparison of the full files. The <code>--diff-cmd</code> flag lets you specify an external diff program:</p>
+<pre><code class="sh">svn diff --diff-cmd=fmdiff
+</code></pre>
+
+<p>This requires <code>fmdiff</code>, which is available <a href="http://www.defraine.net/~brunod/fmdiff/">from the developer's website</a> or via <a href="http://mxcl.github.com/homebrew/">Homebrew</a>. It will show a diff of the entire file in FileMerge.</p>
+<p>I use this frequently enough that I added an alias to it in my <code>.bashrc</code> file:</p>
+<pre><code class="sh">alias svndiff='svn diff --diff-cmd=fmdiff'
+</code></pre>
+</div>
+  <div class="post">
+  <div class="postTitle">
+    <a href="/archives/2012/8/textexpander_date_arithmetic.html">TextExpander Date Arithmetic</a>
+  </div>
+    <div class="date">Published August 14, 2012</div>
+  <p><a href="http://www.smilesoftware.com/textexpander">TextExpander</a> is one of the first apps I install on a new computer. It’s great for abbreviating repeatedly-typed strings. It also is capable of doing simple date arithmetic. Here are some examples I use regularly.</p>
+<table>
+<thead>
+<tr>
+<th>Abbreviation</th>
+<th>Expansion</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>;yesterday</code></td>
+<td><code>%@-1D%Y-%m-%d</code></td>
+<td><code>2012-08-12</code></td>
+</tr>
+<tr>
+<td><code>;today</code></td>
+<td><code>%Y-%m-%d</code></td>
+<td><code>2012-08-13</code></td>
+</tr>
+<tr>
+<td><code>;tomorrow</code></td>
+<td><code>%@+1D%Y-%m-%d</code></td>
+<td><code>2012-08-14</code></td>
+</tr>
+</tbody>
+</table>
+<p>There's more information about this on the <a href="http://blog.smilesoftware.com/2008/10/28/textexpander-date-and-time-math/">TextExpander blog</a>.</p>
+</div>
+  <div class="post">
+  <div class="postTitle">
+    <a href="/archives/2012/8/diff_with_a_remote_file.html">Diff with a Remote File</a>
+  </div>
+    <div class="date">Published August 13, 2012</div>
+  <p>You can use <a href="http://tldp.org/LDP/abs/html/process-sub.html">Bash process substitution</a> to diff a local file with a remote file (or two remote files, for that matter).</p>
+<pre><code class="bash">diff path/to/local/file &lt;(ssh remote-host 'cat path/to/remote/file')
+</code></pre>
+</div>
+  <div class="post">
+  <div class="postTitle">
+    <a href="/archives/2012/8/automated_os_x_address_book_backup.html">Automated OS X Address Book Backup</a>
+  </div>
+    <div class="date">Published August 12, 2012</div>
+  <p>Occasionally, I hear horror stories about <a href="http://www.leancrew.com/all-this/2012/04/address-book-and-icloud-problems/">iCloud screwing up a synced address book</a>. Although I have another backup system in place, I decided I wanted to make an automated script that could back up just my address book.</p>
+<p>The script to run the actual backup is fairly simple. It creates a <code>tar.bz2</code> file with the contents of the <code>~/Library/Application Support/AddressBook/</code> directory. The script puts the <code>tar.bz2</code> archive in <code>~/AddressBookBackups</code>, but you can change it to wherever you'd like your backups to go.</p>
+<pre><code class="bash">#!/usr/bin/env bash
+
+tar -C $HOME/Library/Application\ Support/ -cjf \
+    $HOME/AddressBookBackups/AddressBookBackup-$(date +%Y-%m-%d).tar.bz2 \
+    AddressBook/
+</code></pre>
+
+<p>Now, for the automation part, I wrote a Launch Agent file that schedules the script to be run nightly at midnight.</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
+&lt;plist version=&quot;1.0&quot;&gt;
+    &lt;dict&gt;
+        &lt;key&gt;Label&lt;/key&gt;
+        &lt;string&gt;com.paulcalnan.backupaddressbook&lt;/string&gt;
+        &lt;key&gt;ProgramArguments&lt;/key&gt;
+        &lt;array&gt;
+            &lt;string&gt;/Users/paul/AddressBookBackups/backup-address-book.sh&lt;/string&gt;
+        &lt;/array&gt;
+        &lt;key&gt;StartCalendarInterval&lt;/key&gt;
+        &lt;dict&gt;
+            &lt;key&gt;Hour&lt;/key&gt;
+            &lt;integer&gt;0&lt;/integer&gt;
+            &lt;key&gt;Minute&lt;/key&gt;
+            &lt;integer&gt;0&lt;/integer&gt;
+        &lt;/dict&gt;
+    &lt;/dict&gt;
+&lt;/plist&gt;
+</code></pre>
+
+<p>You can change the Label (and the filename) from <code>com.paulcalnan...</code> to whatever you prefer. You should change the path to the program from <code>/Users/paul/AddressBookBackups</code> to wherever you have the script stored.</p>
+<p>I have an OS X server running 24/7, so I'm able to schedule this there and it runs the backup for me without having to think about it. If don't have a computer that's always on, <code>launchctl</code> takes care of running the scheduled script even if the scheduled time is missed. From the <code>launchctl.plist</code> man page:</p>
+<blockquote>
+<p>Unlike cron which skips job invocations when the computer is asleep, launchd will start the job the next time the computer wakes up. If multiple intervals transpire before the computer is woken, those events will be coalesced into one event upon wake from sleep.</p>
+</blockquote>
+<p>Place the <code>plist</code> file in <code>~/Library/LaunchAgents</code> then run the following to get <code>launchctl</code> to schedule the job:</p>
+<pre><code class="bash">launchctl load ~/Library/LaunchAgents/com.paulcalnan.BackupAddressBook.plist
+</code></pre>
+
+<p>Note that this setup will keep making new backup files every day. I'll leave it as an exercise to the reader to write a script that cleans up old backup files.</p>
+<p>In the event that you want to restore from backup, you can do the following:</p>
+<ul>
+<li>Quit the Contacts app (formerly known as Address Book)</li>
+<li>Copy the latest backup file to <code>~/Library/Application Support/</code></li>
+<li>Rename the <code>~/Library/Application Support/AddressBook</code> directory to <code>AddressBook.old</code></li>
+<li>Unpack the latest backup file (using <code>tar xjf FILENAME</code>)</li>
+<li>Restart Contacts and see if this fixed your problem</li>
+</ul>
+</div>
+
+<div class="paginator">
+            <a href="http://paulcalnan.com/index2.html">Newer Posts</a>
+      
+    |
+  
+      <a href="http://paulcalnan.com/index4.html">Older Posts</a>
+  </div>
+
+      <div id="copyright">
+        <center>
+          <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>          <br/><br/>
+          &copy; 2013 Paul Calnan. All rights reserved.
+        </center>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+  var _gauges = _gauges || [];
+  (function() {
+    var t   = document.createElement('script');
+    t.type  = 'text/javascript';
+    t.async = true;
+    t.id    = 'gauges-tracker';
+    t.setAttribute('data-site-id', '51304dd7108d7b6aad000032');
+    t.src = '//secure.gaug.es/track.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(t, s);
+  })();
+</script>
+  </body>
+</html>
