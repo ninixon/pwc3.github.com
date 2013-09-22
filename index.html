@@ -49,7 +49,7 @@ only broadcast, so I can't watch the Red Sox (as they're on a cable-only
 network), but local NFL games are carried on broadcast stations.</p>
 <p>Aereo also works like an online DVR. You tell it which shows to record and you
 can stream those shows whenever you want.</p>
-<p>In my <a href="TBD">previous post</a> I explained how I use Keybord Maestro to get
+<p>In my <a href="/archives/2013/9/changing-safaris-user-agent-with-keyboard-maestro.html">previous post</a> I explained how I use Keybord Maestro to get
 HTML5 video. That trick works with Aereo as well, which usually requires Flash
 to view video on the desktop. Log in to Aereo from desktop Safari and it says
 you need to have Flash installed to watch video. Change to the Mobile Safari
@@ -152,6 +152,82 @@ frontmost tab in Google Chrome.</p>
 </div>
   <div class="post">
   <div class="postTitle">
+    <a href="/archives/2013/9/textexpander-html-entities-for-os-x-modifier-keys.html">TextExpander HTML Entities for OS X Modifier Keys</a>
+  </div>
+    <div class="date">Published September 13, 2013</div>
+  <p>In writing my recent posts on Keyboard Maestro, I made some new TextExpander
+snippets for typing Mac modifier keys. In the table below, typing the <em>Symbol
+Abbreviation</em> results in the <em>Symbol</em> being inserted; typing the <em>HTML Entity
+Abbreviation</em> results in the <em>HTML Entry</em> being inserted.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Name</th>
+<th align="center">Symbol</th>
+<th align="center">HTML Entity</th>
+<th align="left">Symbol Abbreviation</th>
+<th align="left">HTML Entity Abbreviation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Alt (Option)</td>
+<td align="center">&#8997;</td>
+<td align="center"><code>&amp;#8997;</code></td>
+<td align="left"><code>;alt</code></td>
+<td align="left"><code>;halt</code></td>
+</tr>
+<tr>
+<td align="left">Backspace</td>
+<td align="center">&#9003;</td>
+<td align="center"><code>&amp;#9003;</code></td>
+<td align="left"><code>;backspace</code></td>
+<td align="left"><code>;hbackspace</code></td>
+</tr>
+<tr>
+<td align="left">Caps Lock</td>
+<td align="center">&#8682;</td>
+<td align="center"><code>&amp;#8682;</code></td>
+<td align="left"><code>;caps</code></td>
+<td align="left"><code>;hcaps</code></td>
+</tr>
+<tr>
+<td align="left">Command</td>
+<td align="center">&#8984;</td>
+<td align="center"><code>&amp;#8984;</code></td>
+<td align="left"><code>;cmd</code></td>
+<td align="left"><code>;hcmd</code></td>
+</tr>
+<tr>
+<td align="left">Enter</td>
+<td align="center">&#9166;</td>
+<td align="center"><code>&amp;#9166;</code></td>
+<td align="left"><code>;enter</code></td>
+<td align="left"><code>;henter</code></td>
+</tr>
+<tr>
+<td align="left">Escape</td>
+<td align="center">&#9099;</td>
+<td align="center"><code>&amp;#9099;</code></td>
+<td align="left"><code>;esc</code></td>
+<td align="left"><code>;hesc</code></td>
+</tr>
+<tr>
+<td align="left">Shift</td>
+<td align="center">&#8679;</td>
+<td align="center"><code>&amp;#8679;</code></td>
+<td align="left"><code>;shift</code></td>
+<td align="left"><code>;hshift</code></td>
+</tr>
+</tbody>
+</table>
+<p>I previously just had the symbol abbreviations set. This caused some encoding
+problems in my posts. Rather than try to figure those out, I added the HTML
+Entity abbreviations. These should appear regardless of the encoding of the
+final document.</p>
+</div>
+  <div class="post">
+  <div class="postTitle">
     <a href="/archives/2013/8/changing-blogging-engines-pelican.html">Changing Blogging Engines: Pelican</a>
   </div>
     <div class="date">Published August 28, 2013</div>
@@ -192,24 +268,6 @@ frontmost tab in Google Chrome.</p>
 <p>This causes Skype to dial <code>+18005551212</code>, and enters the access code <code>12345</code> with the right pauses and <code>#</code>s. If I wanted to use an arbitrary access code that doesn't have a corresponding keyword, I could do so like this:</p>
 <pre><code class="no-highlight">bridge 24680
 </code></pre>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2013/8/editing_property_lists_in_a_text_editor.html">Editing Property Lists in a Text Editor</a>
-  </div>
-    <div class="date">Published August 5, 2013</div>
-  <p>Occasionally, I've wanted to be able to poke around in a plist file while working in the terminal. You can open an XML plist in a text editor like Vim, but a binary plist just looks like gibberish.</p>
-<p>Fortunately, you can convert a plist file into XML format with the following command:</p>
-<pre><code class="bash">plutil -convert xml1 INPUT_FILENAME
-</code></pre>
-
-<p>Alternatively, you can convert a plist file into binary format with the following command:</p>
-<pre><code class="bash">plutil -convert binary1 INPUT_FILENAME
-</code></pre>
-
-<p>Obviously, change <code>INPUT_FILENAME</code> to whatever file you want to edit.</p>
-<p>I wrote a quick Python script to automate this. I called it <code>edit-plist</code>. It first checks the file type (using the <code>file</code> utility). If it's a binary plist, it converts to XML. Then it opens in the selected editor (Vim). Once the editor exits, if the file was originally a binary plist, it converts back to that format.</p>
-<script src="https://gist.github.com/pwc3/6161201.js"></script>
 </div>
 
 <div class="paginator">

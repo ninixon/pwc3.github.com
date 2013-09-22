@@ -35,6 +35,20 @@
       
   <div class="post">
   <div class="postTitle">
+    <a href="/archives/2012/8/svn_diffs_in_filemerge.html">SVN Diffs in FileMerge</a>
+  </div>
+    <div class="date">Published August 15, 2012</div>
+  <p>Sometimes, the output of <code>svn diff</code> doesn't quite cut it. Sometimes, you want to see a side-by-side comparison of the full files. The <code>--diff-cmd</code> flag lets you specify an external diff program:</p>
+<pre><code class="sh">svn diff --diff-cmd=fmdiff
+</code></pre>
+
+<p>This requires <code>fmdiff</code>, which is available <a href="http://www.defraine.net/~brunod/fmdiff/">from the developer's website</a> or via <a href="http://mxcl.github.com/homebrew/">Homebrew</a>. It will show a diff of the entire file in FileMerge.</p>
+<p>I use this frequently enough that I added an alias to it in my <code>.bashrc</code> file:</p>
+<pre><code class="sh">alias svndiff='svn diff --diff-cmd=fmdiff'
+</code></pre>
+</div>
+  <div class="post">
+  <div class="postTitle">
     <a href="/archives/2012/8/textexpander_date_arithmetic.html">TextExpander Date Arithmetic</a>
   </div>
     <div class="date">Published August 14, 2012</div>
@@ -191,60 +205,6 @@ con.executemany('insert into person(firstname, lastname) values (?, ?)',
 <p>Back to the original example, this would allow me to insert the list of dictionaries as follows:</p>
 <pre><code class="python">con.executemany('insert into person(firstname, lastname) values (?, ?)',
                 generate_tuples(person_dicts, ['firstname', 'lastname']))
-</code></pre>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2012/8/cleaning_up_after_microsoft_outlook.html">Cleaning up after Microsoft Outlook</a>
-  </div>
-    <div class="date">Published August 11, 2012</div>
-  <p>I'm not a fan of Microsoft Outlook. Unfortunately, I'm often required to use it. Most of the time, a combination of Apple's Mail.app and iCal is good enough to get the job done. However, there are occasions that you need to use Outlook.  In particular, Outlook is the only way to set a server-side rule on an Exchange server.</p>
-<p>So, every once in a while I need to fire up Outlook to create a new rule.  Here's the part that really gets on my nerves: Every time you launch Outlook on OS X, it launches <code>Microsoft Office Reminders</code> which shows a popup window with reminders for all of your appointments. Additionally, it launches <code>Microsoft Database Daemon</code> and <em>adds it to your Login Items</em>.</p>
-<p>Rather than having to quit out of <code>Microsoft Office Reminders</code> and go into System Preferences &gt; Users &amp; Groups &gt; Login Items every time I run Outlook, I wrote a little script to do it for me.</p>
-<p>Since I usually have a Terminal window open, I simply run <code>kill-mso-remnants</code> after I quit Outlook and we're back to where we started.</p>
-<p>The script:</p>
-<pre><code class="bash">#!/usr/bin/env bash
-
-# Kill the two processes.
-for PROC in &quot;Microsoft Database Daemon&quot; &quot;Microsoft Office Reminders&quot;; do
-    echo &quot;Killing $PROC&quot;
-    killall &quot;$PROC&quot;
-done
-
-# This plist file contains your Login Items.
-PLIST_FILE=&quot;$HOME/Library/Preferences/loginwindow.plist&quot;
-
-# PlistBuddy lets you edit plist files from the command line.
-PLIST_BUDDY=&quot;/usr/libexec/PlistBuddy&quot;
-
-# The app that gets added to your Login Items.
-APP_NAME=&quot;/Applications/Microsoft Office 2011/Office/Microsoft Database Daemon.app&quot;
-
-# This loop searches the plist file for the offending application and, if it's
-# found, removes it.
-INDEX=0
-while :
-do
-    # Print the application path for this item in the list and capture the
-    # output.
-    OUTPUT=$($PLIST_BUDDY $PLIST_FILE -c &quot;Print :AutoLaunchedApplicationDictionary:$INDEX:Path&quot; 2&gt;&amp;1)
-
-    # If the output is the name of the offending application...
-    if [ &quot;$OUTPUT&quot; = &quot;$APP_NAME&quot; ]; then
-        # Delete the containing element from the plist file.
-        $PLIST_BUDDY $PLIST_FILE -c &quot;Delete :AutoLaunchedApplicationDictionary:$INDEX&quot;
-        echo &quot;Entry for $APP_NAME deleted from $PLIST_FILE&quot;
-        break
-
-    # If the output matches &quot;Does Not Exist&quot;, we have finished searching
-    # without finding a match.
-    elif [[ &quot;$OUTPUT&quot; =~ &quot;Does Not Exist&quot; ]]; then
-        echo &quot;Could not find Plist entry for $APP_NAME&quot;
-        break
-    fi
-
-    INDEX=$((INDEX + 1))
-done
 </code></pre>
 </div>
 
