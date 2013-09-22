@@ -35,6 +35,103 @@
       
   <div class="post">
   <div class="postTitle">
+    <a href="/archives/2013/9/using-aereo-on-os-x-with-quicktime-and-keyboard-maestro.html">Using Aereo on OS X with QuickTime and Keyboard Maestro</a>
+  </div>
+    <div class="date">Published September 22, 2013</div>
+  <p>I cancelled my cable television subscription a few months ago. I don't watch
+enough television to justify what my cable company was charging me monthly for
+a service I didn't use.</p>
+<p>I'm a football fan, though, and couldn't imagine going the whole season without
+watching <a href="http://en.wikipedia.org/wiki/New_England_Patriots">the Patriots</a> play. Luckily, around the time I cancelled my
+cable, <a href="http://www.aereo.com/">Aereo</a> came to Boston. If you're not familiar with their
+service, Aereo allows you to watch broadcast television over the Internet. It's
+only broadcast, so I can't watch the Red Sox (as they're on a cable-only
+network), but local NFL games are carried on broadcast stations.</p>
+<p>Aereo also works like an online DVR. You tell it which shows to record and you
+can stream those shows whenever you want.</p>
+<p>In my <a href="TBD">previous post</a> I explained how I use Keybord Maestro to get
+HTML5 video. That trick works with Aereo as well, which usually requires Flash
+to view video on the desktop. Log in to Aereo from desktop Safari and it says
+you need to have Flash installed to watch video. Change to the Mobile Safari
+for iPad user agent string and you can watch video.</p>
+<p>When using a DVR, I find it essential to be able to skip back and forth by
+several seconds, mainly to skip commercials. This is impossible to do using the
+HTML5 video player. I'm not sure if you can do the same in the Flash player,
+but I'd rather not have to use Flash in order to watch video.</p>
+<p>The <a href="http://hoyois.github.io/safariextensions/mediacenter/">Media Center Safari Extension</a> adds a context-menu when you
+right-click on an HTML5 video with the option to open the video in QuickTime
+Player. I wrote an AppleScript that can tell QuickTime Player to jump forwards
+or backwards an arbitrary number of seconds. I activate those scripts via
+<a href="http://www.keyboardmaestro.com/">Keyboard Maestro</a> macros to allow me to fast forward or rewind 5, 15, 30,
+60, 120, or 300 seconds. I have those bound to the following keys:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Action</th>
+<th align="left">Key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Rewind 5 minutes</td>
+<td align="left">&#8984;<!--cmd-->&#8679;<!--shift-->[</td>
+</tr>
+<tr>
+<td align="left">Rewind 2 minutes</td>
+<td align="left">&#8984;<!--cmd-->[</td>
+</tr>
+<tr>
+<td align="left">Rewind 1 minute</td>
+<td align="left">&#8984;<!--cmd-->&#8997;<!--alt-->[</td>
+</tr>
+<tr>
+<td align="left">Rewind 30 seconds</td>
+<td align="left">&#8984;<!--cmd-->&#8679;<!--shift-->,</td>
+</tr>
+<tr>
+<td align="left">Rewind 15 seconds</td>
+<td align="left">&#8984;<!--cmd-->,</td>
+</tr>
+<tr>
+<td align="left">Rewind 5 seconds</td>
+<td align="left">&#8984;<!--cmd-->&#8997;<!--alt-->,</td>
+</tr>
+<tr>
+<td align="left">Fast forward 5 seconds</td>
+<td align="left">&#8984;<!--cmd-->&#8997;<!--alt-->.</td>
+</tr>
+<tr>
+<td align="left">Fast forward 15 seconds</td>
+<td align="left">&#8984;<!--cmd-->.</td>
+</tr>
+<tr>
+<td align="left">Fast forward 30 seconds</td>
+<td align="left">&#8984;<!--cmd-->&#8679;<!--shift-->.</td>
+</tr>
+<tr>
+<td align="left">Fast forward 1 minute</td>
+<td align="left">&#8984;<!--cmd-->&#8997;<!--alt-->&rsqb;<!--]--></td>
+</tr>
+<tr>
+<td align="left">Fast forward 2 minutes</td>
+<td align="left">&#8984;<!--cmd-->&rsqb;<!--]--></td>
+</tr>
+<tr>
+<td align="left">Fast forward 5 minutes</td>
+<td align="left">&#8984;<!--cmd-->&#8679;<!--shift-->&rsqb;<!--]--></td>
+</tr>
+</tbody>
+</table>
+<p>That's a lot of shortcuts. I just remember that square brackets (&lsqb; and
+&rsqb;) jump by minutes and angle brackets (&lt; and &gt;) jump by seconds. Shift
+(&#8679;<!--shift-->) jumps by more and alt (&#8997;<!--alt-->) shifts by less.</p>
+<p>Combined with AirPlay Mirroring to my Apple TV, I have a decent DVR system
+controlled by my MacBook Air that allows me to watch NFL football without
+having to see any commercials.</p>
+<p>The Keyboard Maestro macros are available on <a href="https://github.com/pwc3/km-quicktime-dvr-macros">Github</a>.</p>
+</div>
+  <div class="post">
+  <div class="postTitle">
     <a href="/archives/2013/9/changing-safaris-user-agent-with-keyboard-maestro.html">Changing Safari's User Agent with Keyboard Maestro</a>
   </div>
     <div class="date">Published September 22, 2013</div>
@@ -113,85 +210,6 @@ frontmost tab in Google Chrome.</p>
 <p>Obviously, change <code>INPUT_FILENAME</code> to whatever file you want to edit.</p>
 <p>I wrote a quick Python script to automate this. I called it <code>edit-plist</code>. It first checks the file type (using the <code>file</code> utility). If it's a binary plist, it converts to XML. Then it opens in the selected editor (Vim). Once the editor exits, if the file was originally a binary plist, it converts back to that format.</p>
 <script src="https://gist.github.com/pwc3/6161201.js"></script>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2013/8/copy_to_pasteboard_from_a_remote_machine.html">Copy to Pasteboard from a Remote Machine</a>
-  </div>
-    <div class="date">Published August 2, 2013</div>
-  <p>I do a lot of work via SSH on a remote Linux server. It is often useful to transfer text from that server back to my local machine. Rather than save to a file and <code>scp</code> it down to my local machine, I <a href="http://seancoates.com/blogs/remote-pbcopy">adapted this process</a> to allow me to copy to my local pasteboard from a remote machine.</p>
-<p>Note, I use port 50730 for this. I can't remember why I picked that number. Regardless, it's arbitrary and you should be able to choose something else if you prefer.</p>
-<h3>Step 1: Create a pasteboard daemon</h3>
-<p>On Mac OS X, this is fairly easy using a Launch Agent.</p>
-<p>Save the following XML property list file in <code>~/Library/LaunchAgents/com.paulcalnan.pbcopy.plist</code> on your local machine:</p>
-<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE plist PUBLIC &quot;-//Apple Computer//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
-&lt;plist version=&quot;1.0&quot;&gt;
-&lt;dict&gt;
-     &lt;key&gt;Label&lt;/key&gt;
-     &lt;string&gt;com.paulcalnan.pbcopy&lt;/string&gt;
-     &lt;key&gt;ProgramArguments&lt;/key&gt;
-     &lt;array&gt;
-         &lt;string&gt;/usr/bin/pbcopy&lt;/string&gt;
-     &lt;/array&gt;
-     &lt;key&gt;inetdCompatibility&lt;/key&gt;
-     &lt;dict&gt;
-          &lt;key&gt;Wait&lt;/key
-          &lt;false/&gt;
-     &lt;/dict&gt;
-     &lt;key&gt;Sockets&lt;/key&gt;
-     &lt;dict&gt;
-          &lt;key&gt;Listeners&lt;/key&gt;
-               &lt;dict&gt;
-                    &lt;key&gt;SockServiceName&lt;/key&gt;
-                    &lt;string&gt;50730&lt;/string&gt;
-                    &lt;key&gt;SockNodeName&lt;/key&gt;
-                    &lt;string&gt;127.0.0.1&lt;/string&gt;
-               &lt;/dict&gt;
-     &lt;/dict&gt;
-&lt;/dict&gt;
-&lt;/plist&gt;
-</code></pre>
-
-<p>Note that I use my domain name, <code>com.paulcalnan</code>, in the daemon and file name. You can call it whatever you like.</p>
-<h3>Step 2: Load the daemon</h3>
-<p>From the Terminal on your local machine, run:</p>
-<pre><code class="bash">launchctl load ~/Library/LaunchAgents/com.paulcalnan.pbcopy.plist
-</code></pre>
-
-<h3>Step 3: Configure SSH port forwarding</h3>
-<p>Add the following to your local machine's <code>~/.ssh/config</code> file:</p>
-<pre><code class="no-highlight">RemoteForward 50730 127.0.0.1:50730
-</code></pre>
-
-<h3>Step 4: Create a remote <code>pbcopy</code> script</h3>
-<p>Add the following file to the remote server as <code>~/bin/pbcopy</code> and make it executable:</p>
-<pre><code class="bash">#!/usr/bin/env bash
-cat | nc localhost 50730
-</code></pre>
-
-<p>This assumes <code>~/bin</code> is on your <code>PATH</code>. If the remote host runs OS X, you should name it something else, like <code>rpbcopy</code>, to prevent confusion with the built-in <code>pbcopy</code>.</p>
-<h3>Step 5: Try it out</h3>
-<p>From the remote server, run a command and pipe the output through <code>pbcopy</code>:</p>
-<pre><code class="bash">uptime | pbcopy
-</code></pre>
-
-<p>Back on your local machine, paste into a text editor.</p>
-<h3>Bonus <code>tmux</code> Trick</h3>
-<p>Most of the time, I use <code>tmux</code> to manage multiple consoles in the same SSH session. When I split the window horizontally, it breaks my ability to select multiple lines of text with the mouse.</p>
-<p>To copy from a tmux session, I do a <code>Ctrl-A [</code>, select text I want to copy, and press <code>Enter</code> (I use <code>Ctrl-A</code> instead of <code>Ctrl-B</code> for my prefix). That puts the selected text in the tmux buffer. To copy the tmux buffer contents, I run <code>tmuxcp</code>, defined as an alias in my <code>.bashrc</code>:</p>
-<pre><code class="bash">alias tmuxcp='tmux save-buffer - | pbcopy'
-</code></pre>
-
-<p>This works on Linux (where I have my <code>pbcopy</code> script on my path) and on OS X (which has the native <code>pbcopy</code> on the path).</p>
-<h3>Issues</h3>
-<p>I use this quite often and it's turned out to be a huge time saver. It's not perfect, though. There are two issues I have encountered.</p>
-<p>First, it doesn't work if you open multiple SSH sessions to the same server. After one session is opened, subsequent sessions print a warning:</p>
-<pre><code class="no-highlight">Warning: remote port forwarding failed for listen port 50730
-</code></pre>
-
-<p>This can cause other issues. For instance, I have a particular Linux host I connect to via SSH that also runs a MySQL instance. if I have an SSH session open to that host and then use MySQL Workbench (or some other MySQL graphical client) to open an SSH connection to that same host, the warning message is incorrectly interpreted as an error message and the connection fails. The workaround here is to open the MySQL connection first and then open the SSH connection. The port forwarding will fail in the SSH session, preventing the remote <code>pbcopy</code> from working, but the MySQL connection will work.</p>
-<p>Second, it doesn't handle text encoding particularly well. When I pass UTF-8 text into the remote <code>pbcopy</code> script, it shows up on the local pasteboard garbled. This shouldn't be too hard to fix, but I don't run into it often enough to spend the time debugging it.</p>
 </div>
 
 <div class="paginator">

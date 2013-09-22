@@ -1,5 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Paul Calnan</title><link>http://paulcalnan.com/</link><description></description><atom:link href="http://paulcalnan.com/rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 22 Sep 2013 00:42:15 -0400</lastBuildDate><item><title>Changing Safari's User Agent with Keyboard Maestro</title><link>http://paulcalnan.com/archives/2013/9/changing-safaris-user-agent-with-keyboard-maestro.html</link><description>&lt;p&gt;It's surprising how many websites still require Flash to view video when using
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Paul Calnan</title><link>http://paulcalnan.com/</link><description></description><atom:link href="http://paulcalnan.com/rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 22 Sep 2013 00:45:13 -0400</lastBuildDate><item><title>Using Aereo on OS X with QuickTime and Keyboard Maestro</title><link>http://paulcalnan.com/archives/2013/9/using-aereo-on-os-x-with-quicktime-and-keyboard-maestro.html</link><description>&lt;p&gt;I cancelled my cable television subscription a few months ago. I don't watch
+enough television to justify what my cable company was charging me monthly for
+a service I didn't use.&lt;/p&gt;
+&lt;p&gt;I'm a football fan, though, and couldn't imagine going the whole season without
+watching &lt;a href="http://en.wikipedia.org/wiki/New_England_Patriots"&gt;the Patriots&lt;/a&gt; play. Luckily, around the time I cancelled my
+cable, &lt;a href="http://www.aereo.com/"&gt;Aereo&lt;/a&gt; came to Boston. If you're not familiar with their
+service, Aereo allows you to watch broadcast television over the Internet. It's
+only broadcast, so I can't watch the Red Sox (as they're on a cable-only
+network), but local NFL games are carried on broadcast stations.&lt;/p&gt;
+&lt;p&gt;Aereo also works like an online DVR. You tell it which shows to record and you
+can stream those shows whenever you want.&lt;/p&gt;
+&lt;p&gt;In my &lt;a href="TBD"&gt;previous post&lt;/a&gt; I explained how I use Keybord Maestro to get
+HTML5 video. That trick works with Aereo as well, which usually requires Flash
+to view video on the desktop. Log in to Aereo from desktop Safari and it says
+you need to have Flash installed to watch video. Change to the Mobile Safari
+for iPad user agent string and you can watch video.&lt;/p&gt;
+&lt;p&gt;When using a DVR, I find it essential to be able to skip back and forth by
+several seconds, mainly to skip commercials. This is impossible to do using the
+HTML5 video player. I'm not sure if you can do the same in the Flash player,
+but I'd rather not have to use Flash in order to watch video.&lt;/p&gt;
+&lt;p&gt;The &lt;a href="http://hoyois.github.io/safariextensions/mediacenter/"&gt;Media Center Safari Extension&lt;/a&gt; adds a context-menu when you
+right-click on an HTML5 video with the option to open the video in QuickTime
+Player. I wrote an AppleScript that can tell QuickTime Player to jump forwards
+or backwards an arbitrary number of seconds. I activate those scripts via
+&lt;a href="http://www.keyboardmaestro.com/"&gt;Keyboard Maestro&lt;/a&gt; macros to allow me to fast forward or rewind 5, 15, 30,
+60, 120, or 300 seconds. I have those bound to the following keys:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align="left"&gt;Action&lt;/th&gt;
+&lt;th align="left"&gt;Key&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Rewind 5 minutes&lt;/td&gt;
+&lt;td align="left"&gt;&amp;#8984;&lt;!--cmd--&gt;&amp;#8679;&lt;!--shift--&gt;[&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Rewind 2 minutes&lt;/td&gt;
+&lt;td align="left"&gt;&amp;#8984;&lt;!--cmd--&gt;[&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Rewind 1 minute&lt;/td&gt;
+&lt;td align="left"&gt;&amp;#8984;&lt;!--cmd--&gt;&amp;#8997;&lt;!--alt--&gt;[&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Rewind 30 seconds&lt;/td&gt;
+&lt;td align="left"&gt;&amp;#8984;&lt;!--cmd--&gt;&amp;#8679;&lt;!--shift--&gt;,&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Rewind 15 seconds&lt;/td&gt;
+&lt;td align="left"&gt;&amp;#8984;&lt;!--cmd--&gt;,&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Rewind 5 seconds&lt;/td&gt;
+&lt;td align="left"&gt;&amp;#8984;&lt;!--cmd--&gt;&amp;#8997;&lt;!--alt--&gt;,&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Fast forward 5 seconds&lt;/td&gt;
+&lt;td align="left"&gt;&amp;#8984;&lt;!--cmd--&gt;&amp;#8997;&lt;!--alt--&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Fast forward 15 seconds&lt;/td&gt;
+&lt;td align="left"&gt;&amp;#8984;&lt;!--cmd--&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Fast forward 30 seconds&lt;/td&gt;
+&lt;td align="left"&gt;&amp;#8984;&lt;!--cmd--&gt;&amp;#8679;&lt;!--shift--&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Fast forward 1 minute&lt;/td&gt;
+&lt;td align="left"&gt;&amp;#8984;&lt;!--cmd--&gt;&amp;#8997;&lt;!--alt--&gt;&amp;rsqb;&lt;!--]--&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Fast forward 2 minutes&lt;/td&gt;
+&lt;td align="left"&gt;&amp;#8984;&lt;!--cmd--&gt;&amp;rsqb;&lt;!--]--&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;Fast forward 5 minutes&lt;/td&gt;
+&lt;td align="left"&gt;&amp;#8984;&lt;!--cmd--&gt;&amp;#8679;&lt;!--shift--&gt;&amp;rsqb;&lt;!--]--&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;That's a lot of shortcuts. I just remember that square brackets (&amp;lsqb; and
+&amp;rsqb;) jump by minutes and angle brackets (&amp;lt; and &amp;gt;) jump by seconds. Shift
+(&amp;#8679;&lt;!--shift--&gt;) jumps by more and alt (&amp;#8997;&lt;!--alt--&gt;) shifts by less.&lt;/p&gt;
+&lt;p&gt;Combined with AirPlay Mirroring to my Apple TV, I have a decent DVR system
+controlled by my MacBook Air that allows me to watch NFL football without
+having to see any commercials.&lt;/p&gt;
+&lt;p&gt;The Keyboard Maestro macros are available on &lt;a href="https://github.com/pwc3/km-quicktime-dvr-macros"&gt;Github&lt;/a&gt;.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Sun, 22 Sep 2013 00:45:13 -0400</pubDate><guid>tag:paulcalnan.com,2013-09-22:archives/2013/9/using-aereo-on-os-x-with-quicktime-and-keyboard-maestro.html</guid></item><item><title>Changing Safari's User Agent with Keyboard Maestro</title><link>http://paulcalnan.com/archives/2013/9/changing-safaris-user-agent-with-keyboard-maestro.html</link><description>&lt;p&gt;It's surprising how many websites still require Flash to view video when using
 a desktop browser. I use the technique &lt;a href="http://daringfireball.net/2010/11/masquerading_as_mobile_safari"&gt;described in this Daring Fireball
 post&lt;/a&gt; to change the user agent string in Safari on OS X, making it look
 like Mobile Safari in order to get HTML5 video. This does the trick about 90%
