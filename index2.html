@@ -35,6 +35,34 @@
       
   <div class="post">
   <div class="postTitle">
+    <a href="/archives/2013/8/python_line_numbers.html">Python Line Numbers</a>
+  </div>
+    <div class="date">Published August 2, 2013</div>
+  <p>Someone posted to Twitter a link to <a href="http://nedbatchelder.com/text/iter/iter.html">a presentation on Python iteration</a>. In it, I saw something clever.</p>
+<p>When iterating over a file line-by-line, you generally do something like this:</p>
+<pre><code class="python">with open(some_filename, 'r') as fh:
+    for line in fh:
+        do_something_interesting(line)
+</code></pre>
+
+<p>Occasionally, you need a line number associated with each line of data. I usually wind up doing something like this:</p>
+<pre><code class="python">with open(some_filename, 'r') as fh:
+    lineno = 0
+    for line in fh:
+        lineno += 1
+        do_something_interesting(line, lineno)
+</code></pre>
+
+<p>From the presentation, I learned that you can do the same with the <code>enumerate</code> function:</p>
+<pre><code class="python">with open(some_filename, 'r') as fh:
+    for lineno, line in enumerate(fh, start=1):
+        do_something_interesting(line, lineno)
+</code></pre>
+
+<p>I can't believe that never occurred to me before.</p>
+</div>
+  <div class="post">
+  <div class="postTitle">
     <a href="/archives/2013/4/exchange_to_icloud_calendar_sync.html">Exchange to iCloud Calendar Sync</a>
   </div>
     <div class="date">Published April 8, 2013</div>
@@ -157,38 +185,6 @@ end run
 <ol>
 <li>Save the service as "Add Tracking Number to Deliveries" (or whatever service name you prefer).</li>
 </ol>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2013/1/dropbox_updater_for_os_x.html">Dropbox Updater for OS X</a>
-  </div>
-    <div class="date">Published January 28, 2013</div>
-  <p>Since the Dropbox client software installed on my computer never seems to
-automatically update, I wrote a Python script to do it for me. It was developed
-and tested under Mac OS X Mountain Lion 10.8.2.</p>
-<p>The script does the following:</p>
-<ol>
-<li>Checks <code>/Applications/Dropbox.app</code> for the currently-installed version
-   number.</li>
-<li>Checks <a href="http://www.dropbox.com/install">http://www.dropbox.com/install</a> for
-   the "latest available version" (i.e., whichever version is listed on the
-   <em>Download</em> button, which may or may not be the latest available version).</li>
-<li>If the installed version number is less than the latest available version,
-   it attempts to download a DMG of the latest version to <code>~/Downloads</code>.</li>
-<li>If a DMG was successfully downloaded, the script then mounts the DMG and
-   runs the installer.</li>
-</ol>
-<p>There are several assumptions made in the script. I tried to document them all
-and use easily-modifiable constants wherever possible. If the script fails, one
-of the assumptions may no longer be valid.</p>
-<p>There are two command-line options (run with <code>--help</code> for details). The
-<code>-v</code>/<code>--version</code> option allows you to specify the version to install. This is
-useful when installing Forum builds. The <code>-d</code>/<code>--dry-run</code> option performs a
-"dry run" which downloads the DMG but does not mount it or run the installer.</p>
-<p>The script requires the <code>beautifulsoup4</code> module. It is used to scrape the
-Dropbox download page to determine the version number. It can be installed via
-either <code>pip install beautifulsoup4</code> or <code>easy_install beautifulsoup4</code>.</p>
-<p>The script is available for download <a href="http://github.com/pwc3/dropbox-updater">on Github</a>.</p>
 </div>
 
 <div class="paginator">

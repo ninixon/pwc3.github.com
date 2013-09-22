@@ -3,7 +3,7 @@
 
 <html>
   <head http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <title>Paul Calnan</title>
+    <title>Paul Calnan: Changing Safari's User Agent with Keyboard Maestro</title>
     <link rel="stylesheet" href="http://paulcalnan.com/theme/css/main.css" type="text/css"/>
 
     <link rel="stylesheet" href="http://paulcalnan.com/theme/highlight.js/styles/solarized_light.css">
@@ -33,48 +33,27 @@
       </div>
 
       
-  <div class="post">
+<div class="post">
   <div class="postTitle">
-    <a href="/archives/2012/8/pretty-print_json.html">Pretty-Print JSON</a>
+    <a href="/archives/2013/9/changing-safaris-user-agent-with-keyboard-maestro.html">Changing Safari's User Agent with Keyboard Maestro</a>
   </div>
-    <div class="date">Published August 11, 2012</div>
-  <p>I got the idea for this script <a href="http://crisp.tumblr.com/post/2574967567/json-pretty-print-formatting-in-bbedit">from a BBEdit script</a> I found on Tumblr. I <a href="http://scriptd.tumblr.com/post/9941663896/pretty-print-json">posted it to my Tumblr site</a> as well. The script simply reformats and cleans up JSON files.</p>
-<p>Since then, I have revisited and changed the script. Originally, the script used a <code>fileinput</code> object to build an input string, which it passed to the JSON parser. It also didn't do much in the way of error handling.</p>
-<p>I updated it to pass <code>stdin</code> directly to the JSON parser. It now catches exceptions thrown while parsing.</p>
-<p>The new code looks like this:</p>
-<pre><code class="python">#!/usr/bin/env python
-
-from __future__ import print_function
-import sys
-import json
-
-def main():
-    try:
-        obj = json.load(sys.stdin)
-        json.dump(obj, sys.stdout, sort_keys=True, indent=4)
-    except ValueError as strerr:
-        print(&quot;Error: {0}&quot;.format(strerr), file=sys.stderr)
-
-if __name__ == &quot;__main__&quot;:
-    main()
-</code></pre>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2012/8/a_new_beginning.html">A New Beginning</a>
-  </div>
-    <div class="date">Published August 11, 2012</div>
-  <p>Let's get started.</p>
-<p>I want to use this space to record, primarily for myself, things that I've been working on and things that I've learned. Making it into a blog will hopefully help others.</p>
-<p>I had a <a href="http://scriptd.tumblr.com">Tumblr site</a> where I posted scripts that I wanted to share with others. This time, I'm trying a Octopress site, which will hopefully reduce the friction that's prevented me from blogging more.</p>
-<p>Stay tuned.</p>
+    <div class="date">Published September 22, 2013</div>
+  <p>It's surprising how many websites still require Flash to view video when using
+a desktop browser. I use the technique <a href="http://daringfireball.net/2010/11/masquerading_as_mobile_safari">described in this Daring Fireball
+post</a> to change the user agent string in Safari on OS X, making it look
+like Mobile Safari in order to get HTML5 video. This does the trick about 90%
+of the time. I find that the <a href="http://www.verticalforest.com/youtube5-extension/">YouTube 5 Safari Extension</a> also helps,
+often making the user agent shenanigans unnecessary.</p>
+<p>I used to keep Google Chrome installed as a fallback since it comes with Flash
+preinstalled. I find I need to use that less and less, though.</p>
+<p>I use two <a href="http://www.keyboardmaestro.com/">Keyboard Maestro</a> macros for this. The <code>Toggle iPad UA</code> macro
+(bound to &#8984;<!--cmd-->.) toggles between the Mobile Safari for iPad user
+agent string and the default Safari user agent string. The <code>Open in Google
+Chrome</code> macro (bound to &#8984;<!--cmd-->&#8679;<!--shift-->.) opens Safari's
+frontmost tab in Google Chrome.</p>
+<p>Both macros are available on <a href="https://github.com/pwc3/km-safari-ua-macros">Github</a>.</p>
 </div>
 
-<div class="paginator">
-            <a href="http://paulcalnan.com/index4.html">Newer Posts</a>
-      
-  
-  </div>
 
       <div id="copyright">
         <center>

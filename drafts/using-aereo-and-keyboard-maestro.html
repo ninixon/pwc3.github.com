@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+  <head http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Paul Calnan: Using Aereo and Keyboard Maestro</title>
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/css/main.css" type="text/css"/>
+
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/highlight.js/styles/solarized_light.css">
+    <script src="http://paulcalnan.com/theme/highlight.js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="header">
+        <table width="100%" border="0" cellpadding="0">
+          <tr>
+            <td class="headerTitle">
+              <a href="http://paulcalnan.com" style="text-decoration: none;">Paul Calnan</a>
+            </td>
+            <td class="headerLinks">
+              <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>            </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="headerFoot">
+              I love it when a plan comes together
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      
+<div class="post">
+  <div class="postTitle">
+    <a href="/archives/2013/9/using-aereo-and-keyboard-maestro.html">Using Aereo and Keyboard Maestro</a>
+  </div>
+    <div class="date">Published September 13, 2013</div>
+  <p>I cancelled my cable television subscription a few months ago. I don't watch
+enough television to justify what my cable company was charging me monthly for
+a service I didn't use.</p>
+<p>I'm a football fan, though, and couldn't imagine going the whole season without
+watching <a href="http://en.wikipedia.org/wiki/New_England_Patriots">the Patriots</a> play. Luckily, around the time I cancelled my
+cable, <a href="http://www.aereo.com/">Aereo</a> came to Boston. If you're not familiar with their
+service, Aereo allows you to watch broadcast television over the Internet. It's
+only broadcast, so I can't watch the Red Sox (as they're on a cable-only
+network), but local NFL games are carried on broadcast stations.</p>
+<p>Aereo also works like an online DVR. You tell it which shows to record and you
+can stream those shows whenever you want.</p>
+<p>In my <a href="TBD">previous post</a> I explained how I use Keybord Maestro to get
+HTML5 video. That trick works with Aereo as well, which usually requires Flash
+to view video on the desktop. Log in to Aereo from desktop Safari and it says
+you need to have Flash installed to watch video. Change to the Mobile Safari
+for iPad user agent string and you can watch video.</p>
+<p>When using a DVR, I find it essential to be able to skip back and forth by
+several seconds, mainly to skip commercials. This is impossible to do using the
+HTML5 video player. I'm not sure if you can do the same in the Flash player,
+but I'd rather not have to use Flash in order to watch video.</p>
+<p>The <a href="http://hoyois.github.io/safariextensions/mediacenter/">Media Center Safari Extension</a> adds a context-menu when you
+right-click on an HTML5 video with the option to open the video in QuickTime
+Player. I wrote an AppleScript that can tell QuickTime Player to jump forwards
+or backwards an arbitrary number of seconds. I activate those scripts via
+<a href="http://www.keyboardmaestro.com/">Keyboard Maestro</a> macros to allow me to fast forward or rewind 5, 15, 30,
+60, 120, or 300 seconds. I have those bound to the following keys:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Action</th>
+<th align="left">Key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Rewind 5 minutes</td>
+<td align="left">&#8984;<!--cmd-->&#8679;<!--shift-->[</td>
+</tr>
+<tr>
+<td align="left">Rewind 2 minutes</td>
+<td align="left">&#8984;<!--cmd-->[</td>
+</tr>
+<tr>
+<td align="left">Rewind 1 minute</td>
+<td align="left">&#8984;<!--cmd-->&#8997;<!--alt-->[</td>
+</tr>
+<tr>
+<td align="left">Rewind 30 seconds</td>
+<td align="left">&#8984;<!--cmd-->&#8679;<!--shift-->,</td>
+</tr>
+<tr>
+<td align="left">Rewind 15 seconds</td>
+<td align="left">&#8984;<!--cmd-->,</td>
+</tr>
+<tr>
+<td align="left">Rewind 5 seconds</td>
+<td align="left">&#8984;<!--cmd-->&#8997;<!--alt-->,</td>
+</tr>
+<tr>
+<td align="left">Fast forward 5 seconds</td>
+<td align="left">&#8984;<!--cmd-->&#8997;<!--alt-->.</td>
+</tr>
+<tr>
+<td align="left">Fast forward 15 seconds</td>
+<td align="left">&#8984;<!--cmd-->.</td>
+</tr>
+<tr>
+<td align="left">Fast forward 30 seconds</td>
+<td align="left">&#8984;<!--cmd-->&#8679;<!--shift-->.</td>
+</tr>
+<tr>
+<td align="left">Fast forward 1 minute</td>
+<td align="left">&#8984;<!--cmd-->&#8997;<!--alt-->&rsqb;<!--]--></td>
+</tr>
+<tr>
+<td align="left">Fast forward 2 minutes</td>
+<td align="left">&#8984;<!--cmd-->&rsqb;<!--]--></td>
+</tr>
+<tr>
+<td align="left">Fast forward 5 minutes</td>
+<td align="left">&#8984;<!--cmd-->&#8679;<!--shift-->&rsqb;<!--]--></td>
+</tr>
+</tbody>
+</table>
+<p>That's a lot of shortcuts. I just remember that square brackets (&lsqb; and
+&rsqb;) jump by minutes and angle brackets (&lt; and &gt;) jump by seconds. Shift
+(&#8679;<!--shift-->) jumps by more and alt (&#8997;<!--alt-->) shifts by less.</p>
+<p>Combined with AirPlay Mirroring to my Apple TV, I have a decent DVR system
+controlled by my MacBook Air that allows me to watch NFL football without
+having to see any commercials.</p>
+<p>The Keyboard Maestro macros are available on <a href="https://github.com/pwc3/km-quicktime-dvr-macros">Github</a>.</p>
+</div>
+
+
+      <div id="copyright">
+        <center>
+          <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>          <br/><br/>
+          &copy; 2013 Paul Calnan. All rights reserved.
+        </center>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+  var _gauges = _gauges || [];
+  (function() {
+    var t   = document.createElement('script');
+    t.type  = 'text/javascript';
+    t.async = true;
+    t.id    = 'gauges-tracker';
+    t.setAttribute('data-site-id', '51304dd7108d7b6aad000032');
+    t.src = '//secure.gaug.es/track.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(t, s);
+  })();
+</script>
+  </body>
+</html>

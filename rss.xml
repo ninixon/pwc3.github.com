@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Paul Calnan</title><link>http://paulcalnan.com/</link><description></description><atom:link href="http://paulcalnan.com/rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 28 Aug 2013 21:04:20 -0400</lastBuildDate><item><title>Changing Blogging Engines: Pelican</title><link>http://paulcalnan.com/archives/2013/8/changing-blogging-engines-pelican.html</link><description>&lt;p&gt;I suspect I spend more time fiddling with my blogging setup than I spend actually blogging.&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Paul Calnan</title><link>http://paulcalnan.com/</link><description></description><atom:link href="http://paulcalnan.com/rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 22 Sep 2013 00:42:15 -0400</lastBuildDate><item><title>Changing Safari's User Agent with Keyboard Maestro</title><link>http://paulcalnan.com/archives/2013/9/changing-safaris-user-agent-with-keyboard-maestro.html</link><description>&lt;p&gt;It's surprising how many websites still require Flash to view video when using
+a desktop browser. I use the technique &lt;a href="http://daringfireball.net/2010/11/masquerading_as_mobile_safari"&gt;described in this Daring Fireball
+post&lt;/a&gt; to change the user agent string in Safari on OS X, making it look
+like Mobile Safari in order to get HTML5 video. This does the trick about 90%
+of the time. I find that the &lt;a href="http://www.verticalforest.com/youtube5-extension/"&gt;YouTube 5 Safari Extension&lt;/a&gt; also helps,
+often making the user agent shenanigans unnecessary.&lt;/p&gt;
+&lt;p&gt;I used to keep Google Chrome installed as a fallback since it comes with Flash
+preinstalled. I find I need to use that less and less, though.&lt;/p&gt;
+&lt;p&gt;I use two &lt;a href="http://www.keyboardmaestro.com/"&gt;Keyboard Maestro&lt;/a&gt; macros for this. The &lt;code&gt;Toggle iPad UA&lt;/code&gt; macro
+(bound to &amp;#8984;&lt;!--cmd--&gt;.) toggles between the Mobile Safari for iPad user
+agent string and the default Safari user agent string. The &lt;code&gt;Open in Google
+Chrome&lt;/code&gt; macro (bound to &amp;#8984;&lt;!--cmd--&gt;&amp;#8679;&lt;!--shift--&gt;.) opens Safari's
+frontmost tab in Google Chrome.&lt;/p&gt;
+&lt;p&gt;Both macros are available on &lt;a href="https://github.com/pwc3/km-safari-ua-macros"&gt;Github&lt;/a&gt;.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Sun, 22 Sep 2013 00:42:15 -0400</pubDate><guid>tag:paulcalnan.com,2013-09-22:archives/2013/9/changing-safaris-user-agent-with-keyboard-maestro.html</guid></item><item><title>Changing Blogging Engines: Pelican</title><link>http://paulcalnan.com/archives/2013/8/changing-blogging-engines-pelican.html</link><description>&lt;p&gt;I suspect I spend more time fiddling with my blogging setup than I spend actually blogging.&lt;/p&gt;
 &lt;p&gt;Back when I moved to &lt;a href="http://pages.github.com/"&gt;Github Pages&lt;/a&gt;, I started using &lt;a href="http://flyingmeat.com/voodoopad/"&gt;VoodooPad&lt;/a&gt;'s &lt;a href="http://flyingmeat.com/voodoopad/docs/static%20publishing.html"&gt;static publishing engine&lt;/a&gt;. The output looked good but I didn't like the input format. Keeping a directory full of Markdown files that I can edit in Vim is preferable to using another editor.&lt;/p&gt;
 &lt;p&gt;After some looking around, I decided to try &lt;a href="http://docs.getpelican.com/"&gt;Pelican&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;To extract my posts from VoodooPad, I wrote a Python script. It finds all published pages in a VoodooPad bundle directory, prepends some Markdown metadata tags (title, publish date, and slug), and writes the Markdown to a file. Here is the script:&lt;/p&gt;
