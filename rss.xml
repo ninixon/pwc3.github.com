@@ -140,20 +140,20 @@ or backwards an arbitrary number of seconds. I activate those scripts via
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td align="left"&gt;Fast forward 1 minute&lt;/td&gt;
-&lt;td align="left"&gt;&amp;#8984;&lt;!--cmd--&gt;&amp;#8997;&lt;!--alt--&gt;&amp;rsqb;&lt;!--]--&gt;&lt;/td&gt;
+&lt;td align="left"&gt;&amp;#8984;&lt;!--cmd--&gt;&amp;#8997;&lt;!--alt--&gt;]&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td align="left"&gt;Fast forward 2 minutes&lt;/td&gt;
-&lt;td align="left"&gt;&amp;#8984;&lt;!--cmd--&gt;&amp;rsqb;&lt;!--]--&gt;&lt;/td&gt;
+&lt;td align="left"&gt;&amp;#8984;&lt;!--cmd--&gt;]&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td align="left"&gt;Fast forward 5 minutes&lt;/td&gt;
-&lt;td align="left"&gt;&amp;#8984;&lt;!--cmd--&gt;&amp;#8679;&lt;!--shift--&gt;&amp;rsqb;&lt;!--]--&gt;&lt;/td&gt;
+&lt;td align="left"&gt;&amp;#8984;&lt;!--cmd--&gt;&amp;#8679;&lt;!--shift--&gt;]&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;That's a lot of shortcuts. I just remember that square brackets (&amp;lsqb; and
-&amp;rsqb;) jump by minutes and angle brackets (&amp;lt; and &amp;gt;) jump by seconds. Shift
+&lt;p&gt;That's a lot of shortcuts. I just remember that square brackets ([ and ])
+jump by minutes and angle brackets (&amp;lt; and &amp;gt;) jump by seconds. Shift
 (&amp;#8679;&lt;!--shift--&gt;) jumps by more and alt (&amp;#8997;&lt;!--alt--&gt;) shifts by less.&lt;/p&gt;
 &lt;p&gt;Combined with AirPlay Mirroring to my Apple TV, I have a decent DVR system
 controlled by my MacBook Air that allows me to watch NFL football without
