@@ -228,7 +228,7 @@ frontmost tab in Google Chrome.&lt;/p&gt;
      &amp;lt;/array&amp;gt;
      &amp;lt;key&amp;gt;inetdCompatibility&amp;lt;/key&amp;gt;
      &amp;lt;dict&amp;gt;
-          &amp;lt;key&amp;gt;Wait&amp;lt;/key
+          &amp;lt;key&amp;gt;Wait&amp;lt;/key&amp;gt;
           &amp;lt;false/&amp;gt;
      &amp;lt;/dict&amp;gt;
      &amp;lt;key&amp;gt;Sockets&amp;lt;/key&amp;gt;
