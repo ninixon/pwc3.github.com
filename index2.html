@@ -61,34 +61,7 @@
 <h3>Step 1: Create a pasteboard daemon</h3>
 <p>On Mac OS X, this is fairly easy using a Launch Agent.</p>
 <p>Save the following XML property list file in <code>~/Library/LaunchAgents/com.paulcalnan.pbcopy.plist</code> on your local machine:</p>
-<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE plist PUBLIC &quot;-//Apple Computer//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
-&lt;plist version=&quot;1.0&quot;&gt;
-&lt;dict&gt;
-     &lt;key&gt;Label&lt;/key&gt;
-     &lt;string&gt;com.paulcalnan.pbcopy&lt;/string&gt;
-     &lt;key&gt;ProgramArguments&lt;/key&gt;
-     &lt;array&gt;
-         &lt;string&gt;/usr/bin/pbcopy&lt;/string&gt;
-     &lt;/array&gt;
-     &lt;key&gt;inetdCompatibility&lt;/key&gt;
-     &lt;dict&gt;
-          &lt;key&gt;Wait&lt;/key&gt;
-          &lt;false/&gt;
-     &lt;/dict&gt;
-     &lt;key&gt;Sockets&lt;/key&gt;
-     &lt;dict&gt;
-          &lt;key&gt;Listeners&lt;/key&gt;
-               &lt;dict&gt;
-                    &lt;key&gt;SockServiceName&lt;/key&gt;
-                    &lt;string&gt;50730&lt;/string&gt;
-                    &lt;key&gt;SockNodeName&lt;/key&gt;
-                    &lt;string&gt;127.0.0.1&lt;/string&gt;
-               &lt;/dict&gt;
-     &lt;/dict&gt;
-&lt;/dict&gt;
-&lt;/plist&gt;
-</code></pre>
+<script src="https://gist.github.com/pwc3/6759682.js"></script>
 
 <p>Note that I use my domain name, <code>com.paulcalnan</code>, in the daemon and file name. You can call it whatever you like.</p>
 <h3>Step 2: Load the daemon</h3>
