@@ -35,6 +35,25 @@
       
   <div class="post">
   <div class="postTitle">
+    <a href="/archives/2013/3/resetting_kindle_reading_rate_estimates.html">Resetting Kindle Reading Rate Estimates</a>
+  </div>
+    <div class="date">Published March 4, 2013</div>
+  <p>I recently bought a <a href="http://www.amazon.com/Kindle-Paperwhite-Touch-light/dp/B007OZNZG0">Kindle Paperwhite</a>. I used to own a <a href="http://www.amazon.com/Kindle-Special-Offers-Wireless-Reader/dp/B004HFS6Z0">Kindle Keyboard</a> and was pleasantly surprised by the updated features on the new model. </p>
+<p>One of the features I really like is the estimated time printed at the bottom of the screen. You can toggle between time left in the current chapter and time left in the book. When you first use the Kindle, it doesn't immediately show you those values. Rather, it watches how fast you read and adjusts the estimates accordingly.</p>
+<p>Unfortunately, it's easily confused. I'm reading a book with lots of footnotes, and I occasionally flip around. Rapidly changing pages appears to confuse the time estimate calculations. After a while, it was estimating I'd finish the book in one hour, even though I was at the 8% mark of a 1000+ page book.</p>
+<p>Luckily, I found an easy way to reset the estimate. Search for <code>;ReadingTimeReset</code> (keep the semicolon and capitalization as shown) and the estimate will be reset.</p>
+<p>A couple of other miscellaneous thoughts on the Paperwhite:</p>
+<ul>
+<li>
+<p>I was initially disappointed by the uneven backlight at the bottom of the screen. After a couple hours of use, I found that I had the light turned on too high. Lowering the light intensity makes the unevenness less apparent while keeping the screen legible.</p>
+</li>
+<li>
+<p>Once I decided to keep the Paperwhite, paying the extra $20 to get rid of the ads (or "Unsubscribe from Special Offers" in marketing-speak) was a no-brainer.</p>
+</li>
+</ul>
+</div>
+  <div class="post">
+  <div class="postTitle">
     <a href="/archives/2013/2/bash_ps1.html">Bash PS1</a>
   </div>
     <div class="date">Published February 15, 2013</div>
@@ -146,25 +165,6 @@ either <code>pip install beautifulsoup4</code> or <code>easy_install beautifulso
 <p>I post a lot of code samples, and I wanted decent syntax highlighting in the generated pages. Adding <a href="http://softwaremaniacs.org/soft/highlight/en/">Highlight.js</a> was pretty simple.</p>
 <p>As for hosting, I decided to give <a href="http://pages.github.com/">Github Pages</a> a try. After some confusion about <a href="https://help.github.com/articles/user-organization-and-project-pages">user and project pages</a>, I got it up and running.</p>
 <p>So far, so good.</p>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2013/1/textexpander__the_pasteboard__and_unix_pipelines.html">TextExpander, the Pasteboard, and Unix Pipelines</a>
-  </div>
-    <div class="date">Published January 27, 2013</div>
-  <p>Here's a dead simple <a href="http://smilesoftware.com/TextExpander/index.html">TextExpander</a> snippet that I use quite a bit.</p>
-<pre><code class="bash">#!/usr/bin/env bash
-pbpaste | %fill:filter%
-</code></pre>
-
-<p>Be sure to set the Content to <code>Shell Script</code>. I have this set to fire when I
-type <code>;pipe</code>.</p>
-<p>When it fires, a dialog is presented allowing you to fill in whatever you want
-where the <code>%fill:filter%</code> appears. It takes the contents of the pasteboard and
-runs it through an arbitrary Unix pipeline. You can enter a single command,
-(like <code>tr a-z A-Z</code>) or a pipeline of commands (like <code>sort | uniq -c</code>). The
-contents of the pasteboard are passed through whatever set of commands you
-specify and the result is substituted to wherever you were typing.</p>
 </div>
 
 <div class="paginator">

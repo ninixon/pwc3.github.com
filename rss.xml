@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Paul Calnan</title><link>http://paulcalnan.com/</link><description></description><atom:link href="http://paulcalnan.com/rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 22 Sep 2013 00:50:44 -0400</lastBuildDate><item><title>TextExpander HTML Entities for OS X Modifier Keys</title><link>http://paulcalnan.com/archives/2013/9/textexpander-html-entities-for-os-x-modifier-keys.html</link><description>&lt;p&gt;In writing my recent posts on Keyboard Maestro, I made some new TextExpander
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Paul Calnan</title><link>http://paulcalnan.com/</link><description></description><atom:link href="http://paulcalnan.com/rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 04 Oct 2013 22:20:49 -0400</lastBuildDate><item><title>Disabling Autocorrect in Skype</title><link>http://paulcalnan.com/archives/2013/10/disabling-autocorrect-in-skype.html</link><description>&lt;p&gt;Autocorrect has been driving me nuts in Skype. I found an easy way to disable it without disabling it system-wide.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Right-click in an editable text area.&lt;/li&gt;
+&lt;li&gt;Select "Spelling and Grammar"&lt;/li&gt;
+&lt;li&gt;Uncheck "Correct Spelling Automatically"&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;It looks like this also works in other apps that support autocorrect.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Paul Calnan</dc:creator><pubDate>Fri, 04 Oct 2013 22:20:49 -0400</pubDate><guid>tag:paulcalnan.com,2013-10-04:archives/2013/10/disabling-autocorrect-in-skype.html</guid></item><item><title>TextExpander HTML Entities for OS X Modifier Keys</title><link>http://paulcalnan.com/archives/2013/9/textexpander-html-entities-for-os-x-modifier-keys.html</link><description>&lt;p&gt;In writing my recent posts on Keyboard Maestro, I made some new TextExpander
 snippets for typing Mac modifier keys. In the table below, typing the &lt;em&gt;Symbol
 Abbreviation&lt;/em&gt; results in the &lt;em&gt;Symbol&lt;/em&gt; being inserted; typing the &lt;em&gt;HTML Entity
 Abbreviation&lt;/em&gt; results in the &lt;em&gt;HTML Entry&lt;/em&gt; being inserted.&lt;/p&gt;

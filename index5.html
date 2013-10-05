@@ -35,6 +35,68 @@
       
   <div class="post">
   <div class="postTitle">
+    <a href="/archives/2012/8/generating_tuples_from_a_list_of_dicts.html">Generating Tuples from a List of Dicts</a>
+  </div>
+    <div class="date">Published August 12, 2012</div>
+  <p>In Python, I needed a way to insert a list of dictionaries into a SQLite database. The <code>sqlite3</code> package's <code>Cursor</code> class provides an <code>executemany</code> method that takes a parameterized SQL statement and a sequence of parameters.</p>
+<p>An example of this, <a href="http://docs.python.org/library/sqlite3.html#using-shortcut-methods">taken from the Python documentation</a>:</p>
+<pre><code class="python">import sqlite3
+
+person_tuples = [
+    ('Hugo', 'Boss'),
+    ('Calvin', 'Klein')
+]
+
+con = sqlite3.connect(':memory:')
+
+# Create the table
+con.execute('create table person(firstname, lastname)')
+
+# Fill the table
+con.executemany('insert into person(firstname, lastname) values (?, ?)',
+                person_tuples)
+</code></pre>
+
+<p>Now, that works fine for the case when you have a list of tuples already. But what can be done when you have a list of dictionaries? You could call <code>dict.values()</code>, but the order of the values can't be guaranteed and they likely won't match the order required by the SQL statement.</p>
+<pre><code class="python">&gt;&gt;&gt; person_dicts = [
+...     { 'firstname': 'Hugo', 'lastname': 'Boss' },
+...     { 'firstname': 'Calvin', 'lastname': 'Klein' },
+... ]
+...
+&gt;&gt;&gt; for d in person_dicts:
+...     print d.values()
+...
+['Boss', 'Hugo']
+['Klein', 'Calvin']
+</code></pre>
+
+<p>To solve this, I wrote <code>generate_tuples()</code>. It takes a list of dictionaries and a list of keys. It generates a sequence of tuples, one for each dictionary in the list. The elements of the tuple are determined by the values for the specified keys.</p>
+<p>Here's the function:</p>
+<pre><code class="python">def generate_tuples(list_of_dicts, keys):
+    &quot;&quot;&quot;Generates tuples, one for each dict in the specified list, with
+    elements corresponding to the values for the specified keys.
+
+    &quot;&quot;&quot;
+    from operator import itemgetter
+    getter = itemgetter(*keys)
+    return (getter(d) for d in list_of_dicts)
+</code></pre>
+
+<p>And, here it is in action:</p>
+<pre><code class="python">&gt;&gt;&gt; for t in generate_tuples(person_dicts, ['firstname', 'lastname']):
+...     print t
+...
+('Hugo', 'Boss')
+('Calvin', 'Klein')
+</code></pre>
+
+<p>Back to the original example, this would allow me to insert the list of dictionaries as follows:</p>
+<pre><code class="python">con.executemany('insert into person(firstname, lastname) values (?, ?)',
+                generate_tuples(person_dicts, ['firstname', 'lastname']))
+</code></pre>
+</div>
+  <div class="post">
+  <div class="postTitle">
     <a href="/archives/2012/8/cleaning_up_after_microsoft_outlook.html">Cleaning up after Microsoft Outlook</a>
   </div>
     <div class="date">Published August 11, 2012</div>
