@@ -35,6 +35,45 @@
       
   <div class="post">
   <div class="postTitle">
+    <a href="/archives/2013/4/exchange_to_icloud_calendar_sync.html">Exchange to iCloud Calendar Sync</a>
+  </div>
+    <div class="date">Published April 8, 2013</div>
+  <p>I recently received an email from a client of mine. They decided to block all iOS 6.1.3 users from syncing with the corporate Exchange server. This isn't a problem with email as I was able to configure IMAP easily. This was, however, a big problem for my calendar. Being unable to have an up-to-date schedule on my iPhone was out of the question.</p>
+<p>I first looked at <a href="http://davmail.sourceforge.net/">DavMail</a> but couldn't get it to work. Instead I decided to make a duplicate of my Exchange calendar in iCloud.</p>
+<p>(Update 2013-04-16) This wound up causing lots of problems with iCloud. Around when the script ran, I noticed in Console.app reports of the <code>CalendarAgent</code> process crashing repeatedly every few seconds. I'm not sure why, and didn't really dig too deeply to find out. Fortunately, my client re-enabled iOS syncing with Exchange, so the need for this script has gone away.</p>
+<h3>Step 1: Create a new iCloud calendar</h3>
+<p>In Calendar.app (formerly iCal) on OS X, create a new calendar (File &gt; New Calendar &gt; iCloud). Call it whatever you like.</p>
+<p>(Update 2013-04-09) You'll want to Ignore Alerts on this calendar on your computer. Otherwise you'll get double alerts for every event. Right-click the calendar in the list and select Get Info. Check the <em>Ignore Alerts</em> checkbox and click OK.</p>
+<h3>Step 2: Create an AppleScript</h3>
+<p>The pivotal piece here is an AppleScript that does the following:</p>
+<ol>
+<li>Deletes all events from the destination iCloud calendar (created in Step 1 above).</li>
+<li>Copies all events from your Exchange calendar to the iCloud calendar.</li>
+</ol>
+<p>For the purposes of this example, we'll call the Exchange calendar "Source Calendar" and the iCloud calendar "Destination Calendar".</p>
+<p>We first delete all of the events from the destination calendar. We're not <em>really</em> syncing the calendars, rather we're copying all events from one to another. If we didn't delete first, events removed from the source calendar would never be removed from the destination calendar. Just be careful to use the right calendar names so you don't accidentally delete from wrong one!</p>
+<script src="https://gist.github.com/pwc3/5342337.js"></script>
+
+<p>Copy and paste the script above into the AppleScript Editor (usually found in /Applications/Utilities) and change the calendar names as necessary. Try it out and make sure you don't get any error messages. Save it someplace convenient and remember where you put it.</p>
+<h3>Step 3: Schedule the script to run</h3>
+<p>This step is optional. If you prefer, you can just run the script whenever you think of it. I decided to schedule it using Cron. <a href="http://en.wikipedia.org/wiki/Cron">This Wikipedia article</a> provides a reasonable rundown of how Cron works, if you're unfamiliar with it.</p>
+<p>In the Terminal, run:</p>
+<pre><code class="bash">crontab -e
+</code></pre>
+
+<p>This will launch a text editor. In it, you specify the schedule. In my case, I wanted to run it every two hours, Monday through Friday.</p>
+<pre><code class="no-highlight">* */2 * * 1-5 osascript $HOME/Dropbox/Scripts/Applications/Calendar/Exchange\ Sync.scpt
+</code></pre>
+
+<p>Change the path to your AppleScript to match where you put it in Step 2.</p>
+<p>(Apparently, you can wrap an AppleScript with an Automator workflow and <a href="http://hints.macworld.com/article.php?story=20050504105901868">schedule it to run using Calendar.app</a>, but I haven't tried this approach.)</p>
+<h3>Conclusion</h3>
+<p>On a relatively new MacBook Pro, the script takes a couple of minutes to sync around 200 events. Presumably fewer events will sync faster. It may take a couple of minutes for the iCloud sync to go through before you see the events on your iOS device.</p>
+<p>The script is pretty basic. I was going to make the sync go incrementally, but AppleScript is such a pain to program, I decided to go the naive route and just delete everything and copy it back over.</p>
+<p>As usual, <a href="http://twitter.com/pwc/">questions and feedback are always welcome</a>.</p>
+</div>
+  <div class="post">
+  <div class="postTitle">
     <a href="/archives/2013/3/resetting_kindle_reading_rate_estimates.html">Resetting Kindle Reading Rate Estimates</a>
   </div>
     <div class="date">Published March 4, 2013</div>
@@ -150,21 +189,6 @@ useful when installing Forum builds. The <code>-d</code>/<code>--dry-run</code> 
 Dropbox download page to determine the version number. It can be installed via
 either <code>pip install beautifulsoup4</code> or <code>easy_install beautifulsoup4</code>.</p>
 <p>The script is available for download <a href="http://github.com/pwc3/dropbox-updater">on Github</a>.</p>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2013/1/new_blogging_setup.html">New Blogging Setup</a>
-  </div>
-    <div class="date">Published January 28, 2013</div>
-  <p>My blog posts come pretty intermittently. I most recently tried using an <a href="http://octopress.org/">Octopress</a> blog hosted at <a href="http://heroku.com/">Heroku</a> for a while. I got it set up, made a handful of posts over about a week, and then stopped.</p>
-<p>Recently, I had a few blog ideas and went back to try to make some more posts. I'm not sure what I did, but over the past five months, I managed to break my setup. My familiarity with Ruby is pretty limited, so I couldn't easily diagnose the issue.</p>
-<p>So, I started looking at some of other static blogging setups that are comparable to Octopress. <a href="http://blog.getpelican.com/">Pelican</a> was my first choice, as I do a lot of Python development for my day job. The setup was fairly easy, but the output looked bad. I couldn't find a Pelican theme that didn't look awful.</p>
-<p>After that, I took a look at <a href="http://calepin.co/">Calepin</a> and <a href="http://scriptogr.am/">Scriptogram</a>. Both are static blogging engines powered by <a href="http://www.dropbox.com/">Dropbox</a>. I liked them both, but neither were exactly what I was looking for.</p>
-<p>I had been considering buying a copy of <a href="http://flyingmeat.com/voodoopad/">VoodooPad</a> from <a href="http://flyingmeat.com/">Flying Meat</a> for a while now. I like the idea of keeping my notes in a wiki format. When I found out that <a href="http://flyingmeat.com/voodoopad/docs/static%20publishing.html">static blogging was recently added</a>, I thought I'd give it a try.</p>
-<p>I really liked what I saw. It's convenient enough, fits my workflow, supports <a href="http://daringfireball.net/projects/markdown/">Markdown</a>, and gives me enough flexibility in page generation. So, I bought a license and will see how it goes.</p>
-<p>I post a lot of code samples, and I wanted decent syntax highlighting in the generated pages. Adding <a href="http://softwaremaniacs.org/soft/highlight/en/">Highlight.js</a> was pretty simple.</p>
-<p>As for hosting, I decided to give <a href="http://pages.github.com/">Github Pages</a> a try. After some confusion about <a href="https://help.github.com/articles/user-organization-and-project-pages">user and project pages</a>, I got it up and running.</p>
-<p>So far, so good.</p>
 </div>
 
 <div class="paginator">

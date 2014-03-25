@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+  <head http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Paul Calnan: Refreshing Xcode Provisioning Profiles with AppleScript</title>
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/css/main.css" type="text/css"/>
+
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/highlight.js/styles/solarized_light.css">
+    <script src="http://paulcalnan.com/theme/highlight.js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="header">
+        <table width="100%" border="0" cellpadding="0">
+          <tr>
+            <td class="headerTitle">
+              <a href="http://paulcalnan.com" style="text-decoration: none;">Paul Calnan</a>
+            </td>
+            <td class="headerLinks">
+              <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>            </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="headerFoot">
+              I love it when a plan comes together
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      
+<div class="post">
+  <div class="postTitle">
+    <a href="/archives/2014/3/refreshing-xcode-provisioning-profiles-with-applescript.html">Refreshing Xcode Provisioning Profiles with AppleScript</a>
+  </div>
+    <div class="date">Published March 24, 2014</div>
+  <p>This seems to happen whenever someone on the team updates the provisioning profile and commits the change to the <code>.xcodeproj</code> file. The build fails and Xcode complains that it can't find a provisioning profile identified by a UUID.</p>
+<p>To fix it, I have to stop what I'm doing, open Preferences, click the right Apple ID (I have one for each client), click the team, click <em>View Details</em>, click the refresh button, and then close out the action sheet and the Preferences dialog. Not the end of the world, but it gets old after a while.</p>
+<p>To get around this issue, I wrote an AppleScript to automate the process. It's a bit fragile, as it's using Accessibility and System Events to poke around in the Preferences dialog. It probably will break in a later version of Xcode (it works in Xcode 5.1).</p>
+<p>To use the script save it to your computer and set the <code>appleID</code> variable to your Apple ID. I use <a href="http://www.red-sweater.com/fastscripts/">FastScripts</a> to bind the script to &#8997;<!--alt-->&#8679;<!--shift-->&#8984;<!--cmd-->R while in Xcode.</p>
+<p>The script:</p>
+<script src="https://gist.github.com/pwc3/9754730.js"></script>
+</div>
+
+
+      <div id="copyright">
+        <center>
+          <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>          <br/><br/>
+          &copy; 2013 Paul Calnan. All rights reserved.
+        </center>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+  var _gauges = _gauges || [];
+  (function() {
+    var t   = document.createElement('script');
+    t.type  = 'text/javascript';
+    t.async = true;
+    t.id    = 'gauges-tracker';
+    t.setAttribute('data-site-id', '51304dd7108d7b6aad000032');
+    t.src = '//secure.gaug.es/track.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(t, s);
+  })();
+</script>
+  </body>
+</html>

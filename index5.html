@@ -35,6 +35,61 @@
       
   <div class="post">
   <div class="postTitle">
+    <a href="/archives/2012/8/automated_os_x_address_book_backup.html">Automated OS X Address Book Backup</a>
+  </div>
+    <div class="date">Published August 12, 2012</div>
+  <p>Occasionally, I hear horror stories about <a href="http://www.leancrew.com/all-this/2012/04/address-book-and-icloud-problems/">iCloud screwing up a synced address book</a>. Although I have another backup system in place, I decided I wanted to make an automated script that could back up just my address book.</p>
+<p>The script to run the actual backup is fairly simple. It creates a <code>tar.bz2</code> file with the contents of the <code>~/Library/Application Support/AddressBook/</code> directory. The script puts the <code>tar.bz2</code> archive in <code>~/AddressBookBackups</code>, but you can change it to wherever you'd like your backups to go.</p>
+<pre><code class="bash">#!/usr/bin/env bash
+
+tar -C $HOME/Library/Application\ Support/ -cjf \
+    $HOME/AddressBookBackups/AddressBookBackup-$(date +%Y-%m-%d).tar.bz2 \
+    AddressBook/
+</code></pre>
+
+<p>Now, for the automation part, I wrote a Launch Agent file that schedules the script to be run nightly at midnight.</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
+&lt;plist version=&quot;1.0&quot;&gt;
+    &lt;dict&gt;
+        &lt;key&gt;Label&lt;/key&gt;
+        &lt;string&gt;com.paulcalnan.backupaddressbook&lt;/string&gt;
+        &lt;key&gt;ProgramArguments&lt;/key&gt;
+        &lt;array&gt;
+            &lt;string&gt;/Users/paul/AddressBookBackups/backup-address-book.sh&lt;/string&gt;
+        &lt;/array&gt;
+        &lt;key&gt;StartCalendarInterval&lt;/key&gt;
+        &lt;dict&gt;
+            &lt;key&gt;Hour&lt;/key&gt;
+            &lt;integer&gt;0&lt;/integer&gt;
+            &lt;key&gt;Minute&lt;/key&gt;
+            &lt;integer&gt;0&lt;/integer&gt;
+        &lt;/dict&gt;
+    &lt;/dict&gt;
+&lt;/plist&gt;
+</code></pre>
+
+<p>You can change the Label (and the filename) from <code>com.paulcalnan...</code> to whatever you prefer. You should change the path to the program from <code>/Users/paul/AddressBookBackups</code> to wherever you have the script stored.</p>
+<p>I have an OS X server running 24/7, so I'm able to schedule this there and it runs the backup for me without having to think about it. If don't have a computer that's always on, <code>launchctl</code> takes care of running the scheduled script even if the scheduled time is missed. From the <code>launchctl.plist</code> man page:</p>
+<blockquote>
+<p>Unlike cron which skips job invocations when the computer is asleep, launchd will start the job the next time the computer wakes up. If multiple intervals transpire before the computer is woken, those events will be coalesced into one event upon wake from sleep.</p>
+</blockquote>
+<p>Place the <code>plist</code> file in <code>~/Library/LaunchAgents</code> then run the following to get <code>launchctl</code> to schedule the job:</p>
+<pre><code class="bash">launchctl load ~/Library/LaunchAgents/com.paulcalnan.BackupAddressBook.plist
+</code></pre>
+
+<p>Note that this setup will keep making new backup files every day. I'll leave it as an exercise to the reader to write a script that cleans up old backup files.</p>
+<p>In the event that you want to restore from backup, you can do the following:</p>
+<ul>
+<li>Quit the Contacts app (formerly known as Address Book)</li>
+<li>Copy the latest backup file to <code>~/Library/Application Support/</code></li>
+<li>Rename the <code>~/Library/Application Support/AddressBook</code> directory to <code>AddressBook.old</code></li>
+<li>Unpack the latest backup file (using <code>tar xjf FILENAME</code>)</li>
+<li>Restart Contacts and see if this fixed your problem</li>
+</ul>
+</div>
+  <div class="post">
+  <div class="postTitle">
     <a href="/archives/2012/8/generating_tuples_from_a_list_of_dicts.html">Generating Tuples from a List of Dicts</a>
   </div>
     <div class="date">Published August 12, 2012</div>
@@ -244,21 +299,13 @@ if __name__ == &quot;__main__&quot;:
     main()
 </code></pre>
 </div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2012/8/a_new_beginning.html">A New Beginning</a>
-  </div>
-    <div class="date">Published August 11, 2012</div>
-  <p>Let's get started.</p>
-<p>I want to use this space to record, primarily for myself, things that I've been working on and things that I've learned. Making it into a blog will hopefully help others.</p>
-<p>I had a <a href="http://scriptd.tumblr.com">Tumblr site</a> where I posted scripts that I wanted to share with others. This time, I'm trying a Octopress site, which will hopefully reduce the friction that's prevented me from blogging more.</p>
-<p>Stay tuned.</p>
-</div>
 
 <div class="paginator">
             <a href="http://paulcalnan.com/index4.html">Newer Posts</a>
       
+    |
   
+      <a href="http://paulcalnan.com/index6.html">Older Posts</a>
   </div>
 
       <div id="copyright">
