@@ -35,6 +35,19 @@
       
   <div class="post">
   <div class="postTitle">
+    <a href="/archives/2014/3/closing-tweetbot-image-windows-using-applescript.html">Closing Tweetbot Image Windows using AppleScript</a>
+  </div>
+    <div class="date">Published March 24, 2014</div>
+  <p>I'm on a bit of an AppleScript kick lately. It's a frustrating language to use as it's often counterintuitive. I'm constantly looking up the right syntax to do things. But, it's a great way to patch little annoyances you encounter in Mac software.</p>
+<p>The latest annoyance involves Tweetbot image windows. While I'm reading my timeline, I click on lots of links and images. After a while, I find I have a ton of image windows left over.</p>
+<p>There's no good way to close all of those windows without quitting and restarting the app. Holding down &#8997;<!--alt--> and clicking on the Window menu shows <em>Close All</em> bound to &#8997;<!--alt-->&#8984;<!--cmd-->W, but it doesn't work for me. The alternative is to click on each window and &#8984;<!--cmd-->W on the keyboard, but who wants to do that?</p>
+<p>I wrote a little AppleScript to do it. Tweetbot isn't strictly AppleScriptable, but using System Events and Accessiblity gets the job done. The script is a bit kludgy as the inner <code>repeat</code> loop fails after closing three or four windows. To get around it, I wrapped it in a <code>try...on error</code> block and repeat that until there's only one window left.</p>
+<p>I've got this bound to &#8679;<!--shift-->&#8984;<!--cmd-->W using <a href="http://www.red-sweater.com/fastscripts/">FastScripts</a>.</p>
+<p>The script:</p>
+<script src="https://gist.github.com/pwc3/9754912.js"></script>
+</div>
+  <div class="post">
+  <div class="postTitle">
     <a href="/archives/2014/3/refreshing-xcode-provisioning-profiles-with-applescript.html">Refreshing Xcode Provisioning Profiles with AppleScript</a>
   </div>
     <div class="date">Published March 24, 2014</div>
@@ -230,26 +243,6 @@ jump by minutes and angle brackets (&lt; and &gt;) jump by seconds. Shift
 controlled by my MacBook Air that allows me to watch NFL football without
 having to see any commercials.</p>
 <p>The Keyboard Maestro macros are available on <a href="https://github.com/pwc3/km-quicktime-dvr-macros">Github</a>.</p>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2013/9/changing-safaris-user-agent-with-keyboard-maestro.html">Changing Safari's User Agent with Keyboard Maestro</a>
-  </div>
-    <div class="date">Published September 22, 2013</div>
-  <p>It's surprising how many websites still require Flash to view video when using
-a desktop browser. I use the technique <a href="http://daringfireball.net/2010/11/masquerading_as_mobile_safari">described in this Daring Fireball
-post</a> to change the user agent string in Safari on OS X, making it look
-like Mobile Safari in order to get HTML5 video. This does the trick about 90%
-of the time. I find that the <a href="http://www.verticalforest.com/youtube5-extension/">YouTube 5 Safari Extension</a> also helps,
-often making the user agent shenanigans unnecessary.</p>
-<p>I used to keep Google Chrome installed as a fallback since it comes with Flash
-preinstalled. I find I need to use that less and less, though.</p>
-<p>I use two <a href="http://www.keyboardmaestro.com/">Keyboard Maestro</a> macros for this. The <code>Toggle iPad UA</code> macro
-(bound to &#8984;<!--cmd-->.) toggles between the Mobile Safari for iPad user
-agent string and the default Safari user agent string. The <code>Open in Google
-Chrome</code> macro (bound to &#8984;<!--cmd-->&#8679;<!--shift-->.) opens Safari's
-frontmost tab in Google Chrome.</p>
-<p>Both macros are available on <a href="https://github.com/pwc3/km-safari-ua-macros">Github</a>.</p>
 </div>
 
 <div class="paginator">

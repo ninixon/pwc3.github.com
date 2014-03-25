@@ -35,6 +35,38 @@
       
   <div class="post">
   <div class="postTitle">
+    <a href="/archives/2013/1/dropbox_updater_for_os_x.html">Dropbox Updater for OS X</a>
+  </div>
+    <div class="date">Published January 28, 2013</div>
+  <p>Since the Dropbox client software installed on my computer never seems to
+automatically update, I wrote a Python script to do it for me. It was developed
+and tested under Mac OS X Mountain Lion 10.8.2.</p>
+<p>The script does the following:</p>
+<ol>
+<li>Checks <code>/Applications/Dropbox.app</code> for the currently-installed version
+   number.</li>
+<li>Checks <a href="http://www.dropbox.com/install">http://www.dropbox.com/install</a> for
+   the "latest available version" (i.e., whichever version is listed on the
+   <em>Download</em> button, which may or may not be the latest available version).</li>
+<li>If the installed version number is less than the latest available version,
+   it attempts to download a DMG of the latest version to <code>~/Downloads</code>.</li>
+<li>If a DMG was successfully downloaded, the script then mounts the DMG and
+   runs the installer.</li>
+</ol>
+<p>There are several assumptions made in the script. I tried to document them all
+and use easily-modifiable constants wherever possible. If the script fails, one
+of the assumptions may no longer be valid.</p>
+<p>There are two command-line options (run with <code>--help</code> for details). The
+<code>-v</code>/<code>--version</code> option allows you to specify the version to install. This is
+useful when installing Forum builds. The <code>-d</code>/<code>--dry-run</code> option performs a
+"dry run" which downloads the DMG but does not mount it or run the installer.</p>
+<p>The script requires the <code>beautifulsoup4</code> module. It is used to scrape the
+Dropbox download page to determine the version number. It can be installed via
+either <code>pip install beautifulsoup4</code> or <code>easy_install beautifulsoup4</code>.</p>
+<p>The script is available for download <a href="http://github.com/pwc3/dropbox-updater">on Github</a>.</p>
+</div>
+  <div class="post">
+  <div class="postTitle">
     <a href="/archives/2013/1/new_blogging_setup.html">New Blogging Setup</a>
   </div>
     <div class="date">Published January 28, 2013</div>
@@ -114,15 +146,6 @@ specify and the result is substituted to wherever you were typing.</p>
 </tbody>
 </table>
 <p>There's more information about this on the <a href="http://blog.smilesoftware.com/2008/10/28/textexpander-date-and-time-math/">TextExpander blog</a>.</p>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2012/8/diff_with_a_remote_file.html">Diff with a Remote File</a>
-  </div>
-    <div class="date">Published August 13, 2012</div>
-  <p>You can use <a href="http://tldp.org/LDP/abs/html/process-sub.html">Bash process substitution</a> to diff a local file with a remote file (or two remote files, for that matter).</p>
-<pre><code class="bash">diff path/to/local/file &lt;(ssh remote-host 'cat path/to/remote/file')
-</code></pre>
 </div>
 
 <div class="paginator">

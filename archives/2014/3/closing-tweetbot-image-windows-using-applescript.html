@@ -3,7 +3,7 @@
 
 <html>
   <head http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <title>Paul Calnan</title>
+    <title>Paul Calnan: Closing Tweetbot Image Windows using AppleScript</title>
     <link rel="stylesheet" href="http://paulcalnan.com/theme/css/main.css" type="text/css"/>
 
     <link rel="stylesheet" href="http://paulcalnan.com/theme/highlight.js/styles/solarized_light.css">
@@ -33,48 +33,20 @@
       </div>
 
       
-  <div class="post">
+<div class="post">
   <div class="postTitle">
-    <a href="/archives/2012/8/pretty-print_json.html">Pretty-Print JSON</a>
+    <a href="/archives/2014/3/closing-tweetbot-image-windows-using-applescript.html">Closing Tweetbot Image Windows using AppleScript</a>
   </div>
-    <div class="date">Published August 11, 2012</div>
-  <p>I got the idea for this script <a href="http://crisp.tumblr.com/post/2574967567/json-pretty-print-formatting-in-bbedit">from a BBEdit script</a> I found on Tumblr. I <a href="http://scriptd.tumblr.com/post/9941663896/pretty-print-json">posted it to my Tumblr site</a> as well. The script simply reformats and cleans up JSON files.</p>
-<p>Since then, I have revisited and changed the script. Originally, the script used a <code>fileinput</code> object to build an input string, which it passed to the JSON parser. It also didn't do much in the way of error handling.</p>
-<p>I updated it to pass <code>stdin</code> directly to the JSON parser. It now catches exceptions thrown while parsing.</p>
-<p>The new code looks like this:</p>
-<pre><code class="python">#!/usr/bin/env python
-
-from __future__ import print_function
-import sys
-import json
-
-def main():
-    try:
-        obj = json.load(sys.stdin)
-        json.dump(obj, sys.stdout, sort_keys=True, indent=4)
-    except ValueError as strerr:
-        print(&quot;Error: {0}&quot;.format(strerr), file=sys.stderr)
-
-if __name__ == &quot;__main__&quot;:
-    main()
-</code></pre>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2012/8/a_new_beginning.html">A New Beginning</a>
-  </div>
-    <div class="date">Published August 11, 2012</div>
-  <p>Let's get started.</p>
-<p>I want to use this space to record, primarily for myself, things that I've been working on and things that I've learned. Making it into a blog will hopefully help others.</p>
-<p>I had a <a href="http://scriptd.tumblr.com">Tumblr site</a> where I posted scripts that I wanted to share with others. This time, I'm trying a Octopress site, which will hopefully reduce the friction that's prevented me from blogging more.</p>
-<p>Stay tuned.</p>
+    <div class="date">Published March 24, 2014</div>
+  <p>I'm on a bit of an AppleScript kick lately. It's a frustrating language to use as it's often counterintuitive. I'm constantly looking up the right syntax to do things. But, it's a great way to patch little annoyances you encounter in Mac software.</p>
+<p>The latest annoyance involves Tweetbot image windows. While I'm reading my timeline, I click on lots of links and images. After a while, I find I have a ton of image windows left over.</p>
+<p>There's no good way to close all of those windows without quitting and restarting the app. Holding down &#8997;<!--alt--> and clicking on the Window menu shows <em>Close All</em> bound to &#8997;<!--alt-->&#8984;<!--cmd-->W, but it doesn't work for me. The alternative is to click on each window and &#8984;<!--cmd-->W on the keyboard, but who wants to do that?</p>
+<p>I wrote a little AppleScript to do it. Tweetbot isn't strictly AppleScriptable, but using System Events and Accessiblity gets the job done. The script is a bit kludgy as the inner <code>repeat</code> loop fails after closing three or four windows. To get around it, I wrapped it in a <code>try...on error</code> block and repeat that until there's only one window left.</p>
+<p>I've got this bound to &#8679;<!--shift-->&#8984;<!--cmd-->W using <a href="http://www.red-sweater.com/fastscripts/">FastScripts</a>.</p>
+<p>The script:</p>
+<script src="https://gist.github.com/pwc3/9754912.js"></script>
 </div>
 
-<div class="paginator">
-            <a href="http://paulcalnan.com/index5.html">Newer Posts</a>
-      
-  
-  </div>
 
       <div id="copyright">
         <center>
