@@ -35,6 +35,75 @@
       
   <div class="post">
   <div class="postTitle">
+    <a href="/archives/2012/8/adding_unread_skype_message_count_to_the_os_x_menu_bar.html">Adding Unread Skype Message Count to the OS X Menu Bar</a>
+  </div>
+    <div class="date">Published August 11, 2012</div>
+  <p><a href="http://scriptd.tumblr.com/post/23319145310/adding-unread-skype-message-count-to-the-os-x-menu-bar">This is another repost from Scriptd.</a> Be forewarned: it's pretty hacky. That having been said, I use this every day at work.</p>
+<p>I use the Skype 5 client pretty often while I'm at work. It pops up a Growl notification whenever a new message comes in, but if I'm not looking at the screen (or if I'm looking at another monitor), I'll oftentimes miss it. The dock icon shows a badge, but my dock is set to auto-hide so I can't see the badge until I move the mouse to the dock.</p>
+<p>As a result of all this, I wind up missing Skype messages all of the time. What I'd really like is some sort of indicator on the menu bar to tell me when I have unread messages. Unfortunately, Skype doesn't provide this option (one of a long list of shortcomings of the Skype UI). So, I wanted to try to hack something together to fill this need.</p>
+<p>Dock icon badges are presented in OS X via the <code>NSDockTile</code> class. There is a <code>badgeLabel</code> property that contains the text that gets shown in the little red badge bubble. Unfortunately, I couldn't figure out a way to access this information from an external script.</p>
+<p>I had heard of <a href="http://www.fscript.org/">F-Script</a> a while ago as a tool for debugging Cocoa applications. I won't go into details about all you can do with F-Script (and my knowledge of the tool is pretty limited). I had played around with it enough to get a feel for some of the things it could do and figured it might be of use for this issue.</p>
+<p>One of the cool features of F-Script is the ability to inject itself into a running Cocoa application. It's got the ability to add a console to a running app, allowing you to access objects in the app. You set it up using GDB:</p>
+<pre><code class="no-highlight">$ gdb
+(gdb) attach Skype
+(gdb) p (char)[[NSBundle bundleWithPath:@&quot;/Library/Frameworks/FScript.framework&quot;] load]
+(gdb) p (void)[FScriptMenuItem insertInMainMenu]
+(gdb) detach
+(gdb) quit
+</code></pre>
+
+<p>Once you do that, you get a menu item in the target application (in this case, Skype). You can then open a console and play around:</p>
+<pre><code class="no-highlight">&gt; app := NSApplication sharedApplication
+
+&gt; app dockTile badgeLabel
+nil
+</code></pre>
+
+<p>This is what appears if there is no badge icon. Do this again when there is a badge (in this case, I have a “1” badge) and you see the following:</p>
+<pre><code class="no-highlight">&gt; app dockTile badgeLabel
+'1'
+</code></pre>
+
+<p>Great, so I figured out a way to access the badge from a script. But the process is a bit clunky and certainly not something I'd want to do on a daily basis. It's a step in in the right direction, though.</p>
+<p>F-Script also allows you to create your own Objective-C objects that interact with the running application. After a bit of trial and error, I came up with the following <code>NSObject</code>-derived class that accomplished what I wanted to do.</p>
+<pre><code class="no-highlight">SkypeMenuUpdater : NSObject
+{
+    statusBarItem
+    timer
+
+    - init
+    {
+        self := super init.
+        self ~~ nil ifTrue:
+        [
+            statusBarItem := NSStatusBar systemStatusBar statusItemWithLength:20.
+
+            timer := NSTimer scheduledTimerWithTimeInterval:1
+                                                     target:[self updateMenu]
+                                                   selector:#value
+                                                   userInfo:nil
+                                                    repeats:YES.
+        ].
+        ^ self
+    }
+
+    - updateMenu
+    {
+        statusBarItem setTitle:NSApplication sharedApplication dockTile badgeLabel.
+    }
+}.
+
+updater := (SkypeMenuUpdater alloc) init.
+</code></pre>
+
+<p>Here, I define a new class called <code>SkypeMenuUpdater</code> with two ivars. The constructor creates a <code>NSStatusBarItem</code> called <code>statusBarItem</code> and a <code>NSTimer</code> called <code>timer</code> set to fire once a second. When the timer fires, it calls the <code>updateMenu</code> method, which queries the badge label of the app's dock tile, and then sets the status bar item to reflect the value of the label. Finally, it instantiates the object, which kicks the whole thing off.</p>
+<p>The last piece involves injecting this script into a running Skype instance. I chose Ruby, since <a href="https://gist.github.com/1170175">someone had a nice gist on Github showing how to do something similar</a>. The final script is available on <a href="https://gist.github.com/2728176">Github</a>. All you have to do is run the Ruby script and it'll do the rest of the work for you.</p>
+<p>It requires F-Script to be installed (the script assumes it's installed in <code>/Library/Frameworks/FScript.framework</code>). It also requires GDB, which is installed as part of the Xcode command line tools. Also note, you'll have to run the script each time you launch Skype.</p>
+<p>Feel free to try this out. Use it at your own risk, though. I make no guarantees that it will work perfectly under all configurations. Also, I feel that this kind of hack is generally a bad idea. It gets the job done for me, but I'd love to have a less hacky way of accomplishing this.</p>
+<p>As always, <a href="http://twitter.com/pwc">feel free to send along any questions or comments.</a></p>
+</div>
+  <div class="post">
+  <div class="postTitle">
     <a href="/archives/2012/8/pretty-print_json.html">Pretty-Print JSON</a>
   </div>
     <div class="date">Published August 11, 2012</div>

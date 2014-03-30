@@ -35,6 +35,22 @@
       
   <div class="post">
   <div class="postTitle">
+    <a href="/archives/2014/3/xcode-git-status-with-applescript.html">Xcode Git Status with AppleScript</a>
+  </div>
+    <div class="date">Published March 30, 2014</div>
+  <p>Here's another AppleScript I wrote. It would be great if Xcode would show the current Git branch and working directory status in the main window. Unfortunately, the only way to see the current branch is to select the <em>Source Control</em> menu. There's no quick way to see if you have uncommitted modifications.</p>
+<p>I wrote this AppleScript, which I have bound to &#8997;<!--alt-->&#8679;<!--shift-->&#8984;<!--cmd-->G using <a href="http://www.red-sweater.com/fastscripts/">FastScripts</a>. It pops up a notification showing the current branch and status.</p>
+<p>This is a notification showing the master branch with no changes or additions:</p>
+<p><img alt="Clean Working Directory" src="/static/images/git_clean.png" title="Clean Working Directory" /></p>
+<p>This is what it looks like when there are modifications:</p>
+<p><img alt="Modified Files in Working Directory" src="/static/images/git_modified.png" title="Modified Files in Working Directory" /></p>
+<p>And, this is the notification when there are modifications and additions:</p>
+<p><img alt="Modified and Added Files in Working Directory" src="/static/images/git_modified_and_added.png" title="Modified and Added Files in Working Directory" /></p>
+<p>The script:
+<script src="https://gist.github.com/pwc3/9867443.js"></script></p>
+</div>
+  <div class="post">
+  <div class="postTitle">
     <a href="/archives/2014/3/closing-tweetbot-image-windows-using-applescript.html">Closing Tweetbot Image Windows using AppleScript</a>
   </div>
     <div class="date">Published March 24, 2014</div>
@@ -146,103 +162,6 @@ Abbreviation</em> results in the <em>HTML Entry</em> being inserted.</p>
 problems in my posts. Rather than try to figure those out, I added the HTML
 Entity abbreviations. These should appear regardless of the encoding of the
 final document.</p>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2013/9/using-aereo-on-os-x-with-quicktime-and-keyboard-maestro.html">Using Aereo on OS X with QuickTime and Keyboard Maestro</a>
-  </div>
-    <div class="date">Published September 22, 2013</div>
-  <p>I cancelled my cable television subscription a few months ago. I don't watch
-enough television to justify what my cable company was charging me monthly for
-a service I didn't use.</p>
-<p>I'm a football fan, though, and couldn't imagine going the whole season without
-watching <a href="http://en.wikipedia.org/wiki/New_England_Patriots">the Patriots</a> play. Luckily, around the time I cancelled my
-cable, <a href="http://www.aereo.com/">Aereo</a> came to Boston. If you're not familiar with their
-service, Aereo allows you to watch broadcast television over the Internet. It's
-only broadcast, so I can't watch the Red Sox (as they're on a cable-only
-network), but local NFL games are carried on broadcast stations.</p>
-<p>Aereo also works like an online DVR. You tell it which shows to record and you
-can stream those shows whenever you want.</p>
-<p>In my <a href="/archives/2013/9/changing-safaris-user-agent-with-keyboard-maestro.html">previous post</a> I explained how I use Keybord Maestro to get
-HTML5 video. That trick works with Aereo as well, which usually requires Flash
-to view video on the desktop. Log in to Aereo from desktop Safari and it says
-you need to have Flash installed to watch video. Change to the Mobile Safari
-for iPad user agent string and you can watch video.</p>
-<p>When using a DVR, I find it essential to be able to skip back and forth by
-several seconds, mainly to skip commercials. This is impossible to do using the
-HTML5 video player. I'm not sure if you can do the same in the Flash player,
-but I'd rather not have to use Flash in order to watch video.</p>
-<p>The <a href="http://hoyois.github.io/safariextensions/mediacenter/">Media Center Safari Extension</a> adds a context-menu when you
-right-click on an HTML5 video with the option to open the video in QuickTime
-Player. I wrote an AppleScript that can tell QuickTime Player to jump forwards
-or backwards an arbitrary number of seconds. I activate those scripts via
-<a href="http://www.keyboardmaestro.com/">Keyboard Maestro</a> macros to allow me to fast forward or rewind 5, 15, 30,
-60, 120, or 300 seconds. I have those bound to the following keys:</p>
-<table>
-<thead>
-<tr>
-<th align="left">Action</th>
-<th align="left">Key</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left">Rewind 5 minutes</td>
-<td align="left">&#8984;<!--cmd-->&#8679;<!--shift-->[</td>
-</tr>
-<tr>
-<td align="left">Rewind 2 minutes</td>
-<td align="left">&#8984;<!--cmd-->[</td>
-</tr>
-<tr>
-<td align="left">Rewind 1 minute</td>
-<td align="left">&#8984;<!--cmd-->&#8997;<!--alt-->[</td>
-</tr>
-<tr>
-<td align="left">Rewind 30 seconds</td>
-<td align="left">&#8984;<!--cmd-->&#8679;<!--shift-->,</td>
-</tr>
-<tr>
-<td align="left">Rewind 15 seconds</td>
-<td align="left">&#8984;<!--cmd-->,</td>
-</tr>
-<tr>
-<td align="left">Rewind 5 seconds</td>
-<td align="left">&#8984;<!--cmd-->&#8997;<!--alt-->,</td>
-</tr>
-<tr>
-<td align="left">Fast forward 5 seconds</td>
-<td align="left">&#8984;<!--cmd-->&#8997;<!--alt-->.</td>
-</tr>
-<tr>
-<td align="left">Fast forward 15 seconds</td>
-<td align="left">&#8984;<!--cmd-->.</td>
-</tr>
-<tr>
-<td align="left">Fast forward 30 seconds</td>
-<td align="left">&#8984;<!--cmd-->&#8679;<!--shift-->.</td>
-</tr>
-<tr>
-<td align="left">Fast forward 1 minute</td>
-<td align="left">&#8984;<!--cmd-->&#8997;<!--alt-->]</td>
-</tr>
-<tr>
-<td align="left">Fast forward 2 minutes</td>
-<td align="left">&#8984;<!--cmd-->]</td>
-</tr>
-<tr>
-<td align="left">Fast forward 5 minutes</td>
-<td align="left">&#8984;<!--cmd-->&#8679;<!--shift-->]</td>
-</tr>
-</tbody>
-</table>
-<p>That's a lot of shortcuts. I just remember that square brackets ([ and ])
-jump by minutes and angle brackets (&lt; and &gt;) jump by seconds. Shift
-(&#8679;<!--shift-->) jumps by more and alt (&#8997;<!--alt-->) shifts by less.</p>
-<p>Combined with AirPlay Mirroring to my Apple TV, I have a decent DVR system
-controlled by my MacBook Air that allows me to watch NFL football without
-having to see any commercials.</p>
-<p>The Keyboard Maestro macros are available on <a href="https://github.com/pwc3/km-quicktime-dvr-macros">Github</a>.</p>
 </div>
 
 <div class="paginator">

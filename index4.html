@@ -35,6 +35,32 @@
       
   <div class="post">
   <div class="postTitle">
+    <a href="/archives/2013/1/automator_service_for_tracking_deliveries.html">Automator Service for Tracking Deliveries</a>
+  </div>
+    <div class="date">Published January 31, 2013</div>
+  <p>I order lots of stuff online, most of which gets shipped with a tracking number. I use <a href="https://junecloud.com">Junecloud's awesome Delivery Touch app for iOS</a> to track those shipments. Junecloud offers a couple of <a href="http://junecloud.com/support/delivery-status-ios/delivery-status-url-scheme.html">URLs to add new tracking numbers to their system</a> which will sync to their iOS apps (and dashboard widget).</p>
+<p>I put together a simple Automator service that allows you to select a tracking number (for example, from an Amazon.com confirmation email), option-click on it, and select "Add Tracking Number to Deliveries" from your Services menu. This will open the Junecloud sync website and add your selected tracking number. Note, you will need a Junecloud sync account for this to work.</p>
+<p><a href="https://github.com/pwc3/deliveries-service">You can download the Automator service from Github</a>, or you can create it yourself:</p>
+<ol>
+<li>Open <em>Automator</em></li>
+<li>Create a new <em>Service</em></li>
+<li>Make sure the options show: <em>Service receives selected</em> <strong><em>text</em></strong> <em>in</em> <strong><em>any application</em></strong>.</li>
+<li>Drag a <em>Run AppleScript</em> action to the area that says <em>Drag actions or files here to build your workflow.</em></li>
+<li>Enter the following in the new <em>Run AppleScript</em> action:</li>
+</ol>
+<pre><code class="applescript">on run {input, parameters}
+    set _url to &quot;https://junecloud.com/sync/grab/?no=&quot; &amp; input
+    do shell script &quot;open &quot; &amp; _url
+    return input
+end run
+</code></pre>
+
+<ol>
+<li>Save the service as "Add Tracking Number to Deliveries" (or whatever service name you prefer).</li>
+</ol>
+</div>
+  <div class="post">
+  <div class="postTitle">
     <a href="/archives/2013/1/dropbox_updater_for_os_x.html">Dropbox Updater for OS X</a>
   </div>
     <div class="date">Published January 28, 2013</div>
@@ -112,40 +138,6 @@ specify and the result is substituted to wherever you were typing.</p>
 <p>I use this frequently enough that I added an alias to it in my <code>.bashrc</code> file:</p>
 <pre><code class="sh">alias svndiff='svn diff --diff-cmd=fmdiff'
 </code></pre>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2012/8/textexpander_date_arithmetic.html">TextExpander Date Arithmetic</a>
-  </div>
-    <div class="date">Published August 14, 2012</div>
-  <p><a href="http://www.smilesoftware.com/textexpander">TextExpander</a> is one of the first apps I install on a new computer. It's great for abbreviating repeatedly-typed strings. It also is capable of doing simple date arithmetic. Here are some examples I use regularly.</p>
-<table>
-<thead>
-<tr>
-<th>Abbreviation</th>
-<th>Expansion</th>
-<th>Example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>;yesterday</code></td>
-<td><code>%@-1D%Y-%m-%d</code></td>
-<td><code>2012-08-12</code></td>
-</tr>
-<tr>
-<td><code>;today</code></td>
-<td><code>%Y-%m-%d</code></td>
-<td><code>2012-08-13</code></td>
-</tr>
-<tr>
-<td><code>;tomorrow</code></td>
-<td><code>%@+1D%Y-%m-%d</code></td>
-<td><code>2012-08-14</code></td>
-</tr>
-</tbody>
-</table>
-<p>There's more information about this on the <a href="http://blog.smilesoftware.com/2008/10/28/textexpander-date-and-time-math/">TextExpander blog</a>.</p>
 </div>
 
 <div class="paginator">
