@@ -35,6 +35,47 @@
       
   <div class="post">
   <div class="postTitle">
+    <a href="/archives/2013/2/bash_ps1.html">Bash PS1</a>
+  </div>
+    <div class="date">Published February 15, 2013</div>
+  <p>My Bash prompt has progressively gotten more complicated over the years. Today, I wanted to add to it and realized it was time to reorganize.</p>
+<p>Prior to today, it looked like this:</p>
+<pre><code class="bash">export PS1=&quot;\n\[\e[0;33m\]\D{%a %b %d %T %Z %Y}\[\e[0;34m\]\$(__git_ps1)\n\[\e[0;31m\]\u@\h\[\e[0m\]: \[\e[0;36m\]\w\[\e[0m\]\n$ &quot;
+</code></pre>
+
+<p>After today's reorganization, it now looks like this:</p>
+<pre><code class="bash">__pyenv_prompt()
+{
+    if [ &quot;$VIRTUAL_ENV&quot; != &quot;&quot; ]; then
+        echo -n &quot;$(basename $VIRTUAL_ENV) &quot;
+    fi
+}
+
+__PS1_DTS=&quot;\[\e[0;33m\]\D{%a %b %d %T %Z %Y}&quot;
+__PS1_PYENV=&quot;\[\e[1;35m\]\$(__pyenv_prompt)&quot;
+
+if [ -e &quot;$__RVM_HOME/bin/rvm-prompt&quot; ]; then
+    __PS1_RVM=&quot;\[\e[0;31m\]\$(rvm-prompt i v p g)&quot;
+fi
+
+__PS1_USERNAME=&quot;\[\e[0;31m\]\u@\h\[\e[0m\]: &quot;
+__PS1_PWD=&quot;\[\e[0;36m\]\w\[\e[0m\]&quot;
+
+export PS1=&quot;\n${__PS1_DTS}${__PS1_GITSTATUS} ${__PS1_PYENV}${__PS1_RVM}\n${__PS1_USERNAME}${__PS1_PWD}\n$ &quot;
+</code></pre>
+
+<p>Here's a screenshot of it in action:</p>
+<p><img alt="Screenshot" src="/static/images/bash_ps1_screenshot.png" title="Bash Prompt Screenshot" /></p>
+<p>Maybe it's too much information, but I find it useful. On the first line, the date is in yellow. My current Git branch is in green. My current Python virtual environment is in purple. My current Ruby version, patchlevel, and gemset is in red. On the next line, my username and hostname are in red, and my working directory is in blue.</p>
+<p>To show the Git branch, you need to have the <a href="http://mxcl.github.com/homebrew/">Homebrew</a> <code>bash-completion</code> package installed, and you need to do the following in your <code>.bashrc</code>:</p>
+<pre><code class="bash">if [ -f /usr/local/etc/bash_completion.d/git-prompt.sh ]; then
+    export GIT_PS1_SHOWDIRTYSTATE=1
+    source /usr/local/etc/bash_completion.d/git-prompt.sh
+fi
+</code></pre>
+</div>
+  <div class="post">
+  <div class="postTitle">
     <a href="/archives/2013/1/automator_service_for_tracking_deliveries.html">Automator Service for Tracking Deliveries</a>
   </div>
     <div class="date">Published January 31, 2013</div>
@@ -124,20 +165,6 @@ runs it through an arbitrary Unix pipeline. You can enter a single command,
 (like <code>tr a-z A-Z</code>) or a pipeline of commands (like <code>sort | uniq -c</code>). The
 contents of the pasteboard are passed through whatever set of commands you
 specify and the result is substituted to wherever you were typing.</p>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2012/8/svn_diffs_in_filemerge.html">SVN Diffs in FileMerge</a>
-  </div>
-    <div class="date">Published August 15, 2012</div>
-  <p>Sometimes, the output of <code>svn diff</code> doesn't quite cut it. Sometimes, you want to see a side-by-side comparison of the full files. The <code>--diff-cmd</code> flag lets you specify an external diff program:</p>
-<pre><code class="sh">svn diff --diff-cmd=fmdiff
-</code></pre>
-
-<p>This requires <code>fmdiff</code>, which is available <a href="http://www.defraine.net/~brunod/fmdiff/">from the developer's website</a> or via <a href="http://mxcl.github.com/homebrew/">Homebrew</a>. It will show a diff of the entire file in FileMerge.</p>
-<p>I use this frequently enough that I added an alias to it in my <code>.bashrc</code> file:</p>
-<pre><code class="sh">alias svndiff='svn diff --diff-cmd=fmdiff'
-</code></pre>
 </div>
 
 <div class="paginator">

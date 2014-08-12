@@ -35,6 +35,24 @@
       
   <div class="post">
   <div class="postTitle">
+    <a href="/archives/2013/8/editing_property_lists_in_a_text_editor.html">Editing Property Lists in a Text Editor</a>
+  </div>
+    <div class="date">Published August 5, 2013</div>
+  <p>Occasionally, I've wanted to be able to poke around in a plist file while working in the terminal. You can open an XML plist in a text editor like Vim, but a binary plist just looks like gibberish.</p>
+<p>Fortunately, you can convert a plist file into XML format with the following command:</p>
+<pre><code class="bash">plutil -convert xml1 INPUT_FILENAME
+</code></pre>
+
+<p>Alternatively, you can convert a plist file into binary format with the following command:</p>
+<pre><code class="bash">plutil -convert binary1 INPUT_FILENAME
+</code></pre>
+
+<p>Obviously, change <code>INPUT_FILENAME</code> to whatever file you want to edit.</p>
+<p>I wrote a quick Python script to automate this. I called it <code>edit-plist</code>. It first checks the file type (using the <code>file</code> utility). If it's a binary plist, it converts to XML. Then it opens in the selected editor (Vim). Once the editor exits, if the file was originally a binary plist, it converts back to that format.</p>
+<script src="https://gist.github.com/pwc3/6161201.js"></script>
+</div>
+  <div class="post">
+  <div class="postTitle">
     <a href="/archives/2013/8/copy_to_pasteboard_from_a_remote_machine.html">Copy to Pasteboard from a Remote Machine</a>
   </div>
     <div class="date">Published August 2, 2013</div>
@@ -170,47 +188,6 @@ cat | nc localhost 50730
 <p>Once I decided to keep the Paperwhite, paying the extra $20 to get rid of the ads (or "Unsubscribe from Special Offers" in marketing-speak) was a no-brainer.</p>
 </li>
 </ul>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2013/2/bash_ps1.html">Bash PS1</a>
-  </div>
-    <div class="date">Published February 15, 2013</div>
-  <p>My Bash prompt has progressively gotten more complicated over the years. Today, I wanted to add to it and realized it was time to reorganize.</p>
-<p>Prior to today, it looked like this:</p>
-<pre><code class="bash">export PS1=&quot;\n\[\e[0;33m\]\D{%a %b %d %T %Z %Y}\[\e[0;34m\]\$(__git_ps1)\n\[\e[0;31m\]\u@\h\[\e[0m\]: \[\e[0;36m\]\w\[\e[0m\]\n$ &quot;
-</code></pre>
-
-<p>After today's reorganization, it now looks like this:</p>
-<pre><code class="bash">__pyenv_prompt()
-{
-    if [ &quot;$VIRTUAL_ENV&quot; != &quot;&quot; ]; then
-        echo -n &quot;$(basename $VIRTUAL_ENV) &quot;
-    fi
-}
-
-__PS1_DTS=&quot;\[\e[0;33m\]\D{%a %b %d %T %Z %Y}&quot;
-__PS1_PYENV=&quot;\[\e[1;35m\]\$(__pyenv_prompt)&quot;
-
-if [ -e &quot;$__RVM_HOME/bin/rvm-prompt&quot; ]; then
-    __PS1_RVM=&quot;\[\e[0;31m\]\$(rvm-prompt i v p g)&quot;
-fi
-
-__PS1_USERNAME=&quot;\[\e[0;31m\]\u@\h\[\e[0m\]: &quot;
-__PS1_PWD=&quot;\[\e[0;36m\]\w\[\e[0m\]&quot;
-
-export PS1=&quot;\n${__PS1_DTS}${__PS1_GITSTATUS} ${__PS1_PYENV}${__PS1_RVM}\n${__PS1_USERNAME}${__PS1_PWD}\n$ &quot;
-</code></pre>
-
-<p>Here's a screenshot of it in action:</p>
-<p><img alt="Screenshot" src="/static/images/bash_ps1_screenshot.png" title="Bash Prompt Screenshot" /></p>
-<p>Maybe it's too much information, but I find it useful. On the first line, the date is in yellow. My current Git branch is in green. My current Python virtual environment is in purple. My current Ruby version, patchlevel, and gemset is in red. On the next line, my username and hostname are in red, and my working directory is in blue.</p>
-<p>To show the Git branch, you need to have the <a href="http://mxcl.github.com/homebrew/">Homebrew</a> <code>bash-completion</code> package installed, and you need to do the following in your <code>.bashrc</code>:</p>
-<pre><code class="bash">if [ -f /usr/local/etc/bash_completion.d/git-prompt.sh ]; then
-    export GIT_PS1_SHOWDIRTYSTATE=1
-    source /usr/local/etc/bash_completion.d/git-prompt.sh
-fi
-</code></pre>
 </div>
 
 <div class="paginator">
