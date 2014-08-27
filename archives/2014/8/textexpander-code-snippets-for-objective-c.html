@@ -3,7 +3,7 @@
 
 <html>
   <head http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <title>Paul Calnan</title>
+    <title>Paul Calnan: TextExpander Code Snippets for Objective-C</title>
     <link rel="stylesheet" href="http://paulcalnan.com/theme/css/main.css" type="text/css"/>
 
     <link rel="stylesheet" href="http://paulcalnan.com/theme/highlight.js/styles/solarized_light.css">
@@ -33,7 +33,7 @@
       </div>
 
       
-  <div class="post">
+<div class="post">
   <div class="postTitle">
     <a href="/archives/2014/8/textexpander-code-snippets-for-objective-c.html">TextExpander Code Snippets for Objective-C</a>
   </div>
@@ -321,61 +321,7 @@ NSString *&lt;#path#&gt; = [documentsDirectory stringByAppendingPathComponent:&l
 </tbody>
 </table>
 </div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2014/8/objective-c-block-syntax-examples.html">Objective-C Block Syntax Examples</a>
-  </div>
-    <div class="date">Published August 12, 2014</div>
-  <p><a href="http://fuckingblocksyntax.com">The canonical Objective-C block syntax reference</a> misses some cases that I use frequently. At the end of last year, as I was getting back into full-time Objective-C development, I made the following example file that covers every block usage I could think of. It is my go-to reference whenever I'm in doubt as to how to write a particular kind of block.</p>
-<script src="https://gist.github.com/pwc3/9f4edc853be5a2e8f2e5.js"></script>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2014/3/xcode-git-status-with-applescript.html">Xcode Git Status with AppleScript</a>
-  </div>
-    <div class="date">Published March 30, 2014</div>
-  <p>Here's another AppleScript I wrote. It would be great if Xcode would show the current Git branch and working directory status in the main window. Unfortunately, the only way to see the current branch is to select the <em>Source Control</em> menu. There's no quick way to see if you have uncommitted modifications.</p>
-<p>I wrote this AppleScript, which I have bound to &#8997;<!--alt-->&#8679;<!--shift-->&#8984;<!--cmd-->G using <a href="http://www.red-sweater.com/fastscripts/">FastScripts</a>. It pops up a notification showing the current branch and status.</p>
-<p>This is a notification showing the master branch with no changes or additions:</p>
-<p><img alt="Clean Working Directory" src="/static/images/git_clean.png" title="Clean Working Directory" /></p>
-<p>This is what it looks like when there are modifications:</p>
-<p><img alt="Modified Files in Working Directory" src="/static/images/git_modified.png" title="Modified Files in Working Directory" /></p>
-<p>And, this is the notification when there are modifications and additions:</p>
-<p><img alt="Modified and Added Files in Working Directory" src="/static/images/git_modified_and_added.png" title="Modified and Added Files in Working Directory" /></p>
-<p>The script:
-<script src="https://gist.github.com/pwc3/9867443.js"></script></p>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2014/3/closing-tweetbot-image-windows-using-applescript.html">Closing Tweetbot Image Windows using AppleScript</a>
-  </div>
-    <div class="date">Published March 24, 2014</div>
-  <p>I'm on a bit of an AppleScript kick lately. It's a frustrating language to use as it's often counterintuitive. I'm constantly looking up the right syntax to do things. But, it's a great way to patch little annoyances you encounter in Mac software.</p>
-<p>The latest annoyance involves Tweetbot image windows. While I'm reading my timeline, I click on lots of links and images. After a while, I find I have a ton of image windows left over.</p>
-<p>There's no good way to close all of those windows without quitting and restarting the app. Holding down &#8997;<!--alt--> and clicking on the Window menu shows <em>Close All</em> bound to &#8997;<!--alt-->&#8984;<!--cmd-->W, but it doesn't work for me. The alternative is to click on each window and &#8984;<!--cmd-->W on the keyboard, but who wants to do that?</p>
-<p>I wrote a little AppleScript to do it. Tweetbot isn't strictly AppleScriptable, but using System Events and Accessiblity gets the job done. The script is a bit kludgy as the inner <code>repeat</code> loop fails after closing three or four windows. To get around it, I wrapped it in a <code>try...on error</code> block and repeat that until there's only one window left.</p>
-<p>I've got this bound to &#8679;<!--shift-->&#8984;<!--cmd-->W using <a href="http://www.red-sweater.com/fastscripts/">FastScripts</a>.</p>
-<p>The script:</p>
-<script src="https://gist.github.com/pwc3/9754912.js"></script>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2014/3/refreshing-xcode-provisioning-profiles-with-applescript.html">Refreshing Xcode Provisioning Profiles with AppleScript</a>
-  </div>
-    <div class="date">Published March 24, 2014</div>
-  <p>This seems to happen whenever someone on the team updates the provisioning profile and commits the change to the <code>.xcodeproj</code> file. The build fails and Xcode complains that it can't find a provisioning profile identified by a UUID.</p>
-<p>To fix it, I have to stop what I'm doing, open Preferences, click the right Apple ID (I have one for each client), click the team, click <em>View Details</em>, click the refresh button, and then close out the action sheet and the Preferences dialog. Not the end of the world, but it gets old after a while.</p>
-<p>To get around this issue, I wrote an AppleScript to automate the process. It's a bit fragile, as it's using Accessibility and System Events to poke around in the Preferences dialog. It probably will break in a later version of Xcode (it works in Xcode 5.1).</p>
-<p>To use the script save it to your computer and set the <code>appleID</code> variable to your Apple ID. I use <a href="http://www.red-sweater.com/fastscripts/">FastScripts</a> to bind the script to &#8997;<!--alt-->&#8679;<!--shift-->&#8984;<!--cmd-->R while in Xcode.</p>
-<p>The script:</p>
-<script src="https://gist.github.com/pwc3/9754730.js"></script>
-</div>
 
-<div class="paginator">
-  
-  
-      <a href="http://paulcalnan.com/index2.html">Older Posts</a>
-  </div>
 
       <div id="copyright">
         <center>

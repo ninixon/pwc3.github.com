@@ -35,6 +35,19 @@
       
   <div class="post">
   <div class="postTitle">
+    <a href="/archives/2013/10/disabling-autocorrect-in-skype.html">Disabling Autocorrect in Skype</a>
+  </div>
+    <div class="date">Published October 4, 2013</div>
+  <p>Autocorrect has been driving me nuts in Skype. I found an easy way to disable it without disabling it system-wide.</p>
+<ol>
+<li>Right-click in an editable text area.</li>
+<li>Select "Spelling and Grammar"</li>
+<li>Uncheck "Correct Spelling Automatically"</li>
+</ol>
+<p>It looks like this also works in other apps that support autocorrect.</p>
+</div>
+  <div class="post">
+  <div class="postTitle">
     <a href="/archives/2013/9/textexpander-html-entities-for-os-x-modifier-keys.html">TextExpander HTML Entities for OS X Modifier Keys</a>
   </div>
     <div class="date">Published September 22, 2013</div>
@@ -240,34 +253,6 @@ frontmost tab in Google Chrome.</p>
 <p>I wanted to keep the site's file structure as similar to the current structure as possible. This included keeping the file slugs the same. Rather than trying to trick Pelican into deriving the original slugs, I added some code to my extraction script to pre-compute the slugs and include them in the Markdown metadata.</p>
 <p>The only manual change I had to make to my content was to switch from code blocks that are indented by four spaces to fenced code blocks. This allows me to specify the language for the code block instead of relying on <a href="http://softwaremaniacs.org/soft/highlight/en/">highlight.js</a> to figure it out (often incorrectly).</p>
 <p>The theme is more-or-less written from scratch. I liked the VoodooPad-generated site and had already made some customizations to it. It was fairly simple to port that over to use Pelican's templating system.</p>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2013/8/pause_when_dialing_a_skype_number.html">Pause When Dialing a Skype Number</a>
-  </div>
-    <div class="date">Published August 15, 2013</div>
-  <p>One of my clients uses a phone bridge for conference calls. I usually call in to the bridge using Skype. Each regular conference call I have uses a different access code. It works like an extension number: you call the bridge, wait a few seconds, dial the access code, press <code>#</code>, wait a few seconds, and press <code>#</code> again.</p>
-<p>On a cell phone, you can usually add commas to the phone number to insert a pause when dialing, allowing you to save extensions and access codes like this in the contact information. Of course, Skype doesn't support that.</p>
-<p>I found an <a href="http://community.skype.com/t5/Mac/Re-Pause-option-when-dialing/td-p/731820">AppleScript on a Skype discussion board</a> that shows a way to dial a number using Skype followed by a <a href="http://en.wikipedia.org/wiki/dtmf">DTMF</a> string to be sent after the call connects. I wrote a Python wrapper for it. Commas are interpreted as 2 second delays.</p>
-<p>Now, I can call the phone bridge and dial the access code all with the following command:</p>
-<pre><code class="no-highlight">$ skypecall 800-555-1212 &quot;12345#,,#&quot;
-</code></pre>
-
-<p>This dials the number <code>+18005551212</code>, waits for the call to connect, waits 10 seconds, then dials the string <code>12345#</code>, waits 4 seconds, then dials <code>#</code>.</p>
-<p>Here's the Python script:</p>
-<script src="https://gist.github.com/pwc3/6246835.js"></script>
-
-<p>It's fairly easy to go from that to any of a number of shortcuts (Alfred, LaunchBar, an Automator action, etc.) to quickly place a call.</p>
-<p><strong>UPDATE:</strong> I created an Alfred Keyword action named <code>bridge</code> which triggers a shell script that looks like this:</p>
-<script src="https://gist.github.com/pwc3/6246974.js"></script>
-
-<p>The <code>case</code> statement maps from keyword arguments (<code>monday</code>, <code>wednesday</code>, or <code>friday</code> in this example) into access codes (<code>12345</code>, <code>23456</code>, or <code>34567</code> respectively). To run it, I invoke Alfred (<code>Cmd-Space</code> on my computer) then I type:</p>
-<pre><code class="no-highlight">bridge monday
-</code></pre>
-
-<p>This causes Skype to dial <code>+18005551212</code>, and enters the access code <code>12345</code> with the right pauses and <code>#</code>s. If I wanted to use an arbitrary access code that doesn't have a corresponding keyword, I could do so like this:</p>
-<pre><code class="no-highlight">bridge 24680
-</code></pre>
 </div>
 
 <div class="paginator">

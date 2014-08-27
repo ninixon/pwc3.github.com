@@ -35,6 +35,34 @@
       
   <div class="post">
   <div class="postTitle">
+    <a href="/archives/2013/8/pause_when_dialing_a_skype_number.html">Pause When Dialing a Skype Number</a>
+  </div>
+    <div class="date">Published August 15, 2013</div>
+  <p>One of my clients uses a phone bridge for conference calls. I usually call in to the bridge using Skype. Each regular conference call I have uses a different access code. It works like an extension number: you call the bridge, wait a few seconds, dial the access code, press <code>#</code>, wait a few seconds, and press <code>#</code> again.</p>
+<p>On a cell phone, you can usually add commas to the phone number to insert a pause when dialing, allowing you to save extensions and access codes like this in the contact information. Of course, Skype doesn't support that.</p>
+<p>I found an <a href="http://community.skype.com/t5/Mac/Re-Pause-option-when-dialing/td-p/731820">AppleScript on a Skype discussion board</a> that shows a way to dial a number using Skype followed by a <a href="http://en.wikipedia.org/wiki/dtmf">DTMF</a> string to be sent after the call connects. I wrote a Python wrapper for it. Commas are interpreted as 2 second delays.</p>
+<p>Now, I can call the phone bridge and dial the access code all with the following command:</p>
+<pre><code class="no-highlight">$ skypecall 800-555-1212 &quot;12345#,,#&quot;
+</code></pre>
+
+<p>This dials the number <code>+18005551212</code>, waits for the call to connect, waits 10 seconds, then dials the string <code>12345#</code>, waits 4 seconds, then dials <code>#</code>.</p>
+<p>Here's the Python script:</p>
+<script src="https://gist.github.com/pwc3/6246835.js"></script>
+
+<p>It's fairly easy to go from that to any of a number of shortcuts (Alfred, LaunchBar, an Automator action, etc.) to quickly place a call.</p>
+<p><strong>UPDATE:</strong> I created an Alfred Keyword action named <code>bridge</code> which triggers a shell script that looks like this:</p>
+<script src="https://gist.github.com/pwc3/6246974.js"></script>
+
+<p>The <code>case</code> statement maps from keyword arguments (<code>monday</code>, <code>wednesday</code>, or <code>friday</code> in this example) into access codes (<code>12345</code>, <code>23456</code>, or <code>34567</code> respectively). To run it, I invoke Alfred (<code>Cmd-Space</code> on my computer) then I type:</p>
+<pre><code class="no-highlight">bridge monday
+</code></pre>
+
+<p>This causes Skype to dial <code>+18005551212</code>, and enters the access code <code>12345</code> with the right pauses and <code>#</code>s. If I wanted to use an arbitrary access code that doesn't have a corresponding keyword, I could do so like this:</p>
+<pre><code class="no-highlight">bridge 24680
+</code></pre>
+</div>
+  <div class="post">
+  <div class="postTitle">
     <a href="/archives/2013/8/editing_property_lists_in_a_text_editor.html">Editing Property Lists in a Text Editor</a>
   </div>
     <div class="date">Published August 5, 2013</div>
@@ -169,25 +197,6 @@ cat | nc localhost 50730
 <p>On a relatively new MacBook Pro, the script takes a couple of minutes to sync around 200 events. Presumably fewer events will sync faster. It may take a couple of minutes for the iCloud sync to go through before you see the events on your iOS device.</p>
 <p>The script is pretty basic. I was going to make the sync go incrementally, but AppleScript is such a pain to program, I decided to go the naive route and just delete everything and copy it back over.</p>
 <p>As usual, <a href="http://twitter.com/pwc/">questions and feedback are always welcome</a>.</p>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2013/3/resetting_kindle_reading_rate_estimates.html">Resetting Kindle Reading Rate Estimates</a>
-  </div>
-    <div class="date">Published March 4, 2013</div>
-  <p>I recently bought a <a href="http://www.amazon.com/Kindle-Paperwhite-Touch-light/dp/B007OZNZG0">Kindle Paperwhite</a>. I used to own a <a href="http://www.amazon.com/Kindle-Special-Offers-Wireless-Reader/dp/B004HFS6Z0">Kindle Keyboard</a> and was pleasantly surprised by the updated features on the new model. </p>
-<p>One of the features I really like is the estimated time printed at the bottom of the screen. You can toggle between time left in the current chapter and time left in the book. When you first use the Kindle, it doesn't immediately show you those values. Rather, it watches how fast you read and adjusts the estimates accordingly.</p>
-<p>Unfortunately, it's easily confused. I'm reading a book with lots of footnotes, and I occasionally flip around. Rapidly changing pages appears to confuse the time estimate calculations. After a while, it was estimating I'd finish the book in one hour, even though I was at the 8% mark of a 1000+ page book.</p>
-<p>Luckily, I found an easy way to reset the estimate. Search for <code>;ReadingTimeReset</code> (keep the semicolon and capitalization as shown) and the estimate will be reset.</p>
-<p>A couple of other miscellaneous thoughts on the Paperwhite:</p>
-<ul>
-<li>
-<p>I was initially disappointed by the uneven backlight at the bottom of the screen. After a couple hours of use, I found that I had the light turned on too high. Lowering the light intensity makes the unevenness less apparent while keeping the screen legible.</p>
-</li>
-<li>
-<p>Once I decided to keep the Paperwhite, paying the extra $20 to get rid of the ads (or "Unsubscribe from Special Offers" in marketing-speak) was a no-brainer.</p>
-</li>
-</ul>
 </div>
 
 <div class="paginator">
