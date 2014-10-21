@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+  <head http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Paul Calnan: QuickTime Screen Recording of a Single Window</title>
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/css/main.css" type="text/css"/>
+
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/highlight.js/styles/solarized_light.css">
+    <script src="http://paulcalnan.com/theme/highlight.js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="header">
+        <table width="100%" border="0" cellpadding="0">
+          <tr>
+            <td class="headerTitle">
+              <a href="http://paulcalnan.com" style="text-decoration: none;">Paul Calnan</a>
+            </td>
+            <td class="headerLinks">
+              <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>            </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="headerFoot">
+              I love it when a plan comes together
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      
+<div class="post">
+  <div class="postTitle">
+    <a href="/archives/2014/10/quicktime-screen-recording-of-a-single-window.html">QuickTime Screen Recording of a Single Window</a>
+  </div>
+    <div class="date">Published October 21, 2014</div>
+  <p>I regularly make QuickTime screen recordings of demos for clients. While it's easy to capture the entire screen, it's tricky when you want to capture only a single window. You need to open QuickTime Player, select New Screen Recording, then drag a rectangle over the exact area of the screen where the window is located. It's that last part that's a real pain. Even worse, if you have to do multiple takes, you need to drag out the selection rectangle each time.</p>
+<p>One day, after around ten failed takes of a demo I was trying to do with a live voiceover, I got fed up and automated the process.</p>
+<p>You can use AppleScript to get the target window's position and to kick off the screen recording. You need to change the process name (here, it's configured to record the iOS Simulator) and possibly the window number (if the app has more than one window).</p>
+<script src="https://gist.github.com/pwc3/e611504878fd3e18ce91.js"></script>
+
+<p>I couldn't figure out a way to get AppleScript to move or drag the mouse. Originally, this required a small C program. I was recently able to replace it with a Swift script:</p>
+<script src="https://gist.github.com/pwc3/ea255791598a79a1bcd9.js"></script>
+
+<p>The script, saved in my <code>~/bin</code> directory, takes four arguments: the starting x- and y-coordinates and the x and y distance to move the mouse. For example:</p>
+<pre><code>~/bin/clickdrag -x 10 -y 20 -dx 200 -dy 100
+</code></pre>
+<p>This moves the mouse to pixel (10, 20) on the screen, simulates a left mouse button press, waits a half second, drags the mouse 200 pixels to the right and 100 pixels down, waits another half second, and releases the mouse button.</p>
+<p>It's not very polished, and you may need to tweak the delays here and there to make it work, but it's better than having to do it by hand.</p>
+</div>
+
+
+      <div id="copyright">
+        <center>
+          <a href="http://paulcalnan.com/archives.html">Archives</a> |
+<a href="http://paulcalnan.com/pages/about.html">About</a> |
+<a href="http://twitter.com/pwc/">Twitter</a> |
+<a href="http://github.com/pwc3/">Github</a>          <br/><br/>
+          &copy; 2013 Paul Calnan. All rights reserved.
+        </center>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+  var _gauges = _gauges || [];
+  (function() {
+    var t   = document.createElement('script');
+    t.type  = 'text/javascript';
+    t.async = true;
+    t.id    = 'gauges-tracker';
+    t.setAttribute('data-site-id', '51304dd7108d7b6aad000032');
+    t.src = '//secure.gaug.es/track.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(t, s);
+  })();
+</script>
+  </body>
+</html>

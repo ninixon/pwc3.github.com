@@ -35,6 +35,25 @@
       
   <div class="post">
   <div class="postTitle">
+    <a href="/archives/2014/10/quicktime-screen-recording-of-a-single-window.html">QuickTime Screen Recording of a Single Window</a>
+  </div>
+    <div class="date">Published October 21, 2014</div>
+  <p>I regularly make QuickTime screen recordings of demos for clients. While it's easy to capture the entire screen, it's tricky when you want to capture only a single window. You need to open QuickTime Player, select New Screen Recording, then drag a rectangle over the exact area of the screen where the window is located. It's that last part that's a real pain. Even worse, if you have to do multiple takes, you need to drag out the selection rectangle each time.</p>
+<p>One day, after around ten failed takes of a demo I was trying to do with a live voiceover, I got fed up and automated the process.</p>
+<p>You can use AppleScript to get the target window's position and to kick off the screen recording. You need to change the process name (here, it's configured to record the iOS Simulator) and possibly the window number (if the app has more than one window).</p>
+<script src="https://gist.github.com/pwc3/e611504878fd3e18ce91.js"></script>
+
+<p>I couldn't figure out a way to get AppleScript to move or drag the mouse. Originally, this required a small C program. I was recently able to replace it with a Swift script:</p>
+<script src="https://gist.github.com/pwc3/ea255791598a79a1bcd9.js"></script>
+
+<p>The script, saved in my <code>~/bin</code> directory, takes four arguments: the starting x- and y-coordinates and the x and y distance to move the mouse. For example:</p>
+<pre><code>~/bin/clickdrag -x 10 -y 20 -dx 200 -dy 100
+</code></pre>
+<p>This moves the mouse to pixel (10, 20) on the screen, simulates a left mouse button press, waits a half second, drags the mouse 200 pixels to the right and 100 pixels down, waits another half second, and releases the mouse button.</p>
+<p>It's not very polished, and you may need to tweak the delays here and there to make it work, but it's better than having to do it by hand.</p>
+</div>
+  <div class="post">
+  <div class="postTitle">
     <a href="/archives/2014/8/textexpander-code-snippets-for-objective-c.html">TextExpander Code Snippets for Objective-C</a>
   </div>
     <div class="date">Published August 27, 2014</div>
@@ -357,18 +376,6 @@ NSString *&lt;#path#&gt; = [documentsDirectory stringByAppendingPathComponent:&l
 <p>I've got this bound to &#8679;<!--shift-->&#8984;<!--cmd-->W using <a href="http://www.red-sweater.com/fastscripts/">FastScripts</a>.</p>
 <p>The script:</p>
 <script src="https://gist.github.com/pwc3/9754912.js"></script>
-</div>
-  <div class="post">
-  <div class="postTitle">
-    <a href="/archives/2014/3/refreshing-xcode-provisioning-profiles-with-applescript.html">Refreshing Xcode Provisioning Profiles with AppleScript</a>
-  </div>
-    <div class="date">Published March 24, 2014</div>
-  <p>This seems to happen whenever someone on the team updates the provisioning profile and commits the change to the <code>.xcodeproj</code> file. The build fails and Xcode complains that it can't find a provisioning profile identified by a UUID.</p>
-<p>To fix it, I have to stop what I'm doing, open Preferences, click the right Apple ID (I have one for each client), click the team, click <em>View Details</em>, click the refresh button, and then close out the action sheet and the Preferences dialog. Not the end of the world, but it gets old after a while.</p>
-<p>To get around this issue, I wrote an AppleScript to automate the process. It's a bit fragile, as it's using Accessibility and System Events to poke around in the Preferences dialog. It probably will break in a later version of Xcode (it works in Xcode 5.1).</p>
-<p>To use the script save it to your computer and set the <code>appleID</code> variable to your Apple ID. I use <a href="http://www.red-sweater.com/fastscripts/">FastScripts</a> to bind the script to &#8997;<!--alt-->&#8679;<!--shift-->&#8984;<!--cmd-->R while in Xcode.</p>
-<p>The script:</p>
-<script src="https://gist.github.com/pwc3/9754730.js"></script>
 </div>
 
 <div class="paginator">
