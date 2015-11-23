@@ -2,14 +2,20 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
-  <head http-equiv="content-type" content="text/html; charset=utf-8"/>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>Paul Calnan: TextExpander Code Snippets for Objective-C</title>
-    <link rel="stylesheet" href="http://paulcalnan.com/theme/css/main.css" type="text/css"/>
+    <link rel="stylesheet" href="http://paulcalnan.com/theme/css/main.css">
 
     <link rel="stylesheet" href="http://paulcalnan.com/theme/highlight.js/styles/solarized_light.css">
+
     <script src="http://paulcalnan.com/theme/highlight.js/highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
+
   </head>
+
   <body>
     <div class="main">
       <div class="header">
@@ -18,16 +24,13 @@
             <td class="headerTitle">
               <a href="http://paulcalnan.com" style="text-decoration: none;">Paul Calnan</a>
             </td>
+          </tr>
+          <tr>
             <td class="headerLinks">
               <a href="http://paulcalnan.com/archives.html">Archives</a> |
 <a href="http://paulcalnan.com/pages/about.html">About</a> |
 <a href="http://twitter.com/_pwc3/">Twitter</a> |
 <a href="http://github.com/pwc3/">Github</a>            </td>
-          </tr>
-          <tr>
-            <td colspan="2" class="headerFoot">
-              I love it when a plan comes together
-            </td>
           </tr>
         </table>
       </div>
@@ -101,67 +104,37 @@
 </code></pre>
 <h3>Properties</h3>
 <p>Variations for readonly, copy, strong, weak, and assign:</p>
-<table>
-<thead>
-<tr>
-<th align="left">Abbreviation</th>
-<th align="left">Content</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left"><code>;pnra</code></td>
-<td align="left"><code>@property (nonatomic, readonly, assign)</code></td>
-</tr>
-<tr>
-<td align="left"><code>;pnrc</code></td>
-<td align="left"><code>@property (nonatomic, readonly, copy)</code></td>
-</tr>
-<tr>
-<td align="left"><code>;pnrs</code></td>
-<td align="left"><code>@property (nonatomic, readonly, strong)</code></td>
-</tr>
-<tr>
-<td align="left"><code>;pnrw</code></td>
-<td align="left"><code>@property (nonatomic, readonly, weak)</code></td>
-</tr>
-<tr>
-<td align="left"><code>;pna</code></td>
-<td align="left"><code>@property (nonatomic, assign)</code></td>
-</tr>
-<tr>
-<td align="left"><code>;pnc</code></td>
-<td align="left"><code>@property (nonatomic, copy)</code></td>
-</tr>
-<tr>
-<td align="left"><code>;pns</code></td>
-<td align="left"><code>@property (nonatomic, strong)</code></td>
-</tr>
-<tr>
-<td align="left"><code>;pnw</code></td>
-<td align="left"><code>@property (nonatomic, weak)</code></td>
-</tr>
-</tbody>
-</table>
+<p><code>;pnra</code> expands to:</p>
+<pre><code>@property (nonatomic, readonly, assign)
+</code></pre>
+<p><code>;pnrc</code> expands to:</p>
+<pre><code>@property (nonatomic, readonly, copy)
+</code></pre>
+<p><code>;pnrs</code> expands to:</p>
+<pre><code>@property (nonatomic, readonly, strong)
+</code></pre>
+<p><code>;pnrw</code> expands to:</p>
+<pre><code>@property (nonatomic, readonly, weak)
+</code></pre>
+<p><code>;pna</code> expands to:</p>
+<pre><code>@property (nonatomic, assign)
+</code></pre>
+<p><code>;pnc</code> expands to:</p>
+<pre><code>@property (nonatomic, copy)
+</code></pre>
+<p><code>;pns</code> expands to:</p>
+<pre><code>@property (nonatomic, strong)
+</code></pre>
+<p><code>;pnw</code> expands to:</p>
+<pre><code>@property (nonatomic, weak)
+</code></pre>
 <h3>The Strong-Self / Weak-Self Dance</h3>
-<table>
-<thead>
-<tr>
-<th align="left">Abbreviation</th>
-<th align="left">Content</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left"><code>;ws</code></td>
-<td align="left"><code>__weak typeof(self) weakSelf = self;</code></td>
-</tr>
-<tr>
-<td align="left"><code>;ss</code></td>
-<td align="left"><code>__strong typeof(weakSelf) strongSelf = weakSelf;</code></td>
-</tr>
-</tbody>
-</table>
+<p><code>;ws</code> expands to:</p>
+<pre><code>__weak typeof(self) weakSelf = self;
+</code></pre>
+<p><code>;ss</code> expands to:</p>
+<pre><code>__strong typeof(weakSelf) strongSelf = weakSelf;
+</code></pre>
 <h3>Private Read-Write Property Declarations</h3>
 <p>Say you have a public interface for a class, like this:</p>
 <pre><code>@interface SomeClass : NSObject
@@ -180,28 +153,15 @@ pbpaste | sed -e 's/ : .*$/ ()/' -e 's/, readonly//' | grep -v '^[-+]' | grep -v
 @end
 </code></pre>
 <h3>Mark Pragmas</h3>
-<table>
-<thead>
-<tr>
-<th align="left">Abbreviation</th>
-<th align="left">Content</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left"><code>;mark</code></td>
-<td align="left"><code>#pragma mark -</code></td>
-</tr>
-<tr>
-<td align="left"><code>;public</code></td>
-<td align="left"><code>#pragma mark - Public Methods</code></td>
-</tr>
-<tr>
-<td align="left"><code>;private</code></td>
-<td align="left"><code>#pragma mark - Private Methods</code></td>
-</tr>
-</tbody>
-</table>
+<p><code>;mark</code> expands to:</p>
+<pre><code>#pragma mark -
+</code></pre>
+<p><code>;public</code> expands to:</p>
+<pre><code>#pragma mark - Public Methods
+</code></pre>
+<p><code>;private</code> expands to:</p>
+<pre><code>#pragma mark - Private Methods
+</code></pre>
 <h3>Declare and Initialize an Object using the Default Initializer</h3>
 <p><code>;new</code> uses a fill-in for the type name and variable name:</p>
 <pre><code>%filltext:name=typename% *%filltext:name=varname% = [%filltext:name=typename% new];
@@ -243,40 +203,12 @@ NSString *&lt;#path#&gt; = [documentsDirectory stringByAppendingPathComponent:&l
 </code></pre>
 <p>The final <code>NSString</code> variable is the full path to a file in the documents directory.</p>
 <h3>Common Type Names</h3>
-<table>
-<thead>
-<tr>
-<th align="left">Abbreviation</th>
-<th align="left">Content</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left"><code>;nsa</code></td>
-<td align="left"><code>NSArray</code></td>
-</tr>
-<tr>
-<td align="left"><code>;nsd</code></td>
-<td align="left"><code>NSDictionary</code></td>
-</tr>
-<tr>
-<td align="left"><code>;nss</code></td>
-<td align="left"><code>NSString</code></td>
-</tr>
-<tr>
-<td align="left"><code>;nsma</code></td>
-<td align="left"><code>NSMutableArray</code></td>
-</tr>
-<tr>
-<td align="left"><code>;nsmd</code></td>
-<td align="left"><code>NSMutableDictionary</code></td>
-</tr>
-<tr>
-<td align="left"><code>;nsms</code></td>
-<td align="left"><code>NSMutableString</code></td>
-</tr>
-</tbody>
-</table>
+<p><code>;nsa</code>  expands to <code>NSArray</code></p>
+<p><code>;nsd</code>  expands to <code>NSDictionary</code></p>
+<p><code>;nss</code>  expands to <code>NSString</code></p>
+<p><code>;nsma</code> expands to <code>NSMutableArray</code></p>
+<p><code>;nsmd</code> expands to <code>NSMutableDictionary</code></p>
+<p><code>;nsms</code> expands to <code>NSMutableString</code></p>
 <p>These also work with the <code>;new</code> snippet, above.</p>
 <h3>Miscellaneous</h3>
 <p>Reference the default <code>NSNotificationCenter</code> using <code>;dnc</code>:</p>
@@ -290,36 +222,21 @@ NSString *&lt;#path#&gt; = [documentsDirectory stringByAppendingPathComponent:&l
 </code></pre>
 <h3>Xcode Paths</h3>
 <p>These are useful in the Terminal or in the <em>Go to Folder</em> dialog in the Finder.</p>
-<table>
-<thead>
-<tr>
-<th align="left">Abbreviation</th>
-<th align="left">Content</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left"><code>;iossdks</code></td>
-<td align="left"><code>/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs</code></td>
-</tr>
-<tr>
-<td align="left"><code>;osxsdks</code></td>
-<td align="left"><code>/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs</code></td>
-</tr>
-<tr>
-<td align="left"><code>;simulator</code></td>
-<td align="left"><code>~/Library/Application\ Support/iPhone\ Simulator</code></td>
-</tr>
-<tr>
-<td align="left"><code>;archives</code></td>
-<td align="left"><code>~/Library/Developer/Xcode/Archives</code></td>
-</tr>
-<tr>
-<td align="left"><code>;deriveddata</code></td>
-<td align="left"><code>~/Library/Developer/Xcode/DerivedData</code></td>
-</tr>
-</tbody>
-</table>
+<p><code>;iossdks</code>     expands to:</p>
+<pre><code>/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs
+</code></pre>
+<p><code>;osxsdks</code>     expands to:</p>
+<pre><code>/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+</code></pre>
+<p><code>;simulator</code>   expands to:</p>
+<pre><code>~/Library/Application\ Support/iPhone\ Simulator
+</code></pre>
+<p><code>;archives</code>    expands to:</p>
+<pre><code>~/Library/Developer/Xcode/Archives
+</code></pre>
+<p><code>;deriveddata</code> expands to:</p>
+<pre><code>~/Library/Developer/Xcode/DerivedData
+</code></pre>
 </div>
 
 
@@ -329,7 +246,7 @@ NSString *&lt;#path#&gt; = [documentsDirectory stringByAppendingPathComponent:&l
 <a href="http://paulcalnan.com/pages/about.html">About</a> |
 <a href="http://twitter.com/_pwc3/">Twitter</a> |
 <a href="http://github.com/pwc3/">Github</a>          <br/><br/>
-          &copy; 2013 Paul Calnan. All rights reserved.
+          &copy; 2012-2015 Paul Calnan. All rights reserved.
         </center>
       </div>
     </div>
